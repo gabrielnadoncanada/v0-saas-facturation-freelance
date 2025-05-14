@@ -1,16 +1,12 @@
 import { redirect } from "next/navigation"
-import { NewPaymentForm } from "@/components/features/payments/new-payment-form"
+import { NewPaymentForm } from "@/components/payments/new-payment-form"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getPendingInvoices } from "@/app/actions/payments"
+import { getAllInvoicesAction } from "@/features/invoice/list/getAllInvoices.action"
 
 export default async function NewPaymentPage() {
-  const { invoices, error } = await getPendingInvoices()
-
-  if (error === "Non authentifié") {
-    redirect("/login")
-  }
+  const result = await getAllInvoicesAction()
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,7 +23,7 @@ export default async function NewPaymentPage() {
       </div>
 
       <div className="grid gap-6">
-        <NewPaymentForm invoices={invoices} />
+        <NewPaymentForm invoices={result} />
       </div>
     </div>
   )

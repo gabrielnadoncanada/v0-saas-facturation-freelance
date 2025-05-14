@@ -1,4 +1,4 @@
-import { TimeToInvoice } from "@/components/features/time-tracking/time-to-invoice"
+import { TimeToInvoice } from "@/components/time-tracking/time-to-invoice"
 import { createClient } from "@/lib/supabase/server"
 
 export default async function TimeToInvoicePage() {

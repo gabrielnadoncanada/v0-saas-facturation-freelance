@@ -1,0 +1,11 @@
+import { createClient } from '@/lib/supabase/server'
+
+export async function getSessionUser() {
+    const supabase = createClient()
+
+    const { data: { session } } = await supabase.auth.getSession()
+
+    if (!session) throw new Error('Non authentifié')
+
+    return { user: session.user, supabase }
+}

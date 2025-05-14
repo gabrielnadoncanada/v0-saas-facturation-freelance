@@ -1,11 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProductFormUI } from "@/components/features/products/product-form-ui"
+import { ProductFormUI } from "@/components/products/product-form-ui"
 import { redirect, notFound } from "next/navigation"
-import { getProduct } from "@/app/actions/products"
+import { getProductAction } from "@/actions/products/get"
 
 interface EditProductPageProps {
-  params: {
+    params: { 
     id: string
   }
 }
@@ -19,9 +19,9 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
   }
 
   // Fetch the product
-  const { data: product, error } = await getProduct(params.id)
+  const result = await getProductAction(params.id)
 
-  if (error || !product) {
+  if (!result.success) {
     notFound()
   }
 
@@ -37,7 +37,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
           <CardTitle>Détails du produit</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProductFormUI userId={session.session.user.id} product={product} />
+          <ProductFormUI userId={session.session.user.id} product={result.data!.product} />
         </CardContent>
       </Card>
     </div>

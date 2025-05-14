@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProductFormUI } from "@/components/features/products/product-form-ui"
+import { ProductFormUI } from "@/components/products/product-form-ui"
 import { redirect } from "next/navigation"
 
 export default async function NewProductPage() {

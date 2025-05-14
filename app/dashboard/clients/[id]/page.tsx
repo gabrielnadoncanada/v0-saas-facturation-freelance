@@ -1,23 +1,8 @@
-import { ClientForm } from "@/components/features/clients/client-form"
-import { getClient } from "@/app/actions/clients"
-import { notFound, redirect } from "next/navigation"
+import { ClientForm } from "@/components/clients/client-form"
+import { getClientAction } from "@/features/client/edit/getClient.action"
 
-export default async function EditClientPage({
-  params,
-}: {
-  params: { id: string }
-}) {
-  // Si l'ID est "new", rediriger vers la page de création
-  if (params.id === "new") {
-    redirect("/dashboard/clients/new")
-  }
-
-  // Récupérer les données du client
-  const result = await getClient(params.id)
-
-  if (!result.success || !result.data) {
-    notFound()
-  }
+export default async function EditClientPage({ params, }: { params: { id: string } }) {
+  const result = await getClientAction(params.id)
 
   return (
     <div className="flex flex-col gap-6">
@@ -26,7 +11,7 @@ export default async function EditClientPage({
         <p className="text-muted-foreground">Modifiez les informations du client</p>
       </div>
 
-      <ClientForm client={result.data} isEdit={true} />
+      <ClientForm client={result} isEdit={true} />
     </div>
   )
 }

@@ -1,29 +1,19 @@
-import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { ProductsTable } from "@/components/features/products/products-table"
-import { getProducts, getCategories } from "@/app/actions/products"
-import { createClient } from "@/lib/supabase/server"
+import { ProductsTable } from "@/components/products/products-table"
+import { getAllProductsAction } from "@/features/product/list/getAllProducts.action"
+import { getAllCategoriesAction } from "@/features/category/list/getAllCategories.action"
+import { Product } from "@/types/products/product"
+import { Category } from "@/types/categories/category"
 
 export default async function ProductsPage() {
-  const supabase = createClient()
-
-  const { data: session } = await supabase.auth.getSession()
-  if (!session.session) {
-    redirect("/login")
-  }
-
   // Fetch products with categories
-  const { data: products, error } = await getProducts()
-
-  if (error) {
-    console.error("Error fetching products:", error)
-  }
+  const result = await getAllProductsAction()
 
   // Fetch categories count
-  const { data: categoriesData } = await getCategories()
-  const categoriesCount = categoriesData?.length || 0
+  const categoriesResult = await getAllCategoriesAction()
+  const categoriesCount = (categoriesResult.data as Category[]).length || 0
 
   return (
     <div className="flex flex-col gap-6">
@@ -54,7 +44,7 @@ export default async function ProductsPage() {
         </div>
       </div>
 
-      <ProductsTableUI products={products || []} />
+      <ProductsTable products={result} />
     </div>
   )
 }

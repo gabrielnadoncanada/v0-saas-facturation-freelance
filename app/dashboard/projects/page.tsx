@@ -1,12 +1,13 @@
-import { ProjectsTable } from "@/components/features/projects/projects-table"
+import { ProjectsTable } from "@/components/projects/projects-table"
 import { Button } from "@/components/ui/button"
-import { getAllProjects } from "@/app/actions/projects"
+import { getAllProjectsAction } from "@/actions/projects/get-all"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { Project } from "@/types/projects/project"
 
 export default async function ProjectsPage() {
-  const result = await getAllProjects()
+  const result = await getAllProjectsAction()
 
   if (!result.success) {
     redirect("/login")
@@ -27,7 +28,7 @@ export default async function ProjectsPage() {
         </Link>
       </div>
 
-      <ProjectsTable projects={result.data || []} />
+      <ProjectsTable projects={result.data!.projects as Project[]} />
     </div>
   )
 }

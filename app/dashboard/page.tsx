@@ -1,13 +1,13 @@
-import { DashboardCards } from "@/components/features/dashboard/dashboard-cards"
-import { DashboardCharts } from "@/components/features/dashboard/dashboard-charts"
-import { RecentInvoices } from "@/components/features/dashboard/recent-invoices"
-import { RecentProjects } from "@/components/features/dashboard/recent-projects"
-import { UpcomingTasks } from "@/components/features/dashboard/upcoming-tasks"
+import { DashboardCards } from "@/components/dashboard/dashboard-cards"
+import { DashboardCharts } from "@/components/dashboard/dashboard-charts"
+import { RecentInvoices } from "@/components/dashboard/recent-invoices"
+import { RecentProjects } from "@/components/dashboard/recent-projects"
+import { UpcomingTasks } from "@/components/dashboard/upcoming-tasks"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, ArrowUpRight, BarChart4, Clock, FileText, Users, Briefcase } from "lucide-react"
 import Link from "next/link"
-import { getDashboardData } from "@/app/actions/dashboard"
+import { getDashboardData } from "@/actions/dashboard/dashboard"
 
 export default async function DashboardPage() {
   // Récupérer les données du tableau de bord

@@ -1,8 +1,8 @@
 import type React from "react"
-import { DashboardNav } from "@/components/features/dashboard/dashboard-nav"
+import { DashboardNav } from "@/components/dashboard/dashboard-nav"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { TopNav } from "@/components/features/dashboard/top-nav"
+import { TopNav } from "@/components/dashboard/top-nav"
 
 export default async function DashboardLayout({
   children,

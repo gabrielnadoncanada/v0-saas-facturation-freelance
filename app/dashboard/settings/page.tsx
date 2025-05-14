@@ -1,9 +1,9 @@
-import { ProfileForm } from "@/components/features/settings/profile-form"
-import { getUserProfile } from "@/app/actions/settings"
+import { ProfileForm } from "@/components/settings/profile-form"
+import { getUserProfileAction } from "@/actions/settings/get"
 import { redirect } from "next/navigation"
 
 export default async function SettingsPage() {
-  const result = await getUserProfile()
+  const result = await getUserProfileAction()
 
   if (!result.success) {
     redirect("/login")
@@ -17,7 +17,7 @@ export default async function SettingsPage() {
       </div>
 
       <div className="grid gap-6">
-        <ProfileForm profile={result.data} />
+        <ProfileForm profile={result.data!.profile as Profile} />
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
-import { TaskForm } from "@/components/features/projects/task-form"
-import { getTaskFormData } from "@/app/actions/tasks"
+import { TaskForm } from "@/components/projects/task-form"
+import { getTaskFormDataAction } from "@/actions/tasks/get-form-data"
 import { notFound, redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
@@ -11,7 +11,7 @@ export default async function NewTaskPage({
   params: { id: string }
 }) {
   // Utiliser le Server Action pour récupérer les données nécessaires
-  const result = await getTaskFormData(params.id)
+  const result = await getTaskFormDataAction(params.id)
 
   if (!result.success) {
     if (result.error === "Non authentifié") {

@@ -1,16 +1,12 @@
-import { PaymentsTable } from "@/components/features/payments/payments-table"
+import { PaymentsTable } from "@/components/payments/payments-table"
 import { Button } from "@/components/ui/button"
-import { getAllPayments } from "@/app/actions/payments"
+import { getAllPaymentsAction } from "@/actions/payments/get-all"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
 export default async function PaymentsPage() {
-  const { payments, error } = await getAllPayments()
-
-  if (error === "Non authentifié") {
-    redirect("/login")
-  }
+  const result = await getAllPaymentsAction()
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,7 +23,7 @@ export default async function PaymentsPage() {
         </Link>
       </div>
 
-      <PaymentsTable payments={payments} />
+      <PaymentsTable payments={result.data!.payments} />
     </div>
   )
 }

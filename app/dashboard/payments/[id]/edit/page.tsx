@@ -1,20 +1,12 @@
 import { notFound, redirect } from "next/navigation"
-import { EditPaymentForm } from "@/components/features/payments/edit-payment-form"
+import { EditPaymentForm } from "@/components/payments/edit-payment-form"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getPaymentData } from "@/app/actions/payments"
+import { getPaymentAction } from "@/actions/payments/get"
 
 export default async function EditPaymentPage({ params }: { params: { id: string } }) {
-  const { error, payment, invoices } = await getPaymentData(params.id)
-
-  if (error) {
-    if (error === "Non authentifié") {
-      redirect("/login")
-    } else {
-      notFound()
-    }
-  }
+  const result = await getPaymentAction(params.id)
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,13 +19,13 @@ export default async function EditPaymentPage({ params }: { params: { id: string
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Modifier le paiement</h1>
           <p className="text-muted-foreground">
-            Facture {payment!.invoices.invoice_number} - {payment!.invoices.clients.name}
+            Facture {result.data?.payment?.invoice_number} - {result.data?.payment?.client_name}
           </p>
         </div>
       </div>
 
       <div className="grid gap-6">
-        <EditPaymentForm payment={payment!} invoices={invoices} />
+        <EditPaymentForm payment={result.data?.payment} invoices={result.data?.invoices} />
       </div>
     </div>
   )

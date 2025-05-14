@@ -1,20 +1,11 @@
-import { InvoicesTable } from "@/components/features/invoices/invoices-table"
+import { InvoicesTable } from "@/components/invoices/invoices-table"
 import { Button } from "@/components/ui/button"
-import { getAllInvoices } from "@/app/actions/invoices"
+import { getAllInvoicesAction } from "@/features/invoice/list/getAllInvoices.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 
 export default async function InvoicesPage() {
-  const result = await getAllInvoices()
-
-  if (!result.success) {
-    if (result.error === "Non authentifié") {
-      redirect("/login")
-    }
-    // Gérer d'autres erreurs si nécessaire
-    return <div>Erreur: {result.error}</div>
-  }
+  const result = await getAllInvoicesAction()
 
   return (
     <div className="flex flex-col gap-6">
@@ -31,7 +22,7 @@ export default async function InvoicesPage() {
         </Link>
       </div>
 
-      <InvoicesTable invoices={result.data || []} />
+      <InvoicesTable invoices={result} />
     </div>
   )
 }

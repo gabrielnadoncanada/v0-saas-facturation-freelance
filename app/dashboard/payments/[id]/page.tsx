@@ -1,20 +1,12 @@
 import { notFound, redirect } from "next/navigation"
-import { PaymentDetails } from "@/components/features/payments/payment-details"
+import { PaymentDetails } from "@/components/payments/payment-details"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getPaymentData } from "@/app/actions/payments"
+import { getPaymentAction } from "@/actions/payments/get"
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {
-  const { payment, error } = await getPaymentData(params.id)
-
-  if (error === "Non authentifié") {
-    redirect("/login")
-  }
-
-  if (error || !payment) {
-    notFound()
-  }
+  const result = await getPaymentAction(params.id)
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,13 +19,13 @@ export default async function PaymentDetailsPage({ params }: { params: { id: str
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Détails du paiement</h1>
           <p className="text-muted-foreground">
-            Facture {payment.invoices.invoice_number} - {payment.invoices.clients.name}
+            Facture {result.data!.payment.invoice_number} - {result.data!.payment.client_name}
           </p>
         </div>
       </div>
 
       <div className="grid gap-6">
-        <PaymentDetails payment={payment} />
+        <PaymentDetails payment={result.data!.payment} />
       </div>
     </div>
   )

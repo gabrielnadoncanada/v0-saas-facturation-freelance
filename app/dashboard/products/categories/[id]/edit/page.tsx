@@ -1,9 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CategoryFormUI } from "@/components/features/products/category-form-ui"
+import { CategoryFormUI } from "@/components/products/category-form-ui"
 import { redirect, notFound } from "next/navigation"
-import { getCategory, createCategory, updateCategory } from "@/app/actions/categories"
-
+import { getCategoryAction } from "@/actions/categories/get"
+import { createCategoryAction } from "@/actions/categories/create"
+import { updateCategoryAction } from "@/actions/categories/update"
+import { Category } from "@/types/categories/category"
 interface EditCategoryPageProps {
   params: {
     id: string
@@ -19,9 +21,9 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
   }
 
   // Fetch the category
-  const { data: category, error } = await getCategory(params.id)
+  const result = await getCategoryAction(params.id)
 
-  if (error || !category) {
+  if (!result.success) {
     notFound()
   }
 
@@ -39,9 +41,9 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
         <CardContent>
           <CategoryFormUI
             userId={session.session.user.id}
-            category={category}
-            createCategoryAction={createCategory}
-            updateCategoryAction={updateCategory}
+            category={result.data!.category as Category}
+            createCategoryAction={createCategoryAction}
+            updateCategoryAction={updateCategoryAction}
           />
         </CardContent>
       </Card>

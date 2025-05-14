@@ -3,8 +3,8 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { CategoriesTableUI } from "@/components/features/products/categories-table-ui"
-import { getCategories } from "@/app/actions/categories"
+import { CategoriesTableUI } from "@/components/products/categories-table-ui"
+import { getAllCategoriesAction } from "@/features/category/list/getAllCategories.action"
 
 export default async function CategoriesPage() {
   const supabase = createClient()
@@ -15,10 +15,10 @@ export default async function CategoriesPage() {
   }
 
   // Fetch categories
-  const { data: categories, error } = await getCategories()
+  const result = await getAllCategoriesAction()
 
-  if (error) {
-    console.error("Error fetching categories:", error)
+  if (!result.success) {
+    console.error("Error fetching categories:", result.error)
   }
 
   return (
@@ -36,7 +36,7 @@ export default async function CategoriesPage() {
         </Link>
       </div>
 
-      <CategoriesTableUI categories={categories || []} />
+      <CategoriesTableUI categories={result.data!.categories as Category[]} />
     </div>
   )
 }

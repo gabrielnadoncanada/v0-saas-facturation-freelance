@@ -1,5 +1,5 @@
-import { TimeEntriesTable } from "@/components/features/time-tracking/time-entries-table"
-import { TimeTracker } from "@/components/features/time-tracking/time-tracker"
+import { TimeEntriesTable } from "@/components/time-tracking/time-entries-table"
+import { TimeTracker } from "@/components/time-tracking/time-tracker"
 import { createClient } from "@/lib/supabase/server"
 
 export default async function TimeTrackingPage() {

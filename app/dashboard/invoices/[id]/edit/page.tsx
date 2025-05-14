@@ -1,21 +1,12 @@
 import { notFound } from "next/navigation"
-import { InvoiceForm } from "@/components/features/invoices/invoice-form"
-import { getInvoiceData } from "@/app/actions/invoices"
+import { InvoiceForm } from "@/components/invoices/invoice-form"
+import { getInvoiceAction } from "@/features/invoice/edit/getInvoice.action"
 
-interface EditInvoicePageProps {
-  params: {
-    id: string
-  }
-}
 
-export default async function EditInvoicePage({ params }: EditInvoicePageProps) {
-  // Utiliser le Server Action pour récupérer toutes les données nécessaires
-  const result = await getInvoiceData(params.id)
 
-  // Gérer les erreurs
-  if (!result.success) {
-    notFound()
-  }
+export default async function EditInvoicePage({ params }: { params: { id: string } }) {
+  const result = await getInvoiceAction(params.id)
+
 
   const { invoice, invoiceItems, clients, defaultCurrency, userId } = result.data
 

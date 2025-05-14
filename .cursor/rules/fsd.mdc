@@ -1,0 +1,120 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+id: rule.structure
+title: Feature Sliced Architecture — Feature Structure
+description: Canonical structure and folder conventions for organizing a feature using FSD.
+tags: [architecture, fsd, folders, convention, scalable]
+---
+
+# ✅ Feature-Sliced Architecture — Feature Structure
+
+We adopt a **Feature-Sliced Design (FSD)** architecture that maximizes modularity, clarity, testability, and scalability across all business features.
+
+Each business **feature** (`invoice`, `client`, `user`, etc.) is structured into subfolders that reflect **user intents** (`create`, `edit`, `list`, `view`, etc.), and shares logic internally via a `shared/` folder.  
+Global logic is always extracted into the root-level `shared/`.
+
+---
+
+## 📦 Canonical Structure Example
+
+```bash
+features/
+└── invoice/
+    ├── create/
+    │   ├── ui/              # UI components specific to create flow
+    │   ├── actions/         # Server actions (Next.js "use server")
+    │   └── schema/          # Zod validation for create
+
+    ├── edit/
+    │   ├── ui/
+    │   ├── actions/
+    │   └── schema/
+
+    ├── list/
+    │   ├── actions/         # getAllInvoices.action.ts
+    │   └── model/           # fetchAllInvoices.ts
+
+    ├── view/
+    │   ├── actions/         # getInvoice.action.ts
+    │   └── model/           # fetchInvoiceById, fetchUserCurrency, etc.
+
+    ├── shared/
+    │   ├── model/           # DB access: createInvoiceInDb, deleteInvoiceById, etc.
+    │   ├── hooks/           # React logic: useInvoiceForm, useInvoiceStatusColor
+    │   ├── types/           # Domain types: Invoice, InvoiceItem, InvoiceStatus, etc.
+    │   ├── schema/          # Shared Zod schemas: invoice.base.schema.ts
+    │   └── lib/             # Utility functions: formatInvoiceDate, computeInvoiceTotals
+🧱 Folder Responsibilities
+Folder	Responsibility
+create/	UI, validation & server action for invoice creation
+edit/	UI & logic for editing an invoice
+view/	Load & display invoice in readonly mode
+list/	Fetch & display multiple invoices
+shared/	Internal feature logic reused across the sub-intents (create, edit, view)
+
+📚 Shared Folder Breakdown
+Use shared/ within the feature (e.g. invoice/shared/) for logic that’s reused inside the feature only.
+Use shared/ at the root of the project for cross-feature logic (auth, i18n, formatting, etc).
+
+Subfolder	Responsibility
+model/	Raw DB access & Supabase interaction functions (fetch, create…)
+hooks/	Custom UI logic for state management
+schema/	Shared Zod schema definitions
+types/	TypeScript domain types
+lib/	Pure utilities / formatting logic
+
+⚙️ Naming Conventions
+Context	Convention	Example
+Server action	*.action.ts	createInvoice.action.ts
+DB interaction	verbEntity[InDb].ts	fetchInvoiceById.ts
+React Hook	use*	useInvoiceForm.ts
+Zod Schema	*.schema.ts	invoice.base.schema.ts
+Pure util function	verbEntity.ts	formatInvoiceDate.ts
+
+🔄 Global shared/ (at root)
+Logic that is reused across multiple features must live in the global shared/ folder at the root.
+
+bash
+Copier
+Modifier
+shared/
+├── lib/              # Pure functions by domain (auth, date, currency, etc.)
+│   ├── auth/         # getUserIdFromSession.ts, hasRole.ts
+│   ├── date/
+│   ├── currency/
+├── schema/           # Global Zod schemas
+├── types/            # Global types like User, Role, etc.
+├── services/         # External integrations (e.g. Stripe, Supabase client)
+├── ui/               # Reusable UI components (Button, Modal, etc.)
+├── config/           # Theme, locale, env
+🧠 Decision Rules
+✅ Use features/invoice/shared/ → for invoice-specific logic reused across create/edit/view
+
+✅ Use shared/lib/auth/ → for things like getUserIdFromSession, getUserLocale, etc.
+
+❌ Do not place cross-feature utilities inside a feature’s shared folder
+
+❌ Never mix intent folders (e.g. don’t call getInvoiceById from edit/ if it lives in create/)
+
+🧪 Testing Readiness
+Each file should be testable in isolation:
+
+model/ and lib/ → unit tested with Supabase/client mocks
+
+actions/ → tested at integration level (or via E2E flows)
+
+hooks/ → tested with React Testing Library if needed
+
+✅ Summary
+Feature structure is modular, intention-based, and horizontally extensible.
+
+Scope	Folder	Purpose
+Local logic	features/invoice/shared/	Specific to one feature
+Global logic	shared/ (root)	Cross-feature utilities and services
+
+
+This rule ensures all features are consistently structured, scalable, and team-ready.

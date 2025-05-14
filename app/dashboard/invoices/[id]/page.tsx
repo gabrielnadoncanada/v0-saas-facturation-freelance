@@ -1,6 +1,8 @@
-import { InvoiceDetails } from "@/components/features/invoices/invoice-details"
-import { getInvoiceDetails } from "@/app/actions/invoices"
+import { InvoiceDetails } from "@/components/invoices/invoice-details"
+import { getInvoiceAction } from "@/features/invoice/view/getInvoice.action" 
 import { notFound, redirect } from "next/navigation"
+import { Invoice, InvoiceItem } from "@/types/invoices/invoice"
+import { Payment } from "@/types/payments/payment"
 
 export default async function InvoiceDetailsPage({
   params,
@@ -8,7 +10,7 @@ export default async function InvoiceDetailsPage({
   params: { id: string }
 }) {
   // Récupérer les détails de la facture via le Server Action
-  const result = await getInvoiceDetails(params.id)
+  const result = await getInvoiceAction(params.id)
 
   // Gérer les erreurs
   if (!result.success) {
@@ -19,7 +21,7 @@ export default async function InvoiceDetailsPage({
   }
 
   // Extraire les données
-  const { invoice, invoiceItems, payments } = result.data
+  const { invoice, invoiceItems, payments } = result.data as { invoice: Invoice; invoiceItems: InvoiceItem[]; payments: Payment[] }
 
   return (
     <div className="flex flex-col gap-6">

@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CategoryFormUI } from "@/components/features/products/category-form-ui"
+import { CategoryFormUI } from "@/components/products/category-form-ui"
 import { redirect } from "next/navigation"
-import { createCategory } from "@/app/actions/categories"
+import { createCategoryAction } from "@/actions/categories/create"
 
 export default async function NewCategoryPage() {
   const supabase = createClient()
@@ -24,7 +24,7 @@ export default async function NewCategoryPage() {
           <CardTitle>Détails de la catégorie</CardTitle>
         </CardHeader>
         <CardContent>
-          <CategoryFormUI userId={session.session.user.id} createCategoryAction={createCategory} />
+          <CategoryFormUI userId={session.session.user.id} createCategoryAction={createCategoryAction} />
         </CardContent>
       </Card>
     </div>

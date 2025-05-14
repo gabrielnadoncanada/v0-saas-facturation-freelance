@@ -1,11 +1,11 @@
-import { ProjectForm } from "@/components/features/projects/project-form"
-import { getClients } from "@/app/actions/projects"
+import { ProjectForm } from "@/components/projects/project-form"
+import { getProjectDataAction } from "@/actions/projects/get"
 import { redirect } from "next/navigation"
 
 export default async function NewProjectPage() {
-  const result = await getClients()
+  const result = await getProjectDataAction()
 
-  if (!result.success) {
+  if (!result.success || !result.data) {
     redirect("/login")
   }
 
@@ -16,7 +16,7 @@ export default async function NewProjectPage() {
         <p className="text-muted-foreground">Créez un nouveau projet et associez-le à un client</p>
       </div>
 
-      <ProjectForm userId={result.userId} clients={result.clients} />
+      <ProjectForm userId={result.data.userId} clients={result.data.clients as { id: string; name: string }[]} />
     </div>
   )
 }
