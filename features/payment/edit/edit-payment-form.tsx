@@ -15,7 +15,7 @@ import { formatCurrency } from "@/shared/lib/utils"
 import { DatePicker } from "@/components/ui/date-picker"
 import { Payment } from "@/shared/types/payments/payment"
 import { Invoice } from "@/shared/types/invoices/invoice"
-import { updatePaymentAction } from "@/actions/payments/update"
+import { updatePaymentAction } from "@/features/payment/edit/updatePayment.action"
 
 export function EditPaymentForm({ payment, invoices }: { payment: Payment, invoices: Invoice[] }) {
   const router = useRouter()

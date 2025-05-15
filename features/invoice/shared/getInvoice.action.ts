@@ -1,9 +1,9 @@
 'use server'
 
-import { fetchInvoiceById } from './fetchInvoiceById'
-import { fetchInvoiceItems } from './fetchInvoiceItems'
-import { fetchClientsList } from './fetchClientsList'
-import { fetchDefaultCurrency } from './fetchDefaultCurrency'
+import { fetchInvoiceById } from '../view/fetchInvoiceById'
+import { fetchInvoiceItems } from '../view/fetchInvoiceItems'
+import { fetchClientsList } from '../view/fetchClientsList'
+import { fetchDefaultCurrency } from '../view/fetchDefaultCurrency'
 import { InvoiceActionResult } from '@/shared/types/invoices/invoice'
 import { fetchAllPayments } from '@/features/payment'
 

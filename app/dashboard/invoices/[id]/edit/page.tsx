@@ -1,14 +1,12 @@
-import { notFound } from "next/navigation"
 import { InvoiceForm } from "@/features/invoice/shared/InvoiceForm"
-import { getInvoiceAction } from "@/features/invoice/edit/getInvoice.action"
+import { getInvoiceAction } from "@/features/invoice/shared/getInvoice.action"
 
 
 
 export default async function EditInvoicePage({ params }: { params: { id: string } }) {
   const result = await getInvoiceAction(params.id)
 
-
-  const { invoice, invoiceItems, clients, defaultCurrency, userId } = result.data
+  const { invoice, invoiceItems, clients, defaultCurrency } = result.data
 
   return (
     <div className="flex flex-col gap-6">
@@ -18,7 +16,6 @@ export default async function EditInvoicePage({ params }: { params: { id: string
       </div>
 
       <InvoiceForm
-        userId={userId}
         clients={clients}
         invoice={invoice}
         invoiceItems={invoiceItems}

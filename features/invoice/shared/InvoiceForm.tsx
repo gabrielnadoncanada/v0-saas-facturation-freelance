@@ -52,7 +52,6 @@ import { Invoice } from "@/shared/types/invoices/invoice"
 import { Client } from "@/shared/types/clients/client"
 
 interface InvoiceFormProps {
-  userId: string | undefined
   clients: Client[]
   invoice?: Invoice
   invoiceItems?: InvoiceItem[]
@@ -299,7 +298,6 @@ function SortableInvoiceItem({
 }
 
 export function InvoiceForm({
-  userId,
   clients,
   invoice,
   invoiceItems = [],
