@@ -1,6 +1,6 @@
-import { InvoiceForm } from "@/components/invoices/invoice-form"
+import { InvoiceForm } from "@/features/invoice/shared/InvoiceForm"
 import { fetchAllClients } from "@/features/client"
-import { getSessionUser } from "@/shared/getSessionUser"
+import { getSessionUser } from "@/shared/utils/getSessionUser"
 import { fetchDefaultCurrency } from "@/features/invoice/view/fetchDefaultCurrency"
 
 export default async function NewInvoicePage() {

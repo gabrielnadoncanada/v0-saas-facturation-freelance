@@ -1,9 +1,9 @@
 import { notFound, redirect } from "next/navigation"
-import { PaymentDetails } from "@/components/payments/payment-details"
+import { PaymentDetails } from "@/features/payment/shared/PaymentDetails"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getPaymentAction } from "@/actions/payments/get"
+import { getPaymentAction } from "@/features/payment/edit/getPayment.action"
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {
   const result = await getPaymentAction(params.id)

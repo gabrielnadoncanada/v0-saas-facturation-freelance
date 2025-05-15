@@ -1,4 +1,4 @@
-import { getSessionUser } from '@/shared/getSessionUser';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
 
 export async function deleteClientById(clientId: string) {
   const { supabase, user } = await getSessionUser()

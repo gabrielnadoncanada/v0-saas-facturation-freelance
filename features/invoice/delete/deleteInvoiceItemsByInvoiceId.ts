@@ -1,4 +1,4 @@
-import { getSessionUser } from '@/shared/getSessionUser'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function deleteInvoiceItemsByInvoiceId(invoiceId: string): Promise<void> {
   const { supabase } = await getSessionUser()

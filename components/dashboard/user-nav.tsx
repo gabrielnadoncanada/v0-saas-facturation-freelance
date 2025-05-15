@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@/shared/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { LogOut, Settings, UserCircle } from "lucide-react"
 import type { User as SupabaseUser } from "@supabase/supabase-js"

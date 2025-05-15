@@ -1,6 +1,6 @@
-import { extractDataOrThrow } from '@/shared/extractDataOrThrow'
-import { getSessionUser } from '@/shared/getSessionUser'
-import { Product } from '@/types/products/product'
+import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { Product } from '@/shared/types/products/product'
 
 export async function fetchAllProducts(): Promise<Product[]> {
   const { supabase, user } = await getSessionUser()

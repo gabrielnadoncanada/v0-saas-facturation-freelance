@@ -1,7 +1,7 @@
 'use server'
 
 import { updateCategoryInDb } from './updateCategoryInDb'
-import { CategoryFormData, CategoryActionResult } from '@/types/categories/category'
+import { CategoryFormData, CategoryActionResult } from '@/shared/types/categories/category'
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 

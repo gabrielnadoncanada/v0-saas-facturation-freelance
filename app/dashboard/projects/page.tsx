@@ -1,17 +1,11 @@
-import { ProjectsTable } from "@/components/projects/projects-table"
+import { ProjectsTable } from "@/features/project/list/ProjectsTable"
 import { Button } from "@/components/ui/button"
-import { getAllProjectsAction } from "@/actions/projects/get-all"
+import { getAllProjectsAction } from "@/features/project/list/getAllProjects.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { redirect } from "next/navigation"
-import { Project } from "@/types/projects/project"
 
 export default async function ProjectsPage() {
   const result = await getAllProjectsAction()
-
-  if (!result.success) {
-    redirect("/login")
-  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -28,7 +22,7 @@ export default async function ProjectsPage() {
         </Link>
       </div>
 
-      <ProjectsTable projects={result.data!.projects as Project[]} />
+      <ProjectsTable projects={result} />
     </div>
   )
 }

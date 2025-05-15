@@ -2,7 +2,7 @@
 
 import { createInvoiceInDb } from '@/features/invoice/create/createInvoiceInDb'
 import { createInvoiceItems } from '@/features/invoice/create/createInvoiceItems'
-import { Invoice, InvoiceActionResult, InvoiceItem } from '@/features/invoice/shared/invoice.types'
+import { Invoice, InvoiceActionResult, InvoiceItem } from '@/shared/types/invoices/invoice'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 

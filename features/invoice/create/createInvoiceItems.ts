@@ -1,5 +1,5 @@
-import { InvoiceItem } from '@/types/invoices/invoice'
-import { getSessionUser } from '@/shared/getSessionUser'
+import { InvoiceItem } from '@/shared/types/invoices/invoice'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function createInvoiceItems(
   invoiceId: string,

@@ -1,5 +1,5 @@
 "use server"
-import { Invoice, InvoiceActionResult, InvoiceItem } from '@/types/invoices/invoice'
+import { Invoice, InvoiceActionResult, InvoiceItem } from '@/shared/types/invoices/invoice'
 import { updateInvoiceInDb } from '@/features/invoice/edit/updateInvoiceInDb'
 import { deleteRemovedInvoiceItems } from '@/features/invoice/edit/deleteRemovedInvoiceItems'
 import { upsertInvoiceItems } from '@/features/invoice/edit/upsertInvoiceItems'

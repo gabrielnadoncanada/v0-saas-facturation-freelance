@@ -1,5 +1,5 @@
-import { CategoryFormData } from '@/types/categories/category'
-import { getSessionUser } from '@/shared/getSessionUser'
+import { CategoryFormData } from '@/shared/types/categories/category'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function createCategoryInDb(data: CategoryFormData) {
   const { supabase, user } = await getSessionUser()

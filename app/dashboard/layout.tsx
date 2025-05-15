@@ -1,6 +1,6 @@
 import type React from "react"
 import { DashboardNav } from "@/components/dashboard/dashboard-nav"
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from "@/shared/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { TopNav } from "@/components/dashboard/top-nav"
 

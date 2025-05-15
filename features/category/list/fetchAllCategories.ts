@@ -1,16 +1,16 @@
-import { Category } from '@/types/categories/category'
-import { getSessionUser } from '@/shared/getSessionUser'
+import { Category } from '@/shared/types/categories/category'
+import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function fetchAllCategories(): Promise<Category[]> {
   const { supabase, user } = await getSessionUser()
 
-  const { data, error } = await supabase
+  const res = await supabase
     .from("product_categories")
     .select("*, products:products(count)")
     .eq("user_id", user.id)
     .order("name", { ascending: true })
 
-  if (error) throw new Error(error.message)
 
-  return data as Category[]
+  return extractDataOrThrow<Category[]>(res)
 }

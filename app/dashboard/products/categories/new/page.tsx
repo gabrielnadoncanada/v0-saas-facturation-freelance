@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from "@/shared/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CategoryFormUI } from "@/components/products/category-form-ui"
 import { redirect } from "next/navigation"

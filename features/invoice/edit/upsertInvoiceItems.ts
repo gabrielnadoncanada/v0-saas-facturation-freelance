@@ -1,5 +1,5 @@
-import { getSessionUser } from '@/shared/getSessionUser'
-import { InvoiceItem, Invoice } from '@/types/invoices/invoice'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { InvoiceItem, Invoice } from '@/shared/types/invoices/invoice'
 
 export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[], taxRate: number) {
   const { supabase } = await getSessionUser()

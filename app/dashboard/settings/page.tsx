@@ -1,5 +1,5 @@
-import { ProfileForm } from "@/components/settings/profile-form"
-import { getUserProfileAction } from "@/actions/settings/get"
+import { ProfileForm } from "@/features/setting/ProfileForm"
+import { getUserProfileAction } from "@/features/setting/getUserProfile.action"
 import { redirect } from "next/navigation"
 
 export default async function SettingsPage() {

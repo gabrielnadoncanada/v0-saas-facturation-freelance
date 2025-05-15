@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { InvoiceForm } from "@/components/invoices/invoice-form"
+import { InvoiceForm } from "@/features/invoice/shared/InvoiceForm"
 import { getInvoiceAction } from "@/features/invoice/edit/getInvoice.action"
 
 

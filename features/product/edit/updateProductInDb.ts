@@ -1,5 +1,5 @@
-import { getSessionUser } from '@/shared/getSessionUser'
-import { Product } from '@/types/products/product'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { Product } from '@/shared/types/products/product'
 
 export async function updateProductInDb(productId: string, formData: Product): Promise<void> {
   const { supabase, user } = await getSessionUser()

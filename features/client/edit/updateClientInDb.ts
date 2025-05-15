@@ -1,5 +1,5 @@
-import { getSessionUser } from '@/shared/getSessionUser';
-import { ClientFormData } from '@/types/clients/client';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { ClientFormData } from '@/shared/types/clients/client';
 
 export async function updateClientInDb(clientId: string, data: ClientFormData) {
   const { supabase, user } = await getSessionUser()

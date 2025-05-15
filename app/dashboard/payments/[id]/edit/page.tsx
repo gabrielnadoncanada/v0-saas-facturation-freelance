@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation"
-import { EditPaymentForm } from "@/components/payments/edit-payment-form"
+import { EditPaymentForm } from "@/features/payment/edit/edit-payment-form"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"

@@ -1,4 +1,4 @@
-import { getSessionUser } from "@/shared/getSessionUser"
+import { getSessionUser } from "@/shared/utils/getSessionUser"
 
 export async function fetchClientsList() {
     const { supabase, user } = await getSessionUser()

@@ -1,4 +1,4 @@
-import { ClientForm } from "@/components/clients/client-form"
+import { ClientForm } from "@/features/client/shared/ClientForm"
 
 export default async function NewClientPage() {
 

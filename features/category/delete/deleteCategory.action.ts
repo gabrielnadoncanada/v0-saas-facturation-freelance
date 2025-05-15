@@ -2,7 +2,7 @@
 
 import { deleteCategoryInDb } from './deleteCategoryById'
 import { revalidatePath } from "next/cache"
-import { CategoryActionResult } from '@/types/categories/category'
+import { CategoryActionResult } from '@/shared/types/categories/category'
 
 export async function deleteCategoryAction(categoryId: string): Promise<CategoryActionResult> {
   try {

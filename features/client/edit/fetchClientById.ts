@@ -1,6 +1,6 @@
-import { extractDataOrThrow } from '@/shared/extractDataOrThrow';
-import { getSessionUser } from '@/shared/getSessionUser';
-import { Client } from '@/types/clients/client';
+import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { Client } from '@/shared/types/clients/client';
 
 export async function fetchClientById(clientId: string) {
   const { supabase, user } = await getSessionUser()

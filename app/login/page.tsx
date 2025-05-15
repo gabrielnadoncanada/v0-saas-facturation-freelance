@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/auth/login-form"
-import { createClient } from "@/lib/supabase/server"
+import { LoginForm } from "@/features/auth/login/LoginForm"
+import { createClient } from "@/shared/lib/supabase/server"
 import { redirect } from "next/navigation"
 
 export default async function LoginPage() {

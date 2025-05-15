@@ -1,7 +1,7 @@
 'use server'
 
 import { fetchProductById } from './fetchProductById'
-import { ProductActionResult } from '@/types/products/product'
+import { ProductActionResult } from '@/shared/types/products/product'
 
 export async function getProductAction(productId: string): Promise<ProductActionResult> {
   try {

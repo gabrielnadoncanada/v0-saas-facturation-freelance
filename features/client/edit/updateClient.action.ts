@@ -1,7 +1,7 @@
 "use server"
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { ClientFormData, ClientActionResult } from '@/types/clients/client';
+import { ClientFormData, ClientActionResult } from '@/shared/types/clients/client';
 import { updateClientInDb } from './updateClientInDb';
 
 export async function updateClientAction(clientId: string, data: ClientFormData): Promise<ClientActionResult> {

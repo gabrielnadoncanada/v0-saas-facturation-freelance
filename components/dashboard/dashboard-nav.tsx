@@ -3,7 +3,7 @@
 import type * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import { cn } from "@/shared/lib/utils"
 import {
   LayoutDashboard,
   Users,
@@ -20,7 +20,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { APP_NAME } from "@/lib/constants"
+import { APP_NAME } from "@/shared/lib/constants"
 import Image from "next/image"
 
 type NavItem = {

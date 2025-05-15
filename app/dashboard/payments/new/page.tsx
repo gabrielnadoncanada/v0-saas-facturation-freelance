@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { NewPaymentForm } from "@/components/payments/new-payment-form"
+import { NewPaymentForm } from "@/features/payment/create/NewPaymentForm"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"

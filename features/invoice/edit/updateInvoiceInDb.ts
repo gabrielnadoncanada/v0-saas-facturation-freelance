@@ -1,5 +1,5 @@
-import { getSessionUser } from '@/shared/getSessionUser'
-import { Invoice } from '@/types/invoices/invoice'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { Invoice } from '@/shared/types/invoices/invoice'
 
 export async function updateInvoiceInDb(invoiceId: string, formData: Invoice) {
   const { supabase, user } = await getSessionUser()

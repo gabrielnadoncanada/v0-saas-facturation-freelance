@@ -1,15 +1,7 @@
-import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProductFormUI } from "@/components/products/product-form-ui"
-import { redirect } from "next/navigation"
+import { ProductForm } from "@/features/product/shared/ProductForm"
 
 export default async function NewProductPage() {
-  const supabase = createClient()
-  const { data: session } = await supabase.auth.getSession()
-
-  if (!session.session) {
-    redirect("/login")
-  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -23,7 +15,7 @@ export default async function NewProductPage() {
           <CardTitle>Détails du produit</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProductFormUI userId={session.session.user.id} />
+          <ProductForm />
         </CardContent>
       </Card>
     </div>

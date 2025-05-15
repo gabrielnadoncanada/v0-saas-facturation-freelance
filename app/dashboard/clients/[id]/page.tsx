@@ -1,4 +1,4 @@
-import { ClientForm } from "@/components/clients/client-form"
+import { ClientForm } from "@/features/client/shared/ClientForm"
 import { getClientAction } from "@/features/client/edit/getClient.action"
 
 export default async function EditClientPage({ params, }: { params: { id: string } }) {

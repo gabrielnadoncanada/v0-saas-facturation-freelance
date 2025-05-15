@@ -1,7 +1,7 @@
 'use server'
 
 import { createProductInDb } from './createProductInDb'
-import { Product, ProductActionResult } from '@/types/products/product'
+import { Product, ProductActionResult } from '@/shared/types/products/product'
 import { revalidatePath } from "next/cache"
 
 export async function createProductAction(formData: Product): Promise<ProductActionResult> {

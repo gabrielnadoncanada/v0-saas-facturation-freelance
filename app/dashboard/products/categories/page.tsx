@@ -1,25 +1,11 @@
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { CategoriesTableUI } from "@/components/products/categories-table-ui"
+import { CategoriesTable } from "@/features/category/list/CategoriesTable"
 import { getAllCategoriesAction } from "@/features/category/list/getAllCategories.action"
 
 export default async function CategoriesPage() {
-  const supabase = createClient()
-  const { data: session } = await supabase.auth.getSession()
-
-  if (!session.session) {
-    redirect("/login")
-  }
-
-  // Fetch categories
   const result = await getAllCategoriesAction()
-
-  if (!result.success) {
-    console.error("Error fetching categories:", result.error)
-  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -36,7 +22,7 @@ export default async function CategoriesPage() {
         </Link>
       </div>
 
-      <CategoriesTableUI categories={result.data!.categories as Category[]} />
+      <CategoriesTable categories={result} />
     </div>
   )
 }

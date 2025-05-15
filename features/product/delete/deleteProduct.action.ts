@@ -1,7 +1,7 @@
 'use server'
 
 import { deleteProductInDb } from './deleteProductInDb'
-import { ProductActionResult } from '@/types/products/product'
+import { ProductActionResult } from '@/shared/types/products/product'
 import { revalidatePath } from "next/cache"
 
 export async function deleteProductAction(productId: string): Promise<ProductActionResult> {

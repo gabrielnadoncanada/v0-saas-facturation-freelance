@@ -1,4 +1,4 @@
-import { TaskForm } from "@/components/projects/task-form"
+import { TaskForm } from "@/features/task/shared/TaskForm"
 import { getTaskFormDataAction } from "@/actions/tasks/get-form-data"
 import { notFound, redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"

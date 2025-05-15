@@ -1,5 +1,5 @@
-import { Invoice } from '@/features/invoice/shared/invoice.types'
-import { getSessionUser } from '@/shared/getSessionUser'
+import { Invoice } from '@/shared/types/invoices/invoice'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function createInvoiceInDb(formData: Invoice): Promise<string> {
   const { supabase, user } = await getSessionUser()

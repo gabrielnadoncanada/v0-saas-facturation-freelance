@@ -1,5 +1,5 @@
-import { getSessionUser } from '@/shared/getSessionUser'
-import { Category } from '@/types/categories/category'
+import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { Category } from '@/shared/types/categories/category'
 
 export async function fetchCategoryById(categoryId: string): Promise<Category> {
   const { supabase, user } = await getSessionUser()

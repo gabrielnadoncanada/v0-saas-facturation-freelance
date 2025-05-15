@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { ProductsTable } from "@/components/products/products-table"
+import { ProductsTable } from "@/features/product/list/ProductsTable"
 import { getAllProductsAction } from "@/features/product/list/getAllProducts.action"
 import { getAllCategoriesAction } from "@/features/category/list/getAllCategories.action"
-import { Product } from "@/types/products/product"
-import { Category } from "@/types/categories/category"
 
 export default async function ProductsPage() {
   // Fetch products with categories
@@ -13,7 +11,7 @@ export default async function ProductsPage() {
 
   // Fetch categories count
   const categoriesResult = await getAllCategoriesAction()
-  const categoriesCount = (categoriesResult.data as Category[]).length || 0
+  const categoriesCount = categoriesResult.length || 0
 
   return (
     <div className="flex flex-col gap-6">

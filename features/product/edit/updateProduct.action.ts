@@ -1,7 +1,7 @@
 'use server'
 
 import { updateProductInDb } from './updateProductInDb'
-import { Product, ProductActionResult } from '@/types/products/product'
+import { Product, ProductActionResult } from '@/shared/types/products/product'
 import { revalidatePath } from "next/cache"
 
 export async function updateProductAction(

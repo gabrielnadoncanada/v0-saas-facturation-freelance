@@ -1,5 +1,5 @@
 import { TimeToInvoice } from "@/components/time-tracking/time-to-invoice"
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from "@/shared/lib/supabase/server"
 
 export default async function TimeToInvoicePage() {
   const supabase = createClient()
