@@ -1,18 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { createClient } from "@/shared/lib/supabase/server"
-import { redirect } from "next/navigation"
 
 export default async function Home() {
-  const supabase = createClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (session) {
-    redirect("/dashboard")
-  }
-
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">

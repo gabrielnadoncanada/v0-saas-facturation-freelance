@@ -50,7 +50,6 @@ export function CreateClientForm() {
     }
   }
 
-  console.log(defaultValues)
   return (
     <ClientForm
       defaultValues={defaultValues}
