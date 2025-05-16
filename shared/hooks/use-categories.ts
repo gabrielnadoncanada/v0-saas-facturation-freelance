@@ -14,6 +14,5 @@ export function useCategories() {
     categories,
     isLoading,
     error,
-    refetch: ,
   }
 }

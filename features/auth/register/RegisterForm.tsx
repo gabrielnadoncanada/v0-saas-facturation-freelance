@@ -1,129 +1,114 @@
-"use client"
+'use client'
 
-import type React from "react"
-
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/shared/lib/supabase/client"
+import { registerSchema, RegisterSchema } from "@/features/auth/shared/auth.schema"
+import { registerUserAction } from "@/features/auth/register/registerUser.action"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import Link from "next/link"
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form"
 
 export function RegisterForm() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [fullName, setFullName] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const supabase = createClient()
+  const [serverError, setServerError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+  const form = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      full_name: '',
+      email: '',
+      password: '',
+    },
+  })
 
-    try {
-      // Create the user without email confirmation (pour les tests uniquement)
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
+  const onSubmit = async (data: RegisterSchema) => {
+    setServerError(null)
+    const formData = new FormData()
+    formData.append("full_name", data.full_name)
+    formData.append("email", data.email)
+    formData.append("password", data.password)
 
-      if (authError) {
-        setError(authError.message)
-        return
-      }
+    const res = await registerUserAction(formData)
 
-      // Create the profile
-      if (authData.user) {
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: authData.user.id,
-          email: email,
-          full_name: fullName,
-        })
-
-        if (profileError) {
-          setError(profileError.message)
-          return
-        }
-      }
-
-      // Si l'inscription réussit, redirigez vers le tableau de bord
-      // Note: Si emailConfirm est true, l'utilisateur devra confirmer son email avant de pouvoir se connecter
-      router.push("/dashboard")
-      router.refresh()
-    } catch (err) {
-      setError("Une erreur est survenue lors de l'inscription")
-    } finally {
-      setIsLoading(false)
+    if (!res.success) {
+      setServerError(res.error || "Erreur inconnue")
+    } else {
+      router.push("/register/confirmation")
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {serverError && (
+          <div className="mb-2 text-sm text-destructive font-medium">{serverError}</div>
+        )}
 
-      <div className="space-y-2">
-        <Label htmlFor="fullName">Nom complet</Label>
-        <Input
-          id="fullName"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-          placeholder="Jean Dupont"
+        <FormField
+          control={form.control}
+          name="full_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom complet</FormLabel>
+              <FormControl>
+                <Input {...field} autoComplete="name" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="votre@email.com"
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" autoComplete="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Mot de passe</Label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="••••••••"
-          minLength={6}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mot de passe</FormLabel>
+              <FormControl>
+                <Input type="password" autoComplete="new-password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Inscription en cours..." : "S'inscrire"}
-      </Button>
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Inscription..." : "S'inscrire"}
+        </Button>
 
-      <div className="text-center text-sm">
-        Déjà un compte?{" "}
-        <Link href="/login" className="text-primary hover:underline">
-          Se connecter
-        </Link>
-      </div>
-    </form>
+        <div className="text-center text-sm">
+          Déjà un compte ?{" "}
+          <Link href="/login" className="text-primary hover:underline">
+            Se connecter
+          </Link>
+        </div>
+      </form>
+    </Form>
   )
 }

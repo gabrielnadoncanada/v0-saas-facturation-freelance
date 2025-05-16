@@ -1,4 +1,4 @@
-import { ClientForm } from "@/features/client/shared/ClientForm"
+import { CreateClientForm } from "@/features/client/create/CreateClientForm"
 
 export default async function NewClientPage() {
 
@@ -9,7 +9,7 @@ export default async function NewClientPage() {
         <p className="text-muted-foreground">Créez un nouveau client</p>
       </div>
 
-      <ClientForm client={null} isEdit={false} />
+      <CreateClientForm />
     </div>
   )
 }

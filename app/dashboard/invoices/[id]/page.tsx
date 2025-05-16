@@ -1,5 +1,5 @@
 import { InvoiceDetails } from "@/features/invoice/shared/InvoiceDetails"
-import { getInvoiceAction } from "@/features/invoice/shared/getInvoice.action" 
+import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action" 
 import { notFound, redirect } from "next/navigation"
 import { Invoice, InvoiceItem } from "@/shared/types/invoices/invoice"
 import { Payment } from "@/shared/types/payments/payment"

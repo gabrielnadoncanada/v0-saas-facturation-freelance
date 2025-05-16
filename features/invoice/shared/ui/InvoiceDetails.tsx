@@ -1,69 +1,34 @@
-"use client"
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { createClient } from "@/shared/lib/supabase/client"
+import React from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency, formatDate, getInvoiceStatusColor } from "@/shared/lib/utils"
 import { AlertCircle, ArrowLeft, Download, Edit, Send } from "lucide-react"
-import Link from "next/link"
-import { PaymentForm } from "@/features/payment/shared/PaymentForm"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Invoice, InvoiceItem } from "@/shared/types/invoices/invoice"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { PaymentForm } from "@/features/payment/shared/PaymentForm"
+import { useInvoiceDetails } from "../hooks/useInvoiceDetails"
+import { InvoiceLinesTable } from "./InvoiceLinesTable"
+import { InvoicePaymentsTable } from "./InvoicePaymentsTable"
+import type { InvoiceDetailsProps } from "../types/invoiceDetails"
 
-export function InvoiceDetails({ invoice, invoiceItems}: { invoice: Invoice, invoiceItems: InvoiceItem[]}) {
-  const router = useRouter()
-  const supabase = createClient()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
+export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
+  const {
+    router,
+    isLoading,
+    error,
+    setError,
+    paymentDialogOpen,
+    setPaymentDialogOpen,
+    updateInvoiceStatus,
+    getStatusLabel,
+  } = useInvoiceDetails(invoice.id)
 
   // Calculer le total payé
   const totalPaid = invoice.payments.reduce((sum, payment) => sum + payment.amount, 0)
   const balanceDue = invoice.total ? invoice.total - totalPaid : 0
-
-
-  console.log(invoice)
-  // Mettre à jour le statut de la facture
-  const updateInvoiceStatus = async (status: string) => {
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      const { error: updateError } = await supabase.from("invoices").update({ status }).eq("id", invoice.id)
-
-      if (updateError) {
-        setError(updateError.message)
-        return
-      }
-
-      router.refresh()
-    } catch (err) {
-      setError("Une erreur est survenue")
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  // Obtenir le libellé du statut
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "draft":
-        return "Brouillon"
-      case "sent":
-        return "Envoyée"
-      case "paid":
-        return "Payée"
-      case "overdue":
-        return "En retard"
-      default:
-        return status
-    }
-  }
 
   return (
     <div className="space-y-6">
@@ -115,7 +80,6 @@ export function InvoiceDetails({ invoice, invoiceItems}: { invoice: Invoice, inv
                 <p>{invoice.language === "fr" ? "Français" : invoice.language}</p>
               </div>
             </div>
-
             {invoice.notes && (
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Notes</p>
@@ -124,7 +88,6 @@ export function InvoiceDetails({ invoice, invoiceItems}: { invoice: Invoice, inv
             )}
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>Récapitulatif</CardTitle>
@@ -178,76 +141,24 @@ export function InvoiceDetails({ invoice, invoiceItems}: { invoice: Invoice, inv
           </CardFooter>
         </Card>
       </div>
-
       <Card>
         <CardHeader>
           <CardTitle>Lignes de facture</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="px-4 py-2 text-left">Description</th>
-                  <th className="px-4 py-2 text-right">Quantité</th>
-                  <th className="px-4 py-2 text-right">Prix unitaire</th>
-                  <th className="px-4 py-2 text-right">TVA (%)</th>
-                  <th className="px-4 py-2 text-right">Montant</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoiceItems.map((item) => (
-                  <tr key={item.id} className="border-b">
-                    <td className="px-4 py-2">{item.description}</td>
-                    <td className="px-4 py-2 text-right">{item.quantity}</td>
-                    <td className="px-4 py-2 text-right">{formatCurrency(item.unit_price, invoice.currency)}</td>
-                    <td className="px-4 py-2 text-right">{item.tax_rate}%</td>
-                    <td className="px-4 py-2 text-right">{formatCurrency(item.amount, invoice.currency)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <InvoiceLinesTable invoiceItems={invoiceItems} currency={invoice.currency} />
         </CardContent>
       </Card>
-
       {invoice.payments.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Paiements</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="px-4 py-2 text-left">Date</th>
-                    <th className="px-4 py-2 text-left">Méthode</th>
-                    <th className="px-4 py-2 text-right">Montant</th>
-                    <th className="px-4 py-2 text-left">Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoice.payments.map((payment) => (
-                    <tr key={payment.id} className="border-b">
-                      <td className="px-4 py-2">{formatDate(payment.payment_date as string)}</td>
-                      <td className="px-4 py-2">
-                        {payment.payment_method === "card" && "Carte bancaire"}
-                        {payment.payment_method === "cash" && "Espèces"}
-                        {payment.payment_method === "transfer" && "Virement"}
-                        {payment.payment_method === "stripe" && "Stripe"}
-                      </td>
-                      <td className="px-4 py-2 text-right">{formatCurrency(payment.amount, invoice.currency)}</td>
-                      <td className="px-4 py-2">{payment.notes || "-"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <InvoicePaymentsTable payments={invoice.payments} currency={invoice.currency} />
           </CardContent>
         </Card>
       )}
-
       <div className="flex justify-between">
         <div className="flex space-x-2">
           <Link href={`/dashboard/invoices/${invoice.id}/edit`}>
@@ -277,4 +188,4 @@ export function InvoiceDetails({ invoice, invoiceItems}: { invoice: Invoice, inv
       </div>
     </div>
   )
-}
+} 

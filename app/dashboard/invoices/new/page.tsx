@@ -1,4 +1,4 @@
-import { InvoiceForm } from "@/features/invoice/shared/InvoiceForm"
+import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
 import { fetchAllClients } from "@/features/client"
 import { getSessionUser } from "@/shared/utils/getSessionUser"
 import { fetchDefaultCurrency } from "@/features/invoice/view/fetchDefaultCurrency"

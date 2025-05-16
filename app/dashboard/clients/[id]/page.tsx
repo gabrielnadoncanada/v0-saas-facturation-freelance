@@ -1,4 +1,4 @@
-import { ClientForm } from "@/features/client/shared/ClientForm"
+import { EditClientForm } from "@/features/client/edit/EditClientForm"
 import { getClientAction } from "@/features/client/edit/getClient.action"
 
 export default async function EditClientPage({ params, }: { params: { id: string } }) {
@@ -11,7 +11,7 @@ export default async function EditClientPage({ params, }: { params: { id: string
         <p className="text-muted-foreground">Modifiez les informations du client</p>
       </div>
 
-      <ClientForm client={result} isEdit={true} />
+      <EditClientForm client={result} />
     </div>
   )
 }

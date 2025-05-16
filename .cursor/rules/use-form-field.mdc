@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Utilisation de `FormField` dans les formulaires
+
+**Pourquoi utiliser systématiquement `FormField` (et les composants associés comme `FormItem`, `FormLabel`, `FormControl`, `FormMessage`) pour chaque champ de formulaire ?**
+
+- `FormField` encapsule la logique de connexion entre React Hook Form et l'UI, ce qui garantit :
+  - **Validation automatique** : Les erreurs de validation sont automatiquement reliées au champ et affichées via `FormMessage`.
+  - **Accessibilité** : Les attributs ARIA sont gérés pour chaque champ (`aria-invalid`, `aria-describedby`, etc.), améliorant l'expérience pour les utilisateurs de lecteurs d'écran.
+  - **Cohérence UI/UX** : L'utilisation systématique de `FormField` et de ses sous-composants assure une présentation homogène des formulaires (labels, messages d'erreur, descriptions, etc.).
+  - **Extensibilité** : Permet d'ajouter facilement des descriptions, des messages d'erreur personnalisés, ou d'autres éléments liés au champ sans dupliquer la logique.
+  - **Centralisation de la logique** : La logique de gestion d'état, d'affichage des erreurs et de liaison des champs est centralisée, réduisant le risque d'oublis ou d'incohérences.
+
+**Exemple recommandé :**
+
+```tsx
+<FormField
+  control={form.control}
+  name="email"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Email</FormLabel>
+      <FormControl>
+        <Input placeholder="exemple@email.com" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
+
+**À éviter :**
+
+- Déclarer des champs de formulaire sans passer par `FormField` (ex : `<Input ... />` seul avec gestion manuelle des erreurs et du label).
+- Gérer manuellement l'affichage des erreurs ou l'accessibilité pour chaque champ.
+
+**Conclusion :**
+
+
+> Utilisez toujours `FormField` et ses sous-composants pour chaque champ de formulaire afin de garantir la robustesse, l'accessibilité et la cohérence de l'expérience utilisateur dans toute l'application.

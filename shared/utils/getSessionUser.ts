@@ -1,7 +1,7 @@
 import { createClient } from '@/shared/lib/supabase/server'
 
 export async function getSessionUser() {
-    const supabase = createClient()
+    const supabase = await createClient()
 
     const { data: { session } } = await supabase.auth.getSession()
 

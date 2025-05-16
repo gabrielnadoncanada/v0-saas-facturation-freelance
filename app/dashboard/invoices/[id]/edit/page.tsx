@@ -1,5 +1,5 @@
-import { InvoiceForm } from "@/features/invoice/shared/InvoiceForm"
-import { getInvoiceAction } from "@/features/invoice/shared/getInvoice.action"
+import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
+import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action"
 
 
 

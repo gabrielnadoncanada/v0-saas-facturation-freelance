@@ -1,98 +1,103 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/shared/lib/supabase/client"
+import { useState } from "react"
+import { loginSchema, LoginSchema } from "@/features/auth/shared/auth.schema"
+import { loginUserAction } from "@/features/auth/login/loginUser.action"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
 import Link from "next/link"
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form"
 
 export function LoginForm() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const supabase = createClient()
+  const [serverError, setServerError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
+  const onSubmit = async (data: LoginSchema) => {
+    setServerError(null)
+    const formData = new FormData()
+    formData.append("email", data.email)
+    formData.append("password", data.password)
 
-      if (error) {
-        setError(error.message)
-        return
-      }
+    const res = await loginUserAction(formData)
 
+    if (!res.success) {
+      console.log(res)
+      setServerError(res.error || "Erreur inconnue")
+    } else {
       router.push("/dashboard")
       router.refresh()
-    } catch (err) {
-      setError("Une erreur est survenue lors de la connexion")
-    } finally {
-      setIsLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {serverError && (
+          <div className="mb-2 text-sm text-destructive font-medium">{serverError}</div>
+        )}
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="votre@email.com"
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" autoComplete="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password">Mot de passe</Label>
-          <Link href="/forgot-password" className="text-sm text-primary hover:underline">
-            Mot de passe oublié?
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center justify-between">
+                <FormLabel>Mot de passe</FormLabel>
+                <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                  Mot de passe oublié?
+                </Link>
+              </div>
+              <FormControl>
+                <Input type="password" autoComplete="current-password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Connexion en cours..." : "Se connecter"}
+        </Button>
+
+        <div className="text-center text-sm">
+          Pas encore de compte?{" "}
+          <Link href="/register" className="text-primary hover:underline">
+            S'inscrire
           </Link>
         </div>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="••••••••"
-        />
-      </div>
-
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Connexion en cours..." : "Se connecter"}
-      </Button>
-
-      <div className="text-center text-sm">
-        Pas encore de compte?{" "}
-        <Link href="/register" className="text-primary hover:underline">
-          S'inscrire
-        </Link>
-      </div>
-    </form>
+      </form>
+    </Form>
   )
 }
