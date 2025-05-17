@@ -3,7 +3,7 @@ import { PaymentDetails } from "@/features/payment/shared/PaymentDetails"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getPaymentAction } from "@/features/payment/edit/getPayment.action"
+import { getPaymentAction } from "@/features/payment/shared/actions/getPayment.action"
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {
   const result = await getPaymentAction(params.id)

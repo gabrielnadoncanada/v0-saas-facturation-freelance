@@ -1,5 +1,5 @@
 import { ProjectForm } from "@/features/project/shared/ProjectForm"
-import { getProjectAction } from "@/features/project/edit/getProject.action"
+import { getProjectAction } from "@/features/project/shared/actions/getProject.action"
 import { notFound, redirect } from "next/navigation"
 
 export default async function EditProjectPage({
@@ -16,7 +16,7 @@ export default async function EditProjectPage({
         <p className="text-muted-foreground">Modifiez les détails du projet {result.name}</p>
       </div>
 
-      <ProjectForm userId={result.data?.userId} clients={result.data?.clients as { id: string; name: string }[]} project={result.data?.project} />
+      <ProjectForm  clients={result.data?.clients as { id: string; name: string }[]} project={result.data?.project} />
     </div>
   )
 }

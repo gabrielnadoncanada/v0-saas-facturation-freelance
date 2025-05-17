@@ -1,9 +1,8 @@
-import { notFound, redirect } from "next/navigation"
-import { EditPaymentForm } from "@/features/payment/edit/edit-payment-form"
+import { EditPaymentForm } from "@/features/payment/edit/EditPaymentForm"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getPaymentAction } from "@/actions/payments/get"
+import { getPaymentAction } from "@/features/payment/shared/actions/getPayment.action"
 
 export default async function EditPaymentPage({ params }: { params: { id: string } }) {
   const result = await getPaymentAction(params.id)

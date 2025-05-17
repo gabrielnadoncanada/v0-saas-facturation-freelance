@@ -57,6 +57,11 @@ const navSections: NavSection[] = [
         icon: Briefcase,
         badge: 2,
       },
+      {
+        title: "Produits",
+        href: "/dashboard/products",
+        icon: Package,
+      },
     ],
   },
   {
@@ -72,23 +77,7 @@ const navSections: NavSection[] = [
         title: "Paiements",
         href: "/dashboard/payments",
         icon: CreditCard,
-      },
-      {
-        title: "Rapports",
-        href: "/dashboard/reports",
-        icon: BarChart4,
-        isNew: true,
-      },
-    ],
-  },
-  {
-    title: "Productivité",
-    items: [
-      {
-        title: "Suivi du temps",
-        href: "/dashboard/time-tracking",
-        icon: Clock,
-      },
+      }
     ],
   },
   {
@@ -99,21 +88,7 @@ const navSections: NavSection[] = [
         href: "/dashboard/settings",
         icon: Settings,
       },
-      {
-        title: "Aide",
-        href: "/dashboard/help",
-        icon: HelpCircle,
-      },
-      {
-        title: "Support",
-        href: "/dashboard/support",
-        icon: LifeBuoy,
-      },
-      {
-        title: "Produits",
-        href: "/dashboard/products",
-        icon: Package,
-      },
+
     ],
   },
 ]

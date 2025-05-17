@@ -1,6 +1,6 @@
 import { ProjectsTable } from "@/features/project/list/ProjectsTable"
 import { Button } from "@/components/ui/button"
-import { getAllProjectsAction } from "@/features/project/list/getAllProjects.action"
+import { getAllProjectsAction } from "@/features/project/list/actions/getAllProjects.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 

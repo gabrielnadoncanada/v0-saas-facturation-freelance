@@ -1,6 +1,6 @@
 import { InvoicesTable } from "@/features/invoice/list/InvoicesTable"
 import { Button } from "@/components/ui/button"
-import { getAllInvoicesAction } from "@/features/invoice/list/getAllInvoices.action"
+import { getAllInvoicesAction } from "@/features/invoice/list/actions/getAllInvoices.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 

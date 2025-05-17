@@ -3,7 +3,7 @@ import { NewPaymentForm } from "@/features/payment/create/NewPaymentForm"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getAllInvoicesAction } from "@/features/invoice/list/getAllInvoices.action"
+import { getAllInvoicesAction } from "@/features/invoice/list/actions/getAllInvoices.action"
 
 export default async function NewPaymentPage() {
   const result = await getAllInvoicesAction()

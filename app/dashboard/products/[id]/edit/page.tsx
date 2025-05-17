@@ -1,8 +1,8 @@
-import { createClient } from "@/shared/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProductFormUI } from "@/components/products/product-form-ui"
+import { ProductForm } from "@/features/product/shared/ProductForm"
 import { redirect, notFound } from "next/navigation"
-import { getProductAction } from "@/actions/products/get"
+import { getProductAction } from "@/features/product/shared/actions/getProduct.action"
+import { Product } from "@/shared/types/products/product"
 
 interface EditProductPageProps {
     params: { 
@@ -11,14 +11,6 @@ interface EditProductPageProps {
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
-  const supabase = createClient()
-  const { data: session } = await supabase.auth.getSession()
-
-  if (!session.session) {
-    redirect("/login")
-  }
-
-  // Fetch the product
   const result = await getProductAction(params.id)
 
   if (!result.success) {
@@ -37,7 +29,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
           <CardTitle>Détails du produit</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProductFormUI userId={session.session.user.id} product={result.data!.product} />
+          <ProductForm product={result.data as Product} />
         </CardContent>
       </Card>
     </div>

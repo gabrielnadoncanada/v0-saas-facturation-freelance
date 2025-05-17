@@ -1,6 +1,6 @@
 import { PaymentsTable } from "@/features/payment/list/PaymentsTable"
 import { Button } from "@/components/ui/button"
-import { getAllPaymentsAction } from "@/features/payment/list/getAllPayments.action"
+import { getAllPaymentsAction } from "@/features/payment/list/actions/getAllPayments.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"

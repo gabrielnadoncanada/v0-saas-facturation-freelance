@@ -108,7 +108,7 @@ export function ProductSelector({ userId, onSelect, buttonClassName }: ProductSe
                   <DialogHeader>
                     <DialogTitle>Ajouter un produit</DialogTitle>
                   </DialogHeader>
-                  <ProductForm userId={userId} onSuccess={handleProductCreated} />
+                  <ProductForm product={null} />
                 </DialogContent>
               </Dialog>
             </div>

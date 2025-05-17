@@ -1,5 +1,5 @@
 import { EditClientForm } from "@/features/client/edit/EditClientForm"
-import { getClientAction } from "@/features/client/edit/getClient.action"
+import { getClientAction } from "@/features/client/shared/actions/getClient.action"
 
 export default async function EditClientPage({ params, }: { params: { id: string } }) {
   const result = await getClientAction(params.id)

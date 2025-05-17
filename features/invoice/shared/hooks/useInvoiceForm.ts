@@ -3,8 +3,8 @@ import { useRouter } from "next/navigation"
 import { arrayMove } from "@dnd-kit/sortable"
 import { useSensors, useSensor, PointerSensor, KeyboardSensor } from "@dnd-kit/core"
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
-import { createInvoiceAction } from "@/features/invoice/create/createInvoice.action"
-import { updateInvoiceAction } from "@/features/invoice/edit/updateInvoice.action"
+import { createInvoiceAction } from "@/features/invoice/create/actions/createInvoice.action"
+import { updateInvoiceAction } from "@/features/invoice/edit/actions/updateInvoice.action"
 
 export function useInvoiceForm({ clients, invoice, invoiceItems = [], defaultCurrency = "EUR", userId }: any) {
   const router = useRouter()

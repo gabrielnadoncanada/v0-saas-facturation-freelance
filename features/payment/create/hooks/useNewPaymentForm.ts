@@ -1,0 +1,72 @@
+import React from "react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { createPaymentAction } from "@/features/payment/create/actions/createPayment.action"
+import { Invoice } from "@/shared/types/invoices/invoice"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+
+const paymentFormSchema = z.object({
+  invoice_id: z.string().min(1, "La facture est requise"),
+  amount: z.number().min(0.01, "Le montant doit être positif"),
+  payment_date: z.date({ required_error: "La date est requise" }),
+  payment_method: z.string().min(1, "La méthode est requise"),
+  notes: z.string(),
+})
+
+export type PaymentFormSchema = z.infer<typeof paymentFormSchema>
+
+function usePaymentForm(defaults: Partial<PaymentFormSchema> = {}) {
+  return useForm<PaymentFormSchema>({
+    resolver: zodResolver(paymentFormSchema),
+    defaultValues: {
+      invoice_id: defaults.invoice_id || "",
+      amount: defaults.amount ?? 0,
+      payment_date: defaults.payment_date || new Date(),
+      payment_method: defaults.payment_method || "transfer",
+      notes: defaults.notes || "",
+    },
+    mode: "onBlur",
+  })
+}
+
+export function useNewPaymentForm(invoices: Invoice[]) {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
+
+  const form = usePaymentForm()
+
+  React.useEffect(() => {
+    const invoice = invoices.find((inv) => inv.id === form.watch("invoice_id"))
+    setSelectedInvoice(invoice || null)
+    if (invoice && form.watch("amount") !== invoice.total) {
+      form.setValue("amount", invoice.total)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch("invoice_id")])
+
+  const onSubmit = async (values: PaymentFormSchema) => {
+    setIsLoading(true)
+    setError(null)
+    const result = await createPaymentAction(values)
+    if (result.success) {
+      router.push("/dashboard/payments")
+      router.refresh()
+    } else {
+      setError(result.error || "Une erreur est survenue")
+      setIsLoading(false)
+    }
+  }
+
+  return {
+    isLoading,
+    error,
+    selectedInvoice,
+    form,
+    onSubmit,
+    router,
+  }
+} 

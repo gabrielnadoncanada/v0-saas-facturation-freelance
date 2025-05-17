@@ -1,10 +1,7 @@
-import { createClient } from "@/shared/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CategoryFormUI } from "@/components/products/category-form-ui"
+import { CategoryForm } from "@/features/category/shared/CategoryForm"
 import { redirect, notFound } from "next/navigation"
-import { getCategoryAction } from "@/actions/categories/get"
-import { createCategoryAction } from "@/actions/categories/create"
-import { updateCategoryAction } from "@/actions/categories/update"
+import { getCategoryAction } from "@/features/category/shared/actions/getCategory.action"
 import { Category } from "@/shared/types/categories/category"
 interface EditCategoryPageProps {
   params: {
@@ -13,14 +10,6 @@ interface EditCategoryPageProps {
 }
 
 export default async function EditCategoryPage({ params }: EditCategoryPageProps) {
-  const supabase = createClient()
-  const { data: session } = await supabase.auth.getSession()
-
-  if (!session.session) {
-    redirect("/login")
-  }
-
-  // Fetch the category
   const result = await getCategoryAction(params.id)
 
   if (!result.success) {
@@ -39,11 +28,8 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
           <CardTitle>Détails de la catégorie</CardTitle>
         </CardHeader>
         <CardContent>
-          <CategoryFormUI
-            userId={session.session.user.id}
-            category={result.data!.category as Category}
-            createCategoryAction={createCategoryAction}
-            updateCategoryAction={updateCategoryAction}
+          <CategoryForm
+            category={result.data as Category}
           />
         </CardContent>
       </Card>

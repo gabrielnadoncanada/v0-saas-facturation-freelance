@@ -1,6 +1,6 @@
 import { ClientsTable } from "@/features/client/list/ClientsTable"
 import { Button } from "@/components/ui/button"
-import { getAllClientsAction } from "@/features/client/list/getAllClients.action"
+import { getAllClientsAction } from "@/features/client/list/actions/getAllClients.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 

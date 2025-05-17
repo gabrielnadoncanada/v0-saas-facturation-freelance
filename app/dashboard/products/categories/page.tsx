@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 import { CategoriesTable } from "@/features/category/list/CategoriesTable"
-import { getAllCategoriesAction } from "@/features/category/list/getAllCategories.action"
+import { getAllCategoriesAction } from "@/features/category/list/actions/getAllCategories.action"
 
 export default async function CategoriesPage() {
   const result = await getAllCategoriesAction()

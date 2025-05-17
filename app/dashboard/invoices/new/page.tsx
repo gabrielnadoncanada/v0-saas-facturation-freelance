@@ -1,7 +1,7 @@
 import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
 import { fetchAllClients } from "@/features/client"
 import { getSessionUser } from "@/shared/utils/getSessionUser"
-import { fetchDefaultCurrency } from "@/features/invoice/view/fetchDefaultCurrency"
+import { fetchDefaultCurrency } from "@/features/invoice/view/model/fetchDefaultCurrency"
 
 export default async function NewInvoicePage() {
   const clients = await fetchAllClients()

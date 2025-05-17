@@ -15,7 +15,7 @@ export default async function NewProductPage() {
           <CardTitle>Détails du produit</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProductForm />
+          <ProductForm product={null} />
         </CardContent>
       </Card>
     </div>

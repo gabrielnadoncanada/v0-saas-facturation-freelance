@@ -1,1 +1,1 @@
-export * from './list/fetchAllPayments'
+export * from './list/model/fetchAllPayments'

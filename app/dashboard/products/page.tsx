@@ -2,14 +2,12 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 import { ProductsTable } from "@/features/product/list/ProductsTable"
-import { getAllProductsAction } from "@/features/product/list/getAllProducts.action"
-import { getAllCategoriesAction } from "@/features/category/list/getAllCategories.action"
+import { getAllProductsAction } from "@/features/product/list/actions/getAllProducts.action"
+import { getAllCategoriesAction } from "@/features/category/list/actions/getAllCategories.action"
 
 export default async function ProductsPage() {
-  // Fetch products with categories
   const result = await getAllProductsAction()
 
-  // Fetch categories count
   const categoriesResult = await getAllCategoriesAction()
   const categoriesCount = categoriesResult.length || 0
 
