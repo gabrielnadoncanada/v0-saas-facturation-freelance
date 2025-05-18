@@ -1,6 +1,6 @@
 'use server'
 
-import { createTaskInDb } from './createTaskInDb'
+import { createTaskInDb } from "@/features/task/create/model/createTaskInDb"
 import { TaskFormData, TaskActionResult } from '@/shared/types/tasks/task'
 import { revalidatePath } from 'next/cache'
 

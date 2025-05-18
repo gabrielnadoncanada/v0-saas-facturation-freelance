@@ -1,6 +1,6 @@
 'use server'
 
-import { uploadLogoToStorage } from './uploadLogoToStorage'
+import { uploadLogoToStorage } from "@/features/setting/model/uploadLogoToStorage"
 import { LogoActionResult } from '@/shared/types/settings/profile'
 import { revalidatePath } from 'next/cache'
 
