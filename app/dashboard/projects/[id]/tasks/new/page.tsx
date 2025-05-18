@@ -1,5 +1,5 @@
 import { TaskForm } from "@/features/task/shared/TaskForm"
-import { getTaskFormDataAction } from "@/actions/tasks/get-form-data"
+import { getTaskFormDataAction } from "@/features/task/shared/actions/getTaskFormData.action"
 import { notFound, redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
@@ -13,14 +13,7 @@ export default async function NewTaskPage({
   // Utiliser le Server Action pour récupérer les données nécessaires
   const result = await getTaskFormDataAction(params.id)
 
-  if (!result.success) {
-    if (result.error === "Non authentifié") {
-      redirect("/login")
-    }
-    notFound()
-  }
-
-  const { project, teamMembers } = result
+  const { project } = result
 
   return (
     <div className="flex flex-col gap-6">
@@ -39,7 +32,6 @@ export default async function NewTaskPage({
       <div className="max-w-2xl">
         <TaskForm
           projectId={params.id}
-          teamMembers={teamMembers}
           onSuccess={() => redirect(`/dashboard/projects/${params.id}`)}
         />
       </div>

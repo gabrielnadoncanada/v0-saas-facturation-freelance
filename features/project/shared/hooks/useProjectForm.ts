@@ -17,7 +17,7 @@ export function useProjectForm({
 }) {
   const defaultValues: Partial<ProjectFormSchema> = {
     name: project?.name || "",
-    client_id: project?.client_id || "",
+    client_id: project?.client?.id || "",
     description: project?.description || "",
     status: (project?.status || "active") as ProjectFormSchema["status"],
     start_date: project?.start_date || undefined,

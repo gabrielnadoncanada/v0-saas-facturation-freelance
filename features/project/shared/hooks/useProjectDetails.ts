@@ -1,21 +1,14 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { formatCurrency, formatDate, formatDuration } from "@/shared/lib/utils"
 import { Project } from "@/shared/types/projects/project"
 import { Task } from "@/shared/types/tasks/task"
 
 export function useProjectDetails({
   project,
   tasks,
-  timeEntries,
-  userId,
-  teamMembers,
 }: {
   project: Project
   tasks: Task[]
-  timeEntries: any[]
-  userId: string
-  teamMembers: any[]
 }) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
@@ -27,16 +20,6 @@ export function useProjectDetails({
   const completedTasks = tasks.filter((task) => task.status === "completed").length
   const totalTasks = tasks.length
   const completionPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0
-
-  // Calculer le temps total passé sur le projet
-  const totalTimeSpent = timeEntries.reduce((total, entry) => total + (entry.duration || 0), 0)
-  const totalHours = totalTimeSpent / 3600
-
-  // Calculer le coût actuel basé sur le temps passé
-  const currentCost = timeEntries.reduce((total, entry) => {
-    const hours = (entry.duration || 0) / 3600
-    return total + hours * entry.hourly_rate
-  }, 0)
 
   // Filtrer les tâches en fonction des filtres sélectionnés
   const filteredTasks = tasks.filter((task) => {
@@ -105,9 +88,6 @@ export function useProjectDetails({
     completedTasks,
     totalTasks,
     completionPercentage,
-    totalTimeSpent,
-    totalHours,
-    currentCost,
     filteredTasks,
     getStatusLabel,
     getStatusBadgeClass,

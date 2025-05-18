@@ -11,7 +11,6 @@ import { TaskForm } from "@/features/task/shared/TaskForm"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
-import { TimeTrackingList } from "@/features/project/shared/TimeTrackingList"
 import { Progress } from "@/components/ui/progress"
 import {
   DropdownMenu,
@@ -27,8 +26,6 @@ import { Project } from "@/shared/types/projects/project"
 interface ProjectDetailsViewProps {
   project: Project
   tasks: Task[]
-  timeEntries: any[]
-  teamMembers: any[]
   error: string | null
   setError: (e: string | null) => void
   taskDialogOpen: boolean
@@ -40,9 +37,6 @@ interface ProjectDetailsViewProps {
   completedTasks: number
   totalTasks: number
   completionPercentage: number
-  totalTimeSpent: number
-  totalHours: number
-  currentCost: number
   filteredTasks: Task[]
   getStatusLabel: (s: string) => string
   getStatusBadgeClass: (s: string) => string
@@ -53,8 +47,6 @@ interface ProjectDetailsViewProps {
 export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
   project,
   tasks,
-  timeEntries,
-  teamMembers,
   error,
   setError,
   taskDialogOpen,
@@ -66,9 +58,6 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
   completedTasks,
   totalTasks,
   completionPercentage,
-  totalTimeSpent,
-  totalHours,
-  currentCost,
   filteredTasks,
   getStatusLabel,
   getStatusBadgeClass,
@@ -93,7 +82,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{project.name}</h1>
           {/* Adapter ici si project.clients n'existe pas dans le type Project */}
-          <p className="text-muted-foreground">Client: {project.clients?.name || "-"}</p>
+          <p className="text-muted-foreground">Client: {project.client?.name || "-"}</p>
         </div>
       </div>
       <div className="flex items-center space-x-2">
@@ -133,10 +122,6 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
               <p className="text-sm font-medium text-muted-foreground">Budget</p>
               <p>{project.budget ? formatCurrency(project.budget) : "Non défini"}</p>
             </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Coût actuel</p>
-              <p>{formatCurrency(currentCost)}</p>
-            </div>
           </div>
         </CardContent>
       </Card>
@@ -155,29 +140,6 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
             </div>
             <Progress value={completionPercentage} className="h-2" />
           </div>
-
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Temps total</p>
-              <p>{formatDuration(totalTimeSpent)}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Coût / Budget</p>
-              <p>
-                {formatCurrency(currentCost)} / {project.budget ? formatCurrency(project.budget) : "-"}
-              </p>
-            </div>
-            {project.budget && (
-              <div className="col-span-2">
-                <p className="text-sm font-medium text-muted-foreground">Utilisation du budget</p>
-                <Progress
-                  value={(currentCost / project.budget) * 100}
-                  className="h-2"
-                  indicatorClassName={currentCost > project.budget ? "bg-red-500" : undefined}
-                />
-              </div>
-            )}
-          </div>
         </CardContent>
       </Card>
     </div>
@@ -186,7 +148,6 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
       <div className="flex items-center justify-between">
         <TabsList>
           <TabsTrigger value="tasks">Tâches</TabsTrigger>
-          <TabsTrigger value="time">Suivi du temps</TabsTrigger>
         </TabsList>
 
         <div className="flex items-center space-x-2">
@@ -239,15 +200,6 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
               >
                 Non assignées
               </DropdownMenuItem>
-              {teamMembers.map((member) => (
-                <DropdownMenuItem
-                  key={member.id}
-                  onClick={() => setAssigneeFilter(member.id)}
-                  className={assigneeFilter === member.id ? "bg-muted" : ""}
-                >
-                  {member.full_name || member.email}
-                </DropdownMenuItem>
-              ))}
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -271,7 +223,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
                 </DialogHeader>
                 <TaskForm
                   projectId={project.id}
-                  teamMembers={teamMembers}
+                  task={null as unknown as Task}
                   onSuccess={() => {
                     setTaskDialogOpen(false)
                     router.refresh()
@@ -286,19 +238,8 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
       <TabsContent value="tasks" className="space-y-4">
         <TaskList
           tasks={filteredTasks}
-          teamMembers={teamMembers}
           onTaskUpdate={() => router.refresh()}
           onTaskDelete={() => router.refresh()}
-        />
-      </TabsContent>
-
-      <TabsContent value="time" className="space-y-4">
-        <TimeTrackingList
-          timeEntries={timeEntries}
-          tasks={tasks}
-          projectId={project.id}
-          clientId={project.client_id}
-          onSuccess={() => router.refresh()}
         />
       </TabsContent>
     </Tabs>

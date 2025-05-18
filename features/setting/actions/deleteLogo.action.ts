@@ -1,6 +1,6 @@
 'use server'
 
-import { deleteLogoFromStorage } from './deleteLogoFromStorage'
+import { deleteLogoFromStorage } from "@/features/setting/model/deleteLogoFromStorage"
 import { LogoActionResult } from '@/shared/types/settings/profile'
 import { revalidatePath } from 'next/cache'
 

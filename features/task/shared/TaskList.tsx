@@ -23,7 +23,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Task } from "@/shared/types/tasks/task"
 
 
-export function TaskList({ tasks, teamMembers = [], onTaskUpdate, onTaskDelete }: { tasks: Task[], teamMembers: TeamMember[], onTaskUpdate: () => void, onTaskDelete: () => void }) {
+export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[], onTaskUpdate: () => void, onTaskDelete: () => void }) {
   const supabase = createClient()
   const [editTask, setEditTask] = useState<Task | null>(null)
   const [deleteTask, setDeleteTask] = useState<Task | null>(null)
@@ -36,11 +36,6 @@ export function TaskList({ tasks, teamMembers = [], onTaskUpdate, onTaskDelete }
       .map((n) => n[0])
       .join("")
       .toUpperCase()
-  }
-
-  // Fonction pour obtenir le membre de l'équipe par ID
-  const getTeamMember = (id: string) => {
-    return teamMembers.find((member) => member.id === id)
   }
 
   // Fonction pour obtenir le libellé du statut
@@ -238,31 +233,6 @@ export function TaskList({ tasks, teamMembers = [], onTaskUpdate, onTaskDelete }
                               <span className="font-medium">{task.estimated_hours}h</span> estimées
                             </div>
                           )}
-                          {task.assigned_to && (
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div>
-                                    <Avatar className="h-6 w-6">
-                                      <AvatarFallback>
-                                        {getTeamMember(task.assigned_to)?.full_name
-                                          ? getInitials(getTeamMember(task.assigned_to).full_name)
-                                          : "U"}
-                                      </AvatarFallback>
-                                    </Avatar>
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>
-                                    Assignée à:{" "}
-                                    {getTeamMember(task.assigned_to)?.full_name ||
-                                      getTeamMember(task.assigned_to)?.email ||
-                                      "Utilisateur inconnu"}
-                                  </p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
                         </div>
                       </div>
                       <div className="flex items-center space-x-1 flex-shrink-0">
@@ -279,7 +249,6 @@ export function TaskList({ tasks, teamMembers = [], onTaskUpdate, onTaskDelete }
                             <TaskForm
                               projectId={task.project_id}
                               task={task}
-                              teamMembers={teamMembers}
                               onSuccess={() => {
                                 setEditTask(null)
                                 if (onTaskUpdate) onTaskUpdate()

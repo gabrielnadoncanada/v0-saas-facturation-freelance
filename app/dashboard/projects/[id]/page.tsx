@@ -1,10 +1,8 @@
-import { getProjectAction } from "@/actions/projects/get"
+import { getProjectAction } from "@/features/project/shared/actions/getProject.action"
 import { ProjectDetails } from "@/features/project/shared/ProjectDetails"
 import { notFound, redirect } from "next/navigation"
 import { Project } from "@/shared/types/projects/project"
 import { Task } from "@/shared/types/tasks/task"
-import { TimeEntry } from "@/types/time-entries/time-entry"
-import { TeamMember } from "@/types/team-members/team-member"   
 
 export default async function ProjectPage({
   params,
@@ -24,9 +22,6 @@ export default async function ProjectPage({
     <ProjectDetails
       project={result.data!.project as Project}
       tasks={result.data!.tasks as Task[]}
-      timeEntries={result.data!.timeEntries as TimeEntry[]}
-      userId={result.data!.userId}
-      teamMembers={result.data!.teamMembers as TeamMember[]}
     />
   )
 }

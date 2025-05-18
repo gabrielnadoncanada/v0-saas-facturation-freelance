@@ -1,4 +1,4 @@
-import { InvoiceDetails } from "@/features/invoice/shared/InvoiceDetails"
+import { InvoiceDetails } from "@/features/invoice/shared/ui/InvoiceDetails"
 import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action" 
 import { notFound, redirect } from "next/navigation"
 import { Invoice, InvoiceItem } from "@/shared/types/invoices/invoice"

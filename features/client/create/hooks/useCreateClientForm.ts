@@ -7,7 +7,7 @@ export function useCreateClientForm() {
   const [error, setError] = useState<string | null>(null)
 
   const defaultValues: ClientFormSchema = {
-    name: "gay",
+    name: "",
     email: "",
     phone: "",
     hourly_rate: "",

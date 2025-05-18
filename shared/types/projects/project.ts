@@ -1,9 +1,11 @@
+import { Client } from "../clients/client";
+
 export interface Project {
   id: string;
   user_id?: string;
   name: string;
   description?: string;
-  client_id: string;
+  client: Client;
   status: string;
   start_date?: string;
   end_date?: string;
