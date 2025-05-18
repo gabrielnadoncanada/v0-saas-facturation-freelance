@@ -1,6 +1,6 @@
 'use server'
 
-import { updateUserProfileInDb } from './updateUserProfileInDb'
+import { updateUserProfileInDb } from "@/features/setting/model/updateUserProfileInDb"
 import { UserProfileActionResult, UserProfileFormData } from '@/shared/types/settings/profile'
 import { revalidatePath } from 'next/cache'
 
