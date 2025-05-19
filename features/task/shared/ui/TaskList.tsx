@@ -17,7 +17,7 @@ import {
   DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { TaskForm } from "@/features/task/shared/TaskForm"
+import { TaskForm } from "@/features/task/shared/ui/TaskForm"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Task } from "@/features/task/shared/types/task.types"
@@ -28,15 +28,6 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
   const [editTask, setEditTask] = useState<Task | null>(null)
   const [deleteTask, setDeleteTask] = useState<Task | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
-
-  // Fonction pour obtenir les initiales d'un nom
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-  }
 
   // Fonction pour obtenir le libellé du statut
   const getStatusLabel = (status: string) => {

@@ -1,7 +1,8 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { TaskFormData } from '@/features/task/shared/types/task.types'
+import { Task, TaskFormData } from '@/features/task/shared/types/task.types'
+import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 
-export async function createTask(projectId: string, formData: TaskFormData) {
+export async function createTask(projectId: string, formData: TaskFormData): Promise<Task> {
   const { supabase, user } = await getSessionUser()
 
   // Vérifier que le projet appartient à l'utilisateur
@@ -26,5 +27,5 @@ export async function createTask(projectId: string, formData: TaskFormData) {
     throw new Error(insertError.message)
   }
 
-  return data?.[0]
+  return extractDataOrThrow(data?.[0])
 }

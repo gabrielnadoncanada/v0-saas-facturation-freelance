@@ -1,15 +1,16 @@
 'use server'
 
 import { createTask } from "@/features/task/create/model/createTask"
-import { TaskFormData, TaskActionResult } from '@/features/task/shared/types/task.types'
+import { Task, TaskFormData } from '@/features/task/shared/types/task.types'
 import { revalidatePath } from 'next/cache'
+import { fail, Result, success } from '@/shared/utils/result'
 
-export async function createTaskAction(projectId: string, formData: TaskFormData): Promise<TaskActionResult> {
+export async function createTaskAction(projectId: string, formData: TaskFormData): Promise<Result<Task>> {
   try {
     const task = await createTask(projectId, formData)
     revalidatePath(`/dashboard/projects/${projectId}`)
-    return { success: true, task }
+    return success(task)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }
