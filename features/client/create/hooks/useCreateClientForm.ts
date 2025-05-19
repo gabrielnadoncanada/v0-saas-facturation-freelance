@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { createClientAction } from "@/features/client/create/actions/createClient.action"
-import { ClientFormSchema } from "@/features/client/shared/types/client.types"
+import { Client, ClientFormData } from "@/features/client/shared/types/client.types"
+import { ClientFormSchema } from "@/features/client/shared/schema/client.schema"
 
 export function useCreateClientForm() {
   const [isLoading, setIsLoading] = useState(false)

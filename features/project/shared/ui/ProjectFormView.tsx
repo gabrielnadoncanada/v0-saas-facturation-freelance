@@ -15,7 +15,7 @@ import { ProjectFormSchema } from "@/features/project/shared/schema/project.sche
 
 interface ProjectFormViewProps {
   form: UseFormReturn<ProjectFormSchema>
-  onSubmit: (values: ProjectFormSchema) => void
+  onSubmit: (values: ProjectFormSchema) => Promise<void>
   isLoading: boolean
   error: string | null
   clients: Client[]

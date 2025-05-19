@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { updateClientAction } from "@/features/client/edit/actions/updateClient.action"
-import { ClientFormSchema, Client } from "@/features/client/shared/types/client.types"
+import { Client, ClientFormData } from "@/features/client/shared/types/client.types"
+import { ClientFormSchema } from "@/features/client/shared/schema/client.schema"
 
 export function useEditClientForm(client: Client) {
   const [isLoading, setIsLoading] = useState(false)
