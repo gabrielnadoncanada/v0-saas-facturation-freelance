@@ -1,4 +1,4 @@
-import { CreateClientForm } from "@/features/client/create/CreateClientForm"
+import { CreateClientForm } from "@/features/client/create/ui/CreateClientForm"
 
 export default async function NewClientPage() {
 

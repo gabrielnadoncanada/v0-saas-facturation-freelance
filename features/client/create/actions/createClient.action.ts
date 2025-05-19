@@ -7,7 +7,7 @@ import { fail, Result, success } from '@/shared/utils/result'
 
 export async function createClientAction(data: ClientFormData): Promise<Result<Client>> {
   try {
-    const client = await createClient(data);
+    await createClient(data);
 
     revalidatePath("/dashboard/clients")
     redirect("/dashboard/clients")

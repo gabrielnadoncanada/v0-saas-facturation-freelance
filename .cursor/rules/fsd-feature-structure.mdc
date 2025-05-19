@@ -68,3 +68,5 @@ shared/
 
 - Place cross-feature utilities in the root `shared/` folder.
 - Never mix intent folders (e.g., don't call `getInvoice` from `edit/` if it lives in `create/`).
+
+- We are using VITEST for testing and each test file should be at the proper place in the proper feature and in the subfolder __tests__

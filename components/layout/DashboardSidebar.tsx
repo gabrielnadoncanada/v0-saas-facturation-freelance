@@ -32,69 +32,83 @@ type NavSection = {
   items: NavItem[]
 }
 
-const navSections: NavSection[] = [
-  {
-    title: "Principal",
-    items: [
-      {
-        title: "Tableau de bord",
-        href: "/dashboard",
-        icon: LayoutDashboard,
-      },
-      {
-        title: "Clients",
-        href: "/dashboard/clients",
-        icon: Users,
-        badge: 3,
-      },
-      {
-        title: "Projets",
-        href: "/dashboard/projects",
-        icon: Briefcase,
-        badge: 2,
-      },
-      {
-        title: "Produits",
-        href: "/dashboard/products",
-        icon: Package,
-      },
-    ],
-  },
-  {
-    title: "Finance",
-    items: [
-      {
-        title: "Factures",
-        href: "/dashboard/invoices",
-        icon: FileText,
-        badge: 1,
-      },
-      {
-        title: "Paiements",
-        href: "/dashboard/payments",
-        icon: CreditCard,
-      }
-    ],
-  },
-  {
-    title: "Système",
-    items: [
-      {
-        title: "Paramètres",
-        href: "/dashboard/settings",
-        icon: Settings,
-      },
+type DashboardSidebarProps = {
+  clientsCount: number
+  projectsCount: number
+  invoicesCount: number
+  productsCount: number
+  paymentsCount: number
+}
 
-    ],
-  },
-]
-
-export function DashboardNav() {
+export function DashboardSidebar({
+  clientsCount,
+  projectsCount,
+  invoicesCount,
+  productsCount,
+  paymentsCount,
+}: DashboardSidebarProps) {
   const pathname = usePathname()
+
+  const navSections: NavSection[] = [
+    {
+      title: "Principal",
+      items: [
+        {
+          title: "Tableau de bord",
+          href: "/dashboard",
+          icon: LayoutDashboard,
+        },
+        {
+          title: "Clients",
+          href: "/dashboard/clients",
+          icon: Users,
+          badge: clientsCount,
+        },
+        {
+          title: "Projets",
+          href: "/dashboard/projects",
+          icon: Briefcase,
+          badge: projectsCount,
+        },
+        {
+          title: "Produits",
+          href: "/dashboard/products",
+          icon: Package,
+          badge: productsCount,
+        },
+      ],
+    },
+    {
+      title: "Finance",
+      items: [
+        {
+          title: "Factures",
+          href: "/dashboard/invoices",
+          icon: FileText,
+          badge: invoicesCount,
+        },
+        {
+          title: "Paiements",
+          href: "/dashboard/payments",
+          icon: CreditCard,
+          badge: paymentsCount,
+        }
+      ],
+    },
+    {
+      title: "Système",
+      items: [
+        {
+          title: "Paramètres",
+          href: "/dashboard/settings",
+          icon: Settings,
+        },
+      ],
+    },
+  ]
 
   return (
     <div className="flex h-full w-[280px] flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
-      {/* Logo Header */}
       <div className="flex h-16 items-center border-b px-6 py-3">
         <div className="flex items-center gap-2 overflow-hidden">
           <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary">
@@ -106,7 +120,6 @@ export function DashboardNav() {
 
       <ScrollArea className="flex-1 px-4 py-6">
         <div className="space-y-8">
-          {/* Navigation Sections */}
           {navSections.map((section) => (
             <div key={section.title} className="space-y-3">
               <div className="flex items-center px-2">
@@ -135,7 +148,7 @@ export function DashboardNav() {
                         )}
                       />
                       <span className="flex-1 truncate">{item.title}</span>
-                      {item.badge && (
+                      {item.badge !== undefined && item.badge !== 0 && (
                         <Badge
                           variant="outline"
                           className={cn(
@@ -161,17 +174,6 @@ export function DashboardNav() {
           ))}
         </div>
       </ScrollArea>
-
-      <div className="mt-auto border-t p-4">
-        <div className="flex items-center justify-center">
-          <div className="text-xs text-muted-foreground">
-            <div className="text-center">
-              <p className="font-medium">{APP_NAME} v1.0</p>
-              <p className="mt-1">© 2024 Tous droits réservés</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
