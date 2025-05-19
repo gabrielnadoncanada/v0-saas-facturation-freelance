@@ -1,15 +1,20 @@
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { ProductsTable } from "@/features/product/list/ProductsTable"
-import { getAllProductsAction } from "@/features/product/list/actions/getAllProducts.action"
-import { getAllCategoriesAction } from "@/features/category/list/actions/getAllCategories.action"
+import { ProductsTable } from "@/features/product/list/ui/ProductsTable"
+import { getProductsAction } from "@/features/product/list/actions/getProducts.action"
+import { getCategoriesAction } from "@/features/category/list/actions/getCategories.action"
+import { redirect } from "next/navigation"
 
 export default async function ProductsPage() {
-  const result = await getAllProductsAction()
+  const result = await getProductsAction()
+  const categoriesResult = await getCategoriesAction()
 
-  const categoriesResult = await getAllCategoriesAction()
-  const categoriesCount = categoriesResult.length || 0
+  if (!result.success || !categoriesResult.success) {
+    redirect("/login")
+  }
+
+  const categoriesCount = categoriesResult.data?.length || 0
 
   return (
     <div className="flex flex-col gap-6">
@@ -40,7 +45,7 @@ export default async function ProductsPage() {
         </div>
       </div>
 
-      <ProductsTable products={result} />
+      <ProductsTable products={result.data} />
     </div>
   )
 }

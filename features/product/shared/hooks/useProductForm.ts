@@ -1,24 +1,9 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { Product } from "@/shared/types/products/product"
+import { Product } from "@/features/product/shared/types/product.types"
+import { productFormSchema, ProductFormSchema } from "@/features/product/shared/schema/product.schema"
 
-// Zod schema for product form
-export const productFormSchema = z.object({
-  name: z.string().min(1, "Le nom est requis"),
-  description: z.string(),
-  price: z
-    .number({ invalid_type_error: "Le prix doit être un nombre" })
-    .min(0, "Le prix doit être positif"),
-  tax_rate: z
-    .number({ invalid_type_error: "Le taux de TVA doit être un nombre" })
-    .min(0, "Le taux de TVA doit être positif"),
-  is_service: z.boolean(),
-  category_id: z.string().nullable(),
-})
-
-export type ProductFormSchema = z.infer<typeof productFormSchema>
 
 interface UseProductFormOptions {
   product: Product | null

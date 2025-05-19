@@ -1,13 +1,14 @@
 'use server'
 
-import { fetchUserProfile } from '../model/fetchUserProfile'
-import { UserProfileActionResult } from '@/shared/types/settings/profile'
+import { getUserProfile } from '@/features/setting/model/getUserProfile'
+import { UserProfile } from '@/features/setting/types/profile.types'
+import { fail, Result, success } from '@/shared/utils/result'
 
-export async function getUserProfileAction(): Promise<UserProfileActionResult> {
+export async function getUserProfileAction(): Promise<Result<UserProfile>> {
   try {
-    const profile = await fetchUserProfile()
-    return { success: true, data: profile }
+    const profile = await getUserProfile()
+    return success(profile)
   } catch (error) {
-    return { success: false, error: (error as Error).message, data: null }
+    return fail((error as Error).message)
   }
 }

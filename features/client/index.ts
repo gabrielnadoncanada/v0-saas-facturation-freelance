@@ -1,1 +1,1 @@
-export * from './list/model/fetchAllClients'
+export * from '@/features/client/list/model/getClients'

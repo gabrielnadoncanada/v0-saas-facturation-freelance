@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CategoryForm } from "@/features/category/shared/CategoryForm"
+import { CategoryForm } from "@/features/category/shared/ui/CategoryForm"
 import { redirect, notFound } from "next/navigation"
 import { getCategoryAction } from "@/features/category/shared/actions/getCategory.action"
-import { Category } from "@/shared/types/categories/category"
 interface EditCategoryPageProps {
   params: {
     id: string
@@ -29,7 +28,7 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
         </CardHeader>
         <CardContent>
           <CategoryForm
-            category={result.data as Category}
+            category={result.data}
           />
         </CardContent>
       </Card>

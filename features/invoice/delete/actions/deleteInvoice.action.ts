@@ -1,19 +1,17 @@
 'use server'
 
-import { deleteInvoiceItemsByInvoiceId } from '@/features/invoice/delete/model/deleteInvoiceItemsByInvoiceId'
-import { deleteInvoiceById } from '@/features/invoice/delete/model/deleteInvoiceById'
-import { InvoiceActionResult } from '@/shared/types/invoices/invoice'
+import { deleteInvoice } from '@/features/invoice/delete/model/deleteInvoice'
+import { Invoice } from '@/features/invoice/shared/types/invoice.types'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { fail, Result } from '@/shared/utils/result'
 
-export async function deleteInvoiceAction(invoiceId: string): Promise<InvoiceActionResult> {
+export async function deleteInvoiceAction(invoiceId: string): Promise<Result<Invoice>> {
   try {
-    await deleteInvoiceItemsByInvoiceId(invoiceId)
-    await deleteInvoiceById(invoiceId)
-
+    await deleteInvoice(invoiceId)
     revalidatePath('/dashboard/invoices')
     redirect('/dashboard/invoices')
   } catch (err: any) {
-    return { success: false, error: err.message ?? 'Erreur inconnue' }
+    return fail((err as Error).message)
   }
 }

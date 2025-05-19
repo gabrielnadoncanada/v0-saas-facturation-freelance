@@ -1,7 +1,7 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { InvoiceItem, Invoice } from '@/shared/types/invoices/invoice'
+import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
 
-export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[], taxRate: number) {
+export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[], taxRate: number): Promise<null> {
   const { supabase } = await getSessionUser()
 
   for (let i = 0; i < items.length; i++) {
@@ -18,17 +18,19 @@ export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[]
     }
 
     if (item.isNew || !item.id) {
-      const { error } = await supabase.from("invoice_items").insert({
+      const res = await supabase.from("invoice_items").insert({
         invoice_id: invoiceId,
         ...basePayload,
       })
-      if (error) throw new Error(error.message)
+      if (res.error) throw new Error(res.error.message)
     } else {
-      const { error } = await supabase
+      const res = await supabase
         .from("invoice_items")
         .update(basePayload)
         .eq("id", item.id)
-      if (error) throw new Error(error.message)
+      if (res.error) throw new Error(res.error.message)
     }
   }
+
+  return null
 }

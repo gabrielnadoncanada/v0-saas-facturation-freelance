@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { CategoriesTable } from "@/features/category/list/CategoriesTable"
-import { getAllCategoriesAction } from "@/features/category/list/actions/getAllCategories.action"
+import { CategoriesTable } from "@/features/category/list/ui/CategoriesTable"
+import { getCategoriesAction } from "@/features/category/list/actions/getCategories.action"
+import { redirect } from "next/navigation"
 
 export default async function CategoriesPage() {
-  const result = await getAllCategoriesAction()
+  const result = await getCategoriesAction()
+
+  if (!result.success) {
+    redirect("/login")
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -22,7 +27,7 @@ export default async function CategoriesPage() {
         </Link>
       </div>
 
-      <CategoriesTable categories={result} />
+      <CategoriesTable categories={result.data} />
     </div>
   )
 }

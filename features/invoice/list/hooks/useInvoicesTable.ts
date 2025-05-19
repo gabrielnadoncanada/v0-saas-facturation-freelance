@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { deleteInvoiceAction } from "@/features/invoice/delete/actions/deleteInvoice.action"
-import { Invoice } from "@/shared/types/invoices/invoice"
+import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 
 export function useInvoicesTable(invoices: Invoice[]) {
   const router = useRouter()

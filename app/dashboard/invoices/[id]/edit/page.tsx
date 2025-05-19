@@ -1,12 +1,15 @@
 import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
 import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action"
-
-
+import { redirect } from "next/navigation"
 
 export default async function EditInvoicePage({ params }: { params: { id: string } }) {
   const result = await getInvoiceAction(params.id)
 
-  const { invoice, invoiceItems, clients, defaultCurrency } = result.data
+  if (!result.success) {
+    redirect("/login")
+  }
+
+  const { clients, invoice, invoiceItems, defaultCurrency } = result.data
 
   return (
     <div className="flex flex-col gap-6">

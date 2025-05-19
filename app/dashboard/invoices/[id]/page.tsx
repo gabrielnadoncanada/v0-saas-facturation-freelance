@@ -1,8 +1,8 @@
 import { InvoiceDetails } from "@/features/invoice/shared/ui/InvoiceDetails"
 import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action" 
 import { notFound, redirect } from "next/navigation"
-import { Invoice, InvoiceItem } from "@/shared/types/invoices/invoice"
-import { Payment } from "@/shared/types/payments/payment"
+import { Invoice, InvoiceItem } from "@/features/invoice/shared/types/invoice.types"
+import { Payment } from "@/features/payment/shared/types/payment.types"
 
 export default async function InvoiceDetailsPage({
   params,
@@ -11,12 +11,15 @@ export default async function InvoiceDetailsPage({
 }) {
   const result = await getInvoiceAction(params.id)
 
-  // Extraire les données
-  const { invoice, invoiceItems } = result.data as { invoice: Invoice; invoiceItems: InvoiceItem[]}
+  if (!result.success) {
+    redirect("/login")
+  }
+
+  const { invoice, invoiceItems, clients, defaultCurrency } = result.data
 
   return (
     <div className="flex flex-col gap-6">
-      <InvoiceDetails invoice={invoice} invoiceItems={invoiceItems} />
+      <InvoiceDetails invoice={invoice} invoiceItems={invoiceItems} clients={clients} defaultCurrency={defaultCurrency} />
     </div>
   )
 }

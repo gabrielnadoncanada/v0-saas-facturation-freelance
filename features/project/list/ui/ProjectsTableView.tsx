@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { formatCurrency, formatDate } from "@/shared/lib/utils"
-import { ProjectWithClient } from "../hooks/useProjectsTable"
+import { ProjectWithClient } from "@/features/project/list/hooks/useProjectsTable"
 import React from "react"
 
 interface ProjectsTableViewProps {

@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { formatCurrency, formatDate, getInvoiceStatusColor } from "@/shared/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Invoice } from "@/shared/types/invoices/invoice"
+import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 
 interface InvoicesTableViewProps {
   filteredInvoices: Invoice[]

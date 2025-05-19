@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation"
 import { ClientForm } from "@/features/client/shared/ui/ClientForm"
-import { useEditClientForm } from "./hooks/useEditClientForm"
-import { Client } from "@/shared/types/clients/client"
+import { useEditClientForm } from "@/features/client/edit/hooks/useEditClientForm"
+import { Client } from "@/features/client/shared/types/client.types"
 
 export function EditClientForm({ client }: { client: Client }) {
   const router = useRouter()

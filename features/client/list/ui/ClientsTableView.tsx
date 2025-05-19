@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Client } from "@/shared/types/clients/client"
+import { Client } from "@/features/client/shared/types/client.types"
 
 interface ClientsTableViewProps {
   filteredClients: Client[]

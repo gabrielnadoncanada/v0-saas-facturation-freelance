@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProductForm } from "@/features/product/shared/ProductForm"
+import { ProductForm } from "@/features/product/shared/ui/ProductForm"
 import { redirect, notFound } from "next/navigation"
 import { getProductAction } from "@/features/product/shared/actions/getProduct.action"
-import { Product } from "@/shared/types/products/product"
+import { Product } from "@/features/product/shared/types/product.types"
 
 interface EditProductPageProps {
     params: { 

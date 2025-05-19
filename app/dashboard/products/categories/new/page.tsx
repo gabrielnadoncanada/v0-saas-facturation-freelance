@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CategoryForm } from "@/features/category/shared/CategoryForm"
+import { CategoryForm } from "@/features/category/shared/ui/CategoryForm"
 
 export default async function NewCategoryPage() {
 

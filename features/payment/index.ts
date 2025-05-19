@@ -1,1 +1,1 @@
-export * from './list/model/fetchAllPayments'
+export * from '@/features/payment/list/model/getPayments'

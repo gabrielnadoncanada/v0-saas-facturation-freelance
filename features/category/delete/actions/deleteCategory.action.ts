@@ -1,18 +1,16 @@
 "use server"
 
-import { deleteCategoryInDb } from '../model/deleteCategoryById'
+import { deleteCategory } from '@/features/category/delete/model/deleteCategory'
 import { revalidatePath } from "next/cache"
-import { CategoryActionResult } from '@/shared/types/categories/category'
+import { fail, Result, success } from '@/shared/utils/result'
 
-export async function deleteCategoryAction(categoryId: string): Promise<CategoryActionResult> {
+export async function deleteCategoryAction(categoryId: string): Promise<Result<null>> {
   try {
-    await deleteCategoryInDb(categoryId)
-
+    await deleteCategory(categoryId)
     revalidatePath("/dashboard/products/categories")
     revalidatePath("/dashboard/products")
-
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

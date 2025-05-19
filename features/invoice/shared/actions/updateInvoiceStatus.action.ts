@@ -1,25 +1,19 @@
 'use server'
 
-import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { revalidatePath } from 'next/cache'
-import type { ActionResult } from '@/shared/types/api.types'
+import { updateInvoiceStatus } from '@/features/invoice/shared/model/updateInvoiceStatus'
+import { fail, Result, success } from '@/shared/utils/result'
+import { Invoice } from '@/features/invoice/shared/types/invoice.types'
 
 export async function updateInvoiceStatusAction(
   invoiceId: string,
   status: string
-): Promise<ActionResult> {
-  const { supabase, user } = await getSessionUser()
-
-  const { error } = await supabase
-    .from('invoices')
-    .update({ status })
-    .eq('id', invoiceId)
-    .eq('user_id', user.id)
-
-  if (error) {
-    return { success: false, error: error.message }
+): Promise<Result<Invoice>> {
+  try {
+    const invoice = await updateInvoiceStatus(invoiceId, status)
+    revalidatePath('/dashboard/invoices')
+    return success(invoice)
+  } catch (error) {
+    return fail((error as Error).message)
   }
-
-  revalidatePath('/dashboard/invoices')
-  return { success: true }
 }

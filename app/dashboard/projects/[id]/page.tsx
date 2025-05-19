@@ -1,8 +1,6 @@
 import { getProjectAction } from "@/features/project/shared/actions/getProject.action"
-import { ProjectDetails } from "@/features/project/shared/ProjectDetails"
+import { ProjectDetails } from "@/features/project/shared/ui/ProjectDetails"
 import { notFound, redirect } from "next/navigation"
-import { Project } from "@/shared/types/projects/project"
-import { Task } from "@/shared/types/tasks/task"
 
 export default async function ProjectPage({
   params,
@@ -20,8 +18,7 @@ export default async function ProjectPage({
 
   return (
     <ProjectDetails
-      project={result.data!.project as Project}
-      tasks={result.data!.tasks as Task[]}
+      project={result.data}
     />
   )
 }

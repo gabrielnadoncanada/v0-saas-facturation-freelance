@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
-import { RegisterSchema } from "@/features/auth/shared/auth.schema";
+import { RegisterSchema } from "@/features/auth/shared/schema/auth.schema";
 
 interface RegisterFormViewProps {
   form: UseFormReturn<RegisterSchema>;

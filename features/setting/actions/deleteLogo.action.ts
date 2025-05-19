@@ -1,19 +1,15 @@
 'use server'
 
-import { deleteLogoFromStorage } from "@/features/setting/model/deleteLogoFromStorage"
-import { LogoActionResult } from '@/shared/types/settings/profile'
+import { deleteLogo } from "@/features/setting/model/deleteLogo"
+import { fail, Result, success } from "@/shared/utils/result"
 import { revalidatePath } from 'next/cache'
 
-export async function deleteLogoAction(): Promise<LogoActionResult> {
+export async function deleteLogoAction(): Promise<Result<null>> {
   try {
-    await deleteLogoFromStorage()
+    await deleteLogo()
     revalidatePath('/dashboard/settings')
-    return { success: true, error: null, logoUrl: null }
+    return success(null)
   } catch (error) {
-    return {
-      success: false,
-      error: (error as Error).message,
-      logoUrl: null,
-    }
+    return fail((error as Error).message)
   }
 }

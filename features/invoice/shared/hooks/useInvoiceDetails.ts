@@ -1,6 +1,6 @@
 import { useTransition, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useInvoiceStatus } from "./useInvoiceStatus"
+import { useInvoiceStatus } from "@/features/invoice/shared/hooks/useInvoiceStatus"
 import { updateInvoiceStatusAction } from "@/features/invoice/shared/actions/updateInvoiceStatus.action"
 
 export function useInvoiceDetails(invoiceId: string) {

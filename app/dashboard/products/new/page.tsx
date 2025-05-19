@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProductForm } from "@/features/product/shared/ProductForm"
+import { ProductForm } from "@/features/product/shared/ui/ProductForm"
 
 export default async function NewProductPage() {
 

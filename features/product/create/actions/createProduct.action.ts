@@ -1,15 +1,17 @@
 'use server'
 
-import { createProductInDb } from '@/features/product/create/model/createProductInDb'
-import { Product, ProductActionResult } from '@/shared/types/products/product'
+import { createProduct } from '@/features/product/create/model/createProduct'
+import { Product } from '@/features/product/shared/types/product.types'
+import { fail, Result } from '@/shared/utils/result'
+import { success } from '@/shared/utils/result'
 import { revalidatePath } from "next/cache"
 
-export async function createProductAction(formData: Product): Promise<ProductActionResult> {
+export async function createProductAction(formData: Product): Promise<Result<null>> {
   try {
-    await createProductInDb(formData)
+    await createProduct(formData)
     revalidatePath("/dashboard/products")
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

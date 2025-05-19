@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { projectFormSchema, ProjectFormSchema } from "../projectFormSchema"
+import { projectFormSchema, ProjectFormSchema } from "@/features/project/shared/schema/project.schema"
 // import { createProjectAction } from "@/features/project/create/createProject.action" // Décommente si le fichier existe
 import { updateProjectAction } from "@/features/project/edit/actions/updateProject.action"
-import { Project } from "@/shared/types/projects/project"
+import { Project } from "@/features/project/shared/types/project.types"
 
 export function useProjectForm({
   project,

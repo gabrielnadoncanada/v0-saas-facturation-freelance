@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { createTaskAction } from "@/features/task/create/actions/createTask.action"
 import { updateTaskAction } from "@/features/task/edit/actions/updateTask.action"
-import { Task } from "@/shared/types/tasks/task"
+import { Task } from "@/features/task/shared/types/task.types"
 
 interface UseTaskFormProps {
   projectId: string

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { deleteClientAction } from "@/features/client/delete/actions/deleteClient.action"
-import { Client } from "@/shared/types/clients/client"
+import { Client } from "@/features/client/shared/types/client.types"
 import { useRouter } from "next/navigation"
 
 export function useClientsTable(clients: Client[]) {
@@ -9,6 +9,7 @@ export function useClientsTable(clients: Client[]) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [clientToDelete, setClientToDelete] = useState<string | null>(null)
 
+  console.log(clients)
   const filteredClients = clients.filter(
     (client) =>
       client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

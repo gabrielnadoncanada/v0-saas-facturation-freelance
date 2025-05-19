@@ -1,11 +1,15 @@
 import { ClientsTable } from "@/features/client/list/ClientsTable"
 import { Button } from "@/components/ui/button"
-import { getAllClientsAction } from "@/features/client/list/actions/getAllClients.action"
+import { getClientsAction } from "@/features/client/list/actions/getClients.action"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 
 export default async function ClientsPage() {
-  const result = await getAllClientsAction()
+  const result = await getClientsAction()
+
+  if (!result.success) {
+    return <div>Error: {result.error}</div>
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -22,7 +26,7 @@ export default async function ClientsPage() {
         </Link>
       </div>
 
-      <ClientsTable clients={result} />
+      <ClientsTable clients={result.data} />
     </div>
   )
 }

@@ -1,13 +1,15 @@
 'use server'
 
-import { fetchProductById } from "@/features/product/shared/model/fetchProductById"
-import { ProductActionResult } from '@/shared/types/products/product'
+import { getProduct } from "@/features/product/shared/model/getProduct"
+import { Product } from '@/features/product/shared/types/product.types'
+import { fail, Result } from "@/shared/utils/result"
+import { success } from "@/shared/utils/result"
 
-export async function getProductAction(productId: string): Promise<ProductActionResult> {
+export async function getProductAction(productId: string): Promise<Result<Product>> {
   try {
-    const product = await fetchProductById(productId)
-    return { success: true, data: product }
+    const product = await getProduct(productId)
+    return success(product)
   } catch (error) {
-    return { success: false, error: (error as Error).message, data: null }
+    return fail((error as Error).message)
   }
 }

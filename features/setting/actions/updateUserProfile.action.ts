@@ -1,10 +1,11 @@
 'use server'
 
-import { updateUserProfileInDb } from "@/features/setting/model/updateUserProfileInDb"
-import { UserProfileActionResult, UserProfileFormData } from '@/shared/types/settings/profile'
+import { updateUserProfile } from "@/features/setting/model/updateUserProfile"
+import { UserProfileFormData } from '@/features/setting/types/profile.types'
 import { revalidatePath } from 'next/cache'
+import { fail, Result, success } from "@/shared/utils/result"
 
-export async function updateUserProfileAction(form: FormData): Promise<UserProfileActionResult> {
+export async function updateUserProfileAction(form: FormData): Promise<Result<null>> {
   try {
     const data: UserProfileFormData = {
       name: form.get('name') as string,
@@ -18,10 +19,10 @@ export async function updateUserProfileAction(form: FormData): Promise<UserProfi
       website: form.get('website') as string,
     }
 
-    await updateUserProfileInDb(data)
+    await updateUserProfile(data)
     revalidatePath('/dashboard/settings')
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

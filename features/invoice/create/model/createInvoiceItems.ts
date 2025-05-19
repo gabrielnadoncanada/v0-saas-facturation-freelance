@@ -1,4 +1,4 @@
-import { InvoiceItem } from '@/shared/types/invoices/invoice'
+import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function createInvoiceItems(

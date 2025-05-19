@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
-import { LoginSchema } from "@/features/auth/shared/auth.schema";
+import { LoginSchema } from "@/features/auth/shared/schema/auth.schema";
 
 interface LoginFormViewProps {
   form: UseFormReturn<LoginSchema>;

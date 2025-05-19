@@ -1,16 +1,14 @@
 'use server'
 
-import { fetchPaymentById } from '../model/fetchPaymentById'
-import { fetchPaymentInvoices } from '../../edit/model/fetchPaymentInvoices'
-import { PaymentActionResult } from '@/shared/types/payments/payment'
+import { success, fail, Result } from '@/shared/utils/result'
+import { getPayment } from '@/features/payment/shared/model/getPayment'
+import { Payment } from '@/features/payment/shared/types/payment.types'
 
-export async function getPaymentAction(paymentId: string): Promise<PaymentActionResult> {
+export async function getPaymentAction(paymentId: string): Promise<Result<Payment>> {
   try {
-    const payment = await fetchPaymentById(paymentId)
-    const invoices = await fetchPaymentInvoices(payment.invoice_id)
-
-    return { success: true, data: { payment, invoices } }
+    const payment = await getPayment(paymentId)
+    return success(payment)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

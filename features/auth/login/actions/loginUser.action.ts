@@ -1,6 +1,6 @@
 'use server'
 
-import { LoginSchema, loginSchema } from '@/features/auth/shared/auth.schema'
+import { LoginSchema, loginSchema } from '@/features/auth/shared/schema/auth.schema'
 import { createClient } from '@/shared/lib/supabase/server'
 import { FormResult } from '@/shared/types/api.types'
 import { safeParseForm } from '@/shared/utils/safeParseForm'

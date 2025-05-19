@@ -1,13 +1,15 @@
 'use server'
 
-import { fetchProjectDetails } from '@/features/project/edit/model/fetchProjectDetails'
-import { ProjectActionResult } from '@/shared/types/projects/project'
+import { getClientsList } from '@/features/invoice/view/model/getClients'
+import { getProjectDetails } from '@/features/project/edit/model/getProjectDetails'
+import { Project } from '@/features/project/shared/types/project.types'
+import { fail, Result, success } from '@/shared/utils/result'
 
-export async function getProjectAction(projectId: string): Promise<ProjectActionResult> {
+export async function getProjectAction(projectId: string): Promise<Result<Project>> {
   try {
-    const data = await fetchProjectDetails(projectId)
-    return { success: true, data }
+    const project = await getProjectDetails(projectId)
+    return success(project)
   } catch (error) {
-    return { success: false, error: (error as Error).message, data: null }
+    return fail((error as Error).message)
   }
 }

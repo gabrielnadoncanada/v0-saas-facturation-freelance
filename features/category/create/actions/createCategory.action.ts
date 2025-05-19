@@ -1,18 +1,18 @@
 "use server"
 
-import { CategoryFormData, CategoryActionResult } from '@/shared/types/categories/category'
-import { createCategoryInDb } from '@/features/category/create/model/createCategoryInDb'
+import { CategoryFormData } from '@/features/category/shared/types/category.types'
+import { createCategory } from '@/features/category/create/model/createCategory'
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { fail, Result } from '@/shared/utils/result'
 
-export async function createCategoryAction(data: CategoryFormData): Promise<CategoryActionResult> {
+export async function createCategoryAction(data: CategoryFormData): Promise<Result<null>> {
   try {
-    await createCategoryInDb(data)
-
+    await createCategory(data)
     revalidatePath("/dashboard/products/categories")
     revalidatePath("/dashboard/products")
     redirect("/dashboard/products/categories")
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

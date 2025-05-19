@@ -1,13 +1,14 @@
 'use server'
 
-import { fetchCategoryById } from '../model/fetchCategoryById'
-import { CategoryActionResult } from '@/shared/types/categories/category'
+import { fail, Result, success } from '@/shared/utils/result'
+import { getCategory } from '@/features/category/shared/model/getCategory'
+import { Category } from '@/features/category/shared/types/category.types'
 
-export async function getCategoryAction(categoryId: string): Promise<CategoryActionResult> {
+export async function getCategoryAction(categoryId: string): Promise<Result<Category>> {
   try {
-    const category = await fetchCategoryById(categoryId)
-    return { success: true, data: category }
+    const category = await getCategory(categoryId)
+    return success(category)
   } catch (error) {
-    return { success: false, error: (error as Error).message, data: null }
+    return fail((error as Error).message)
   }
 } 

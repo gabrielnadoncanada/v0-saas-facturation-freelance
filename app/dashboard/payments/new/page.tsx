@@ -1,12 +1,16 @@
 import { redirect } from "next/navigation"
-import { NewPaymentForm } from "@/features/payment/create/NewPaymentForm"
+import { NewPaymentForm } from "@/features/payment/create/ui/NewPaymentForm"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getAllInvoicesAction } from "@/features/invoice/list/actions/getAllInvoices.action"
+import { getInvoicesAction } from "@/features/invoice/list/actions/getInvoices.action"
 
 export default async function NewPaymentPage() {
-  const result = await getAllInvoicesAction()
+  const result = await getInvoicesAction()
+
+  if (!result.success) {
+    return <div>Error: {result.error}</div>
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -23,7 +27,7 @@ export default async function NewPaymentPage() {
       </div>
 
       <div className="grid gap-6">
-        <NewPaymentForm invoices={result} />
+        <NewPaymentForm invoices={result.data} />
       </div>
     </div>
   )

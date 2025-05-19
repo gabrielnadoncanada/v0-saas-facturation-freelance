@@ -8,9 +8,9 @@ import { AlertCircle, Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatCurrency } from "@/shared/lib/utils"
 import { DatePicker } from "@/components/ui/date-picker"
-import { Invoice } from "@/shared/types/invoices/invoice"
+import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { PaymentFormSchema } from "../hooks/useNewPaymentForm"
+import { PaymentFormSchema, paymentFormSchema } from "@/features/payment/shared/schema/payment.schema"
 
 interface NewPaymentFormViewProps {
   form: any

@@ -1,21 +1,21 @@
 'use server'
 
-import { updateProductInDb } from '../model/updateProductInDb'
-import { Product, ProductActionResult } from '@/shared/types/products/product'
+import { updateProduct } from '@/features/product/edit/model/updateProduct'
+import { Product } from '@/features/product/shared/types/product.types'
+import { fail, Result } from '@/shared/utils/result'
+import { success } from '@/shared/utils/result'
 import { revalidatePath } from "next/cache"
 
 export async function updateProductAction(
   productId: string,
   formData: Product
-): Promise<ProductActionResult> {
+): Promise<Result<null>> {
   try {
-    await updateProductInDb(productId, formData)
-
+    await updateProduct(productId, formData)
     revalidatePath("/dashboard/products")
     revalidatePath(`/dashboard/products/${productId}`)
-
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

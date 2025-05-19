@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { ClientForm } from "@/features/client/shared/ui/ClientForm"
-import { useCreateClientForm } from "./hooks/useCreateClientForm"
+import { useCreateClientForm } from "@/features/client/create/hooks/useCreateClientForm"
 
 export function CreateClientForm() {
   const router = useRouter()

@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -8,15 +10,17 @@ import { formatCurrency, formatDate, getInvoiceStatusColor } from "@/shared/lib/
 import { AlertCircle, ArrowLeft, Download, Edit, Send } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { PaymentForm } from "@/features/payment/shared/PaymentForm"
-import { useInvoiceDetails } from "../hooks/useInvoiceDetails"
-import { InvoiceLinesTable } from "./InvoiceLinesTable"
-import { InvoicePaymentsTable } from "./InvoicePaymentsTable"
-import type { InvoiceDetailsProps } from "../types/invoiceDetails"
+import { NewPaymentFormView } from "@/features/payment/create/ui/NewPaymentFormView"
+import { useInvoiceDetails } from "@/features/invoice/shared/hooks/useInvoiceDetails"
+import { InvoiceLinesTable } from "@/features/invoice/shared/ui/InvoiceLinesTable"
+import { InvoicePaymentsTable } from "@/features/invoice/shared/ui/InvoicePaymentsTable"
+import { Invoice, InvoiceDetailsProps } from "@/features/invoice/shared/types/invoice.types"
+import { useRouter } from "next/navigation"
+import PaymentForm from "@/features/payment/shared/ui/PaymentForm"
 
 export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
+  const router = useRouter()
   const {
-    router,
     isLoading,
     error,
     setError,

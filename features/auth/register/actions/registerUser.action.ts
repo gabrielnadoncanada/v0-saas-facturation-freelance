@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/shared/lib/supabase/server'
-import { RegisterSchema, registerSchema } from '@/features/auth/shared/auth.schema'
+import { RegisterSchema, registerSchema } from '@/features/auth/shared/schema/auth.schema'
 import { revalidatePath } from 'next/cache'
 import { safeParseForm } from '@/shared/utils/safeParseForm'
 import type { FormResult } from '@/shared/types/api.types'

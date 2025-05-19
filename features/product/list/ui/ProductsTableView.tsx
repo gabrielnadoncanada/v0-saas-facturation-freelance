@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Package, MoreHorizontal, Pencil, Trash2, Tag } from "lucide-react"
 import { formatCurrency } from "@/shared/lib/utils"
-import { Product } from "@/shared/types/products/product"
+import { Product } from "@/features/product/shared/types/product.types"
 
 interface ProductsTableViewProps {
   products: Product[]

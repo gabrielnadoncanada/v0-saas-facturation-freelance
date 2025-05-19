@@ -1,15 +1,17 @@
 'use server'
 
-import { deletePaymentInDb } from '@/features/payment/delete/model/deletePaymentInDb'
-import { PaymentActionResult } from '@/shared/types/payments/payment'
+import { deletePayment } from '@/features/payment/delete/model/deletePayment'
+import { fail } from '@/shared/utils/result'
+import { success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
 import { revalidatePath } from 'next/cache'
 
-export async function deletePaymentAction(paymentId: string): Promise<PaymentActionResult> {
+export async function deletePaymentAction(paymentId: string): Promise<Result<null>> {
   try {
-    await deletePaymentInDb(paymentId)
+    await deletePayment(paymentId)
     revalidatePath("/dashboard/payments")
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

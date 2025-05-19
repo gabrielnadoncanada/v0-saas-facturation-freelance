@@ -1,15 +1,16 @@
 'use server'
 
-import { deleteProductInDb } from '../../delete/model/deleteProductInDb'
-import { ProductActionResult } from '@/shared/types/products/product'
+import { deleteProduct } from '@/features/product/delete/model/deleteProduct'
+import { fail, Result } from '@/shared/utils/result'
+import { success } from '@/shared/utils/result'
 import { revalidatePath } from "next/cache"
 
-export async function deleteProductAction(productId: string): Promise<ProductActionResult> {
+export async function deleteProductAction(productId: string): Promise<Result<null>> {
   try {
-    await deleteProductInDb(productId)
+     await deleteProduct(productId)
     revalidatePath("/dashboard/products")
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

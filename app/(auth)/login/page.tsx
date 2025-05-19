@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/auth/login/LoginForm"
+import { LoginForm } from "@/features/auth/login/ui/LoginForm"
 import { redirectIfAuthenticated } from "@/shared/utils/redirectIfAuthenticated"
 
 export default async function LoginPage() {

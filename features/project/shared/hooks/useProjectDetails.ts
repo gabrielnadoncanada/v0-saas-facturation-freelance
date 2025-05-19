@@ -1,15 +1,8 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Project } from "@/shared/types/projects/project"
-import { Task } from "@/shared/types/tasks/task"
+import { Project } from "@/features/project/shared/types/project.types"
 
-export function useProjectDetails({
-  project,
-  tasks,
-}: {
-  project: Project
-  tasks: Task[]
-}) {
+export function useProjectDetails(project: Project) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [taskDialogOpen, setTaskDialogOpen] = useState(false)
@@ -17,12 +10,12 @@ export function useProjectDetails({
   const [assigneeFilter, setAssigneeFilter] = useState<string | null>(null)
 
   // Calculer les statistiques du projet
-  const completedTasks = tasks.filter((task) => task.status === "completed").length
-  const totalTasks = tasks.length
+  const completedTasks = project.tasks.filter((task) => task.status === "completed").length
+  const totalTasks = project.tasks.length
   const completionPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0
 
   // Filtrer les tâches en fonction des filtres sélectionnés
-  const filteredTasks = tasks.filter((task) => {
+  const filteredTasks = project.tasks.filter((task) => {
     if (statusFilter && task.status !== statusFilter) return false
     if (assigneeFilter && task.assigned_to !== assigneeFilter) return false
     return true

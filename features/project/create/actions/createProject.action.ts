@@ -1,13 +1,15 @@
 'use server'
 
-import { createProjectInDb } from '@/features/project/create/model/createProjectInDb'
-import { ProjectFormData, ProjectActionResult } from '@/shared/types/projects/project'
+import { createProject } from '@/features/project/create/model/createProject'
+import { Project, ProjectFormData } from '@/features/project/shared/types/project.types'
+import { fail, Result } from '@/shared/utils/result'
+import { success } from '@/shared/utils/result'
 
-export async function createProjectAction(formData: ProjectFormData): Promise<ProjectActionResult> {
+export async function createProjectAction(formData: ProjectFormData): Promise<Result<Project>> {
   try {
-    const project = await createProjectInDb(formData)
-    return { success: true, data: project }
+    const project = await createProject(formData)
+    return success(project)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

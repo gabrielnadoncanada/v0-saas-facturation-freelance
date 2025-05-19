@@ -1,27 +1,22 @@
 'use server'
 
-import { fetchInvoiceById } from '../../view/model/fetchInvoiceById'
-import { fetchInvoiceItems } from '../../view/model/fetchInvoiceItems'
-import { fetchClientsList } from '../../view/model/fetchClientsList'
-import { fetchDefaultCurrency } from '../../view/model/fetchDefaultCurrency'
-import { InvoiceActionResult } from '@/shared/types/invoices/invoice'
-import { fetchAllPayments } from '@/features/payment'
+import { getInvoice } from "@/features/invoice/view/model/getInvoice"
+import { getInvoiceItems } from "@/features/invoice/view/model/getInvoiceItems"
+import { getClientsList } from "@/features/invoice/view/model/getClients"
+import { getDefaultCurrency } from "@/features/invoice/view/model/getDefaultCurrency"
+import { Result } from "@/shared/utils/result"
+import { InvoiceDetailsProps } from "@/features/invoice/shared/types/invoice.types"
 
-export async function getInvoiceAction(invoiceId: string): Promise<InvoiceActionResult> {
+export async function getInvoiceAction(invoiceId: string): Promise<Result<InvoiceDetailsProps>> {
   try {
-    const invoice = await fetchInvoiceById(invoiceId)
-    const invoiceItems = await fetchInvoiceItems(invoiceId)
-    const clients = await fetchClientsList()
-    const defaultCurrency = await fetchDefaultCurrency()
+    const invoice = await getInvoice(invoiceId)
+    const invoiceItems = await getInvoiceItems(invoiceId)
+    const clients = await getClientsList()
+    const defaultCurrency = await getDefaultCurrency()
 
     return {
       success: true,
-      data: {
-        invoice,
-        invoiceItems,
-        clients,
-        defaultCurrency,
-      }
+      data: { invoice, invoiceItems, clients, defaultCurrency }
     }
   } catch (error) {
     return { success: false, error: (error as Error).message }

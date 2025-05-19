@@ -8,10 +8,10 @@ import { AlertCircle, Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DatePicker } from "@/components/ui/date-picker"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { Project } from "@/shared/types/projects/project"
-import { Client } from "@/shared/types/clients/client"
+import { Project } from "@/features/project/shared/types/project.types"
+import { Client } from "@/features/client/shared/types/client.types"
 import { UseFormReturn } from "react-hook-form"
-import { ProjectFormSchema } from "../projectFormSchema"
+import { ProjectFormSchema } from "@/features/project/shared/schema/project.schema"
 
 interface ProjectFormViewProps {
   form: UseFormReturn<ProjectFormSchema>

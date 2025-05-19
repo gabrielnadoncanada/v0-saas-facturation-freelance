@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { formatCurrency, formatDate } from "@/shared/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Payment } from "@/shared/types/payments/payment"
+import { Payment } from "@/features/payment/shared/types/payment.types"
 
 interface PaymentsTableViewProps {
   filteredPayments: Payment[]
@@ -51,6 +51,8 @@ export function PaymentsTableView({
   getPaymentMethodLabel,
   router,
 }: PaymentsTableViewProps) {
+
+
   return (
     <div className="space-y-4">
       <div className="flex items-center">
@@ -93,7 +95,7 @@ export function PaymentsTableView({
                   onClick={() => router.push(`/dashboard/payments/${payment.id}`)}
                 >
                   <TableCell className="font-medium">{payment.invoice.invoice_number}</TableCell>
-                  <TableCell>{payment.invoice.client.name}</TableCell>
+                  <TableCell>{payment.client_name}</TableCell>
                   <TableCell>{formatDate(payment.payment_date as string)}</TableCell>
                   <TableCell>{formatCurrency(payment.amount, payment.invoice.currency)}</TableCell>
                   <TableCell>{getPaymentMethodLabel(payment.payment_method)}</TableCell>

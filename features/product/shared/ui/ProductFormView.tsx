@@ -13,7 +13,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form"
-import { ProductFormSchema } from "../hooks/useProductForm"
+import { ProductFormSchema } from "@/features/product/shared/schema/product.schema"
 import { UseFormReturn } from "react-hook-form"
 import React from "react"
 

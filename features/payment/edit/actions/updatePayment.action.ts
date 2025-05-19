@@ -1,18 +1,19 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { updatePaymentInDb } from '@/features/payment/edit/model/updatePaymentInDb'
-import { PaymentFormData, PaymentActionResult } from '@/shared/types/payments/payment'
+import { updatePayment } from '@/features/payment/edit/model/updatePayment'
+import { PaymentFormData } from '@/features/payment/shared/types/payment.types'
+import { fail, Result, success } from '@/shared/utils/result'
 
 export async function updatePaymentAction(
   paymentId: string,
   formData: PaymentFormData
-): Promise<PaymentActionResult> {
+): Promise<Result<null>> {
   try {
-    await updatePaymentInDb(paymentId, formData)
+    await updatePayment(paymentId, formData)
     revalidatePath("/dashboard/payments")
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }

@@ -1,8 +1,8 @@
 "use client"
 
-import { useClientsTable } from "./hooks/useClientsTable"
-import { ClientsTableView } from "./ui/ClientsTableView"
-import { Client } from "@/shared/types/clients/client"
+import { useClientsTable } from "@/features/client/list/hooks/useClientsTable"
+import { ClientsTableView } from "@/features/client/list/ui/ClientsTableView"
+import { Client } from "@/features/client/shared/types/client.types"
 
 export function ClientsTable({ clients }: { clients: Client[] }) {
   const {
@@ -16,6 +16,8 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
     handleDelete,
     router,
   } = useClientsTable(clients)
+
+
 
   return (
     <ClientsTableView

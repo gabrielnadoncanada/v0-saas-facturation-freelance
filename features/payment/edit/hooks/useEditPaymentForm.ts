@@ -2,12 +2,12 @@ import React from "react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { updatePaymentAction } from "@/features/payment/edit/actions/updatePayment.action"
-import { Payment } from "@/shared/types/payments/payment"
-import { Invoice } from "@/shared/types/invoices/invoice"
+import { Payment } from "@/features/payment/shared/types/payment.types"
+import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { PaymentFormData } from "@/shared/types/payments/payment"
+import { PaymentFormData } from "@/features/payment/shared/types/payment.types"
 
 const paymentFormSchema = z.object({
   invoice_id: z.string().min(1, "La facture est requise"),

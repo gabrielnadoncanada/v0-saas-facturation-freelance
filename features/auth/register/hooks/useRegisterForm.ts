@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { registerSchema, RegisterSchema } from "@/features/auth/shared/auth.schema";
-import { registerUserAction } from "../actions/registerUser.action";
+import { registerSchema, RegisterSchema } from "@/features/auth/shared/schema/auth.schema";
+import { registerUserAction } from "@/features/auth/register/actions/registerUser.action";
 
 export function useRegisterForm() {
   const router = useRouter();

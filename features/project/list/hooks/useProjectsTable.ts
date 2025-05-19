@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { deleteProjectAction } from "@/features/project/delete/actions/deleteProject.action"
-import { Project as BaseProject } from "@/shared/types/projects/project"
+import { Project as BaseProject } from "@/features/project/shared/types/project.types"
 
 // Extend Project type to include clients relation
 export interface ProjectWithClient extends BaseProject {

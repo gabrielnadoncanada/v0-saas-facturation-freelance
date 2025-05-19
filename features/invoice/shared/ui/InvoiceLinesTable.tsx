@@ -1,6 +1,6 @@
 import React from "react"
 import { formatCurrency } from "@/shared/lib/utils"
-import type { InvoiceItem } from "@/shared/types/invoices/invoice"
+import type { InvoiceItem } from "@/features/invoice/shared/types/invoice.types"
 
 export function InvoiceLinesTable({ invoiceItems, currency }: { invoiceItems: InvoiceItem[]; currency: string }) {
   return (

@@ -1,6 +1,6 @@
 "use client"
 
-import type { ProfileFormValues } from "../hooks/useProfileForm"
+import type { ProfileFormValues } from "@/features/setting/hooks/useProfileForm"
 import type { UseFormReturn } from "react-hook-form"
 import type React from "react"
 import { Button } from "@/components/ui/button"

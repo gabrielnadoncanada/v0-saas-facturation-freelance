@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { deletePaymentAction } from "@/features/payment/delete/actions/deletePayment.action"
-import { Payment } from "@/shared/types/payments/payment"
+import { Payment } from "@/features/payment/shared/types/payment.types"
 
 export function usePaymentsTable(payments: Payment[]) {
   const router = useRouter()
@@ -10,6 +10,7 @@ export function usePaymentsTable(payments: Payment[]) {
   const [paymentToDelete, setPaymentToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
+  
   const filteredPayments = payments.filter(
     (payment) =>
       payment.invoice.invoice_number.toLowerCase().includes(searchTerm.toLowerCase()) ||

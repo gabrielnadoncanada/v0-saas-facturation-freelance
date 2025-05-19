@@ -1,4 +1,4 @@
-import { InvoiceItem } from '@/shared/types/invoices/invoice'
+import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function deleteRemovedInvoiceItems(items: InvoiceItem[], originalItems: InvoiceItem[]) {
@@ -9,11 +9,13 @@ export async function deleteRemovedInvoiceItems(items: InvoiceItem[], originalIt
     .map(item => item.id)
 
   if (itemsToDelete.length > 0) {
-    const { error } = await supabase
+    const res = await supabase
       .from("invoice_items")
       .delete()
       .in("id", itemsToDelete as string[])
 
-    if (error) throw new Error(error.message)
+    if (res.error) throw new Error(res.error.message)
+
+    return null
   }
 }

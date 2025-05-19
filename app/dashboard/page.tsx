@@ -1,4 +1,4 @@
-import { getDashboardData } from "@/features/dashboard/view/getDashboardData.action"
+import { getDashboardData } from "@/features/dashboard/view/actions/getDashboardData.action"
 import { DashboardHeader } from "@/features/dashboard/view/ui/DashboardHeader"
 import { DashboardStats } from "@/features/dashboard/view/ui/DashboardStats"
 import { RecentActivityColumn } from "@/features/dashboard/view/ui/RecentActivityColumn"

@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DatePicker } from "@/components/ui/date-picker"
 import { Percent } from "lucide-react"
 
-import type { InvoiceFormValues } from "./InvoiceForm"
+import type { InvoiceFormValues } from "@/features/invoice/shared/ui/InvoiceForm"
 
 interface Client {
   id: string

@@ -1,16 +1,16 @@
 'use server'
 
-import { uploadLogoToStorage } from "@/features/setting/model/uploadLogoToStorage"
-import { LogoActionResult } from '@/shared/types/settings/profile'
+import { uploadLogo } from "@/features/setting/model/uploadLogo"
+import { fail, Result, success } from "@/shared/utils/result"
 import { revalidatePath } from 'next/cache'
 
-export async function uploadLogoAction(formData: FormData): Promise<LogoActionResult> {
+export async function uploadLogoAction(formData: FormData): Promise<Result<string>> {
   try {
     const logoFile = formData.get("logo") as File
-    const publicUrl = await uploadLogoToStorage(logoFile)
+    const publicUrl = await uploadLogo(logoFile)
     revalidatePath("/dashboard/settings")
-    return { success: true, error: null, logoUrl: publicUrl }
+    return success(publicUrl)
   } catch (error) {
-    return { success: false, error: (error as Error).message, logoUrl: null }
+    return fail((error as Error).message)
   }
 }

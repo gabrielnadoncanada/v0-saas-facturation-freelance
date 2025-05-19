@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { createCategoryAction } from "@/features/category/create/actions/createCategory.action"
 import { updateCategoryAction } from "@/features/category/edit/actions/updateCategory.action"
-import { Category, CategoryFormData, CategoryActionResult } from "@/shared/types/categories/category"
+import { Category, CategoryFormData, CategoryActionResult } from "@/features/category/shared/types/category.types"
 
 const categoryFormSchema = z.object({
   name: z.string().min(1, "Le nom est requis"),

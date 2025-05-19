@@ -1,4 +1,4 @@
-import { ProfileForm } from "@/features/setting/ProfileForm"
+import { ProfileForm } from "@/features/setting/ui/ProfileForm"
 import { getUserProfileAction } from "@/features/setting/actions/getUserProfile.action"
 import { redirect } from "next/navigation"
 
@@ -17,7 +17,7 @@ export default async function SettingsPage() {
       </div>
 
       <div className="grid gap-6">
-        <ProfileForm profile={result.data!.profile as Profile} />
+        <ProfileForm profile={result.data} />
       </div>
     </div>
   )

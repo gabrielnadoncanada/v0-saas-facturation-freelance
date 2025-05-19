@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { forgotPasswordSchema, ForgotPasswordSchema } from '@/features/auth/shared/auth.schema';
-import { forgotPasswordAction } from '../actions/forgotPassword.action';
+import { forgotPasswordSchema, ForgotPasswordSchema } from '@/features/auth/shared/schema/auth.schema';
+import { forgotPasswordAction } from '@/features/auth/forgot/actions/forgotPassword.action';
 
 export function useForgotPasswordForm() {
   const [serverError, setServerError] = useState<string | null>(null);

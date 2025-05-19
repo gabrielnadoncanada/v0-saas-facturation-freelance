@@ -8,8 +8,6 @@ export function useCategories() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-
-
   return {
     categories,
     isLoading,

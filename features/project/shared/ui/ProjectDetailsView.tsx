@@ -6,8 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { formatCurrency, formatDate, formatDuration } from "@/shared/lib/utils"
 import { ArrowLeft, Edit, Plus, Filter } from "lucide-react"
 import Link from "next/link"
-import { TaskList } from "@/features/task/shared/TaskList"
-import { TaskForm } from "@/features/task/shared/TaskForm"
+import { TaskList } from "@/features/task/shared/ui/TaskList"
+import { TaskForm } from "@/features/task/shared/ui/TaskForm"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -20,12 +20,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Task } from "@/shared/types/tasks/task"
-import { Project } from "@/shared/types/projects/project"
+import { Task } from "@/features/task/shared/types/task.types"
+import { Project } from "@/features/project/shared/types/project.types"
 
 interface ProjectDetailsViewProps {
   project: Project
-  tasks: Task[]
   error: string | null
   setError: (e: string | null) => void
   taskDialogOpen: boolean
@@ -46,7 +45,6 @@ interface ProjectDetailsViewProps {
 
 export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
   project,
-  tasks,
   error,
   setError,
   taskDialogOpen,

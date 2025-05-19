@@ -14,9 +14,11 @@ import { DatePicker } from "@/components/ui/date-picker"
 import { DndContext, closestCenter, useSensors, useSensor, PointerSensor, KeyboardSensor } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import type { InvoiceFormProps } from "../types/invoiceForm"
-import { InvoiceGeneralFields } from "./InvoiceGeneralFields"
-import { InvoiceLineFields } from "./InvoiceLineFields"
+import { InvoiceGeneralFields } from "@/features/invoice/shared/ui/InvoiceGeneralFields"
+import { InvoiceLineFields } from "@/features/invoice/shared/ui/InvoiceLineFields"
+import { createInvoiceAction } from '@/features/invoice/create/actions/createInvoice.action'
+import { useInvoiceForm } from "@/features/invoice/shared/hooks/useInvoiceForm"
+import { InvoiceFormProps } from "@/features/invoice/shared/types/invoice.types"
 
 // --- Types & Defaults ---
 interface InvoiceItem {
@@ -40,81 +42,29 @@ interface InvoiceFormValues {
   items: InvoiceItem[]
 }
 
-const getDefaultValues = (props: InvoiceFormProps & { userId: string | undefined }): InvoiceFormValues => {
-  const { invoice, invoiceItems = [], defaultCurrency } = props
-  return {
-    client_id: invoice?.client_id || "",
-    issue_date: invoice?.issue_date ? new Date(invoice.issue_date) : new Date(),
-    due_date: invoice?.due_date ? new Date(invoice.due_date) : new Date(new Date().setDate(new Date().getDate() + 30)),
-    status: invoice?.status || "draft",
-    currency: invoice?.currency || defaultCurrency || "EUR",
-    notes: invoice?.notes || "",
-    tax_rate: invoice?.tax_rate || 20,
-    items:
-      invoiceItems.length > 0
-        ? invoiceItems.map((item) => ({ ...item, tax_rate: invoice?.tax_rate || 20, isNew: false }))
-        : [{ id: "new-item-" + Date.now(), description: "", quantity: 1, unit_price: 0, tax_rate: invoice?.tax_rate || 20, amount: 0, isNew: true }],
-  }
-}
-
-// --- Main Component ---
 export type { InvoiceFormValues };
-export function InvoiceForm(props: InvoiceFormProps & { userId: string | undefined }) {
-  const { clients, invoice, userId } = props
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+
+export function InvoiceForm(props: InvoiceFormProps) {
   const router = typeof window !== 'undefined' ? require('next/navigation').useRouter() : { push: () => {} }
-
-  const form = useForm<InvoiceFormValues>({ defaultValues: getDefaultValues(props), mode: "onBlur" })
-  const { control, handleSubmit, watch, setValue, getValues } = form
-  const { fields, append, remove, move } = useFieldArray({ control, name: "items" })
-
-  // Totals
-  const items = watch("items")
-  const tax_rate = watch("tax_rate")
-  const currency = watch("currency")
-  const subtotal = items.reduce((sum, item) => sum + Number(item.quantity) * Number(item.unit_price), 0)
-  const tax = (subtotal * Number(tax_rate)) / 100
-  const total = subtotal + tax
-
-  // DnD sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  )
-
-  // Keep all item tax_rate in sync with global
-  useEffect(() => {
-    getValues("items").forEach((_, idx) => setValue(`items.${idx}.tax_rate`, Number(tax_rate)))
-  }, [tax_rate])
-
-  // Submission
-  const onSubmit = async (data: InvoiceFormValues) => {
-    setIsLoading(true)
-    setError(null)
-    if (!userId || !data.client_id) {
-      setError("Informations manquantes")
-      setIsLoading(false)
-      return
-    }
-    try {
-      // TODO: Call your create/update invoice action here
-      setIsLoading(false)
-      router.push("/dashboard/invoices")
-    } catch (err: any) {
-      setError(err.message || "Une erreur est survenue")
-      setIsLoading(false)
-    }
-  }
-
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event
-    if (over && active.id !== over.id) {
-      const oldIndex = fields.findIndex((item) => item.id === active.id)
-      const newIndex = fields.findIndex((item) => item.id === over.id)
-      move(oldIndex, newIndex)
-    }
-  }
+  const {
+    form,
+    control,
+    handleSubmit,
+    onSubmit,
+    error,
+    isLoading,
+    fields,
+    append,
+    remove,
+    move,
+    sensors,
+    handleDragEnd,
+    tax_rate,
+    currency,
+    subtotal,
+    tax,
+    total,
+  } = useInvoiceForm(props)
 
   return (
     <FormProvider {...form}>
@@ -126,20 +76,19 @@ export function InvoiceForm(props: InvoiceFormProps & { userId: string | undefin
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Informations générales</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <InvoiceGeneralFields control={control} clients={clients} />
+                <InvoiceGeneralFields control={control} clients={props.clients} />
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Récapitulatif</CardTitle>
-                {invoice && <div className="text-lg font-semibold">{invoice.invoice_number}</div>}
+                {props.invoice && <div className="text-lg font-semibold">{props.invoice.invoice_number}</div>}
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-1">
@@ -197,7 +146,7 @@ export function InvoiceForm(props: InvoiceFormProps & { userId: string | undefin
             <Button type="button" variant="outline" onClick={() => router.push("/dashboard/invoices") } className="w-full sm:w-auto">Annuler</Button>
             <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {invoice ? "Mettre à jour" : "Créer la facture"}
+              {props.invoice ? "Mettre à jour" : "Créer la facture"}
             </Button>
           </div>
         </form>

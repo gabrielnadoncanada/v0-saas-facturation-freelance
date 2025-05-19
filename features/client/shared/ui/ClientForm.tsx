@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { clientFormSchema, ClientFormSchema } from "@/shared/types/clients/client"
+import { clientFormSchema, ClientFormSchema } from "@/features/client/shared/types/client.types"
 import {
   Form,
   FormField,

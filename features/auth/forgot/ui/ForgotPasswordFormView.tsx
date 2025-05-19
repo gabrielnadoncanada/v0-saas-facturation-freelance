@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert } from '@/components/ui/alert';
 import { UseFormReturn } from 'react-hook-form';
-import { ForgotPasswordSchema } from '@/features/auth/shared/auth.schema';
+import { ForgotPasswordSchema } from '@/features/auth/shared/schema/auth.schema';
 
 interface ForgotPasswordFormViewProps {
   form: UseFormReturn<ForgotPasswordSchema>;

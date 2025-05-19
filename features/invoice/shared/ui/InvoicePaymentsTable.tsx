@@ -1,6 +1,6 @@
 import React from "react"
 import { formatCurrency, formatDate } from "@/shared/lib/utils"
-import type { Payment } from "@/shared/types/payments/payment"
+import type { Payment } from "@/features/payment/shared/types/payment.types"
 
 export function InvoicePaymentsTable({ payments, currency }: { payments: Payment[]; currency: string }) {
   return (

@@ -1,15 +1,16 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { PaymentFormData, PaymentActionResult } from '@/shared/types/payments/payment'
-import { createPaymentInDb } from '../model/createPaymentInDb'
+import { PaymentFormData } from '@/features/payment/shared/types/payment.types'
+import { createPayment } from '@/features/payment/create/model/createPayment'
+import { fail, Result, success } from '@/shared/utils/result'
 
-export async function createPaymentAction(formData: PaymentFormData): Promise<PaymentActionResult> {
+export async function createPaymentAction(formData: PaymentFormData): Promise<Result<null>> {
   try {
-    await createPaymentInDb(formData)
+    await createPayment(formData)
     revalidatePath("/dashboard/payments")
-    return { success: true }
+    return success(null)
   } catch (error) {
-    return { success: false, error: (error as Error).message }
+    return fail((error as Error).message)
   }
 }
