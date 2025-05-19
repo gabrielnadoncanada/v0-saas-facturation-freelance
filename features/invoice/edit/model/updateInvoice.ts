@@ -11,7 +11,7 @@ export async function updateInvoice(invoiceId: string, formData: Invoice): Promi
   const res = await supabase
     .from("invoices")
     .update({
-      client: formData.client,
+      client_id: formData.client.id,
       issue_date: issueDate.toISOString().split("T")[0],
       due_date: dueDate.toISOString().split("T")[0],
       status: formData.status,
