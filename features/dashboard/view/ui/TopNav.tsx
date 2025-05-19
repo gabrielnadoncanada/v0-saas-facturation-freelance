@@ -1,3 +1,5 @@
+"use client"
+
 import { TopNavView } from "./TopNavView"
 import { useTopNav } from "../hooks/useTopNav"
 import type { TopNavProps } from "@/features/dashboard/view/types/top-nav.types"
