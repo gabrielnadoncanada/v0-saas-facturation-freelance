@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import type { Notification, QuickAction, TopNavProps } from "@/features/dashboard/view/types/top-nav.types"
