@@ -79,7 +79,7 @@ export default async function Home() {
         <p className="text-xs text-gray-500 dark:text-gray-400">© 2023 Facturation Pro. Tous droits réservés.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="/terms">
-            Conditions d'utilisation
+            Conditions d&apos;utilisation
           </Link>
           <Link className="text-xs hover:underline underline-offset-4" href="/privacy">
             Politique de confidentialité

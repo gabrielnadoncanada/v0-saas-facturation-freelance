@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CategoryForm } from "@/features/category/shared/ui/CategoryForm"
-import { redirect, notFound } from "next/navigation"
+import { notFound } from "next/navigation"
 import { getCategoryAction } from "@/features/category/shared/actions/getCategory.action"
 interface EditCategoryPageProps {
   params: {

@@ -8,13 +8,9 @@ import {
   LayoutDashboard,
   Users,
   FileText,
-  Clock,
   CreditCard,
   Settings,
   Briefcase,
-  BarChart4,
-  HelpCircle,
-  LifeBuoy,
   Package,
 } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"

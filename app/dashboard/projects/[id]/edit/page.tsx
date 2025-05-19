@@ -1,6 +1,6 @@
 import { ProjectForm } from "@/features/project/shared/ui/ProjectForm"
 import { getProjectAction } from "@/features/project/shared/actions/getProject.action"
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { getClientsAction } from "@/features/client/list/actions/getClients.action"
 
 export default async function EditProjectPage({

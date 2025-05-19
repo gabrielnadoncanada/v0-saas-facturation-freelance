@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { PaymentDetails } from "@/features/payment/view/ui/PaymentDetails"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"

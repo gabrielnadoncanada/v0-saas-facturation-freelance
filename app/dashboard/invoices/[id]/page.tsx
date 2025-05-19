@@ -1,8 +1,6 @@
 import { InvoiceDetails } from "@/features/invoice/shared/ui/InvoiceDetails"
 import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action" 
-import { notFound, redirect } from "next/navigation"
-import { Invoice, InvoiceItem } from "@/features/invoice/shared/types/invoice.types"
-import { Payment } from "@/features/payment/shared/types/payment.types"
+import { redirect } from "next/navigation"
 
 export default async function InvoiceDetailsPage({
   params,

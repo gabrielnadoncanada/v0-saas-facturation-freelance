@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation"
 import { NewPaymentForm } from "@/features/payment/create/ui/NewPaymentForm"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
