@@ -11,7 +11,7 @@ export async function createInvoice(formData: Invoice): Promise<string> {
     .from('invoices')
     .insert({
       user_id: user.id,
-      client_id: formData.client_id,
+      client_id: formData.client.id,
       issue_date: issueDate.toISOString().split('T')[0],
       due_date: dueDate.toISOString().split('T')[0],
       status: formData.status,
