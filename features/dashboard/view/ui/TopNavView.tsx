@@ -20,7 +20,7 @@ import { MobileNav } from "@/components/dashboard/mobile-nav"
 import { UserNav } from "@/components/dashboard/user-nav"
 import { APP_NAME } from "@/shared/lib/constants"
 import { cn } from "@/shared/lib/utils"
-import type { TopNavProps, Notification, QuickAction } from "../types/top-nav.types"
+import type { TopNavProps, Notification, QuickAction } from "@/features/dashboard/view/types/top-nav.types"
 
 interface TopNavViewProps {
   user: TopNavProps["user"]

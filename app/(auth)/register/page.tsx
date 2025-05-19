@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/features/auth/register/RegisterForm"
+import { RegisterForm } from "@/features/auth/register/ui/RegisterForm"
 import { redirectIfAuthenticated } from "@/shared/utils/redirectIfAuthenticated"
 
 export default async function RegisterPage() {

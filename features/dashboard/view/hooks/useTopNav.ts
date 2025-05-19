@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import type { Notification, QuickAction, TopNavProps } from "../types/top-nav.types"
+import type { Notification, QuickAction, TopNavProps } from "@/features/dashboard/view/types/top-nav.types"
 import { APP_NAME } from "@/shared/lib/constants"
 import { Users, FileText, Briefcase, Clock, Calendar } from "lucide-react"
 

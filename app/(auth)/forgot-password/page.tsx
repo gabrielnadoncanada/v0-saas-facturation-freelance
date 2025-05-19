@@ -1,4 +1,4 @@
-import { ForgotPasswordForm } from "@/features/auth/forgot/ForgotPasswordForm"
+import { ForgotPasswordForm } from "@/features/auth/forgot/ui/ForgotPasswordForm"
 import { redirectIfAuthenticated } from "@/shared/utils/redirectIfAuthenticated"
 
 export default async function ForgotPasswordPage() {
