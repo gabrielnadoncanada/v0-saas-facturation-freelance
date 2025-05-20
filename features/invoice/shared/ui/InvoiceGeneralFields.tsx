@@ -1,9 +1,13 @@
-import React from "react"
+import React, { useState } from "react"
 import { Control, FieldValues, Path } from "react-hook-form"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ClientForm } from "@/features/client/shared/ui/ClientForm"
+import { useCreateClientInlineForm } from "@/features/client/create/hooks/useCreateClientInlineForm"
 import { DatePicker } from "@/components/ui/date-picker"
 import { Percent } from "lucide-react"
 
@@ -17,9 +21,16 @@ interface Client {
 type InvoiceGeneralFieldsProps<T extends FieldValues = InvoiceFormValues> = {
   control: Control<T>
   clients: Client[]
+  onClientCreated: (client: Client) => void
 }
 
-export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>({ control, clients }: InvoiceGeneralFieldsProps<T>) {
+export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>({ control, clients, onClientCreated }: InvoiceGeneralFieldsProps<T>) {
+  const [open, setOpen] = useState(false)
+  const { isLoading, error, defaultValues, onSubmit } = useCreateClientInlineForm((client) => {
+    onClientCreated(client)
+    setOpen(false)
+  })
+
   return (
     <>
       <FormField
@@ -43,10 +54,28 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
                 </SelectContent>
               </Select>
             </FormControl>
+            <Button type="button" variant="link" className="p-0 text-sm" onClick={() => setOpen(true)}>
+              Ajouter un client
+            </Button>
             <FormMessage />
           </FormItem>
         )}
       />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Nouveau client</DialogTitle>
+          </DialogHeader>
+          <ClientForm
+            defaultValues={defaultValues}
+            onSubmit={onSubmit}
+            isLoading={isLoading}
+            error={error}
+            onCancel={() => setOpen(false)}
+            submitLabel="Créer le client"
+          />
+        </DialogContent>
+      </Dialog>
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
           control={control}
