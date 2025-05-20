@@ -41,6 +41,14 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
 
   // Calculate payment rate
   const paymentRate = data.total_invoiced > 0 ? (data.total_paid / data.total_invoiced) * 100 : 0
+  // Calculate active clients rate (currently 80% of client_count)
+  const activeClientsRate = data.client_count > 0 ? (data.client_count * 0.8) / data.client_count * 100 : 0
+  // Calculate project completion rate
+  const projectCompletionRate = data.project_count && data.project_count > 0 && data.completed_tasks_count !== undefined
+    ? (data.completed_tasks_count / data.project_count) * 100
+    : 0
+  // Calculate billable hours rate (currently 70% of time_tracked_hours)
+  const billableHoursRate = 70 // If you have a dynamic value, replace this
 
   return (
     <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -99,7 +107,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
                 <span className="text-muted-foreground">Clients actifs</span>
                 <span className="text-green-500">{Math.round(data.client_count * 0.8)}</span>
               </div>
-              <Progress value={80} className="h-1.5" />
+              <Progress value={activeClientsRate} className="h-1.5" />
               <div className="flex items-center justify-between mt-1">
                 <span className="text-xs text-muted-foreground">
                   {data.invoice_count} facture{data.invoice_count !== 1 ? "s" : ""}
@@ -135,7 +143,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
                 <span className="text-muted-foreground">Progression</span>
                 <span className="text-blue-500">{data.completed_tasks_count || 0} tâches terminées</span>
               </div>
-              <Progress value={65} className="h-1.5" />
+              <Progress value={projectCompletionRate} className="h-1.5" />
               <div className="flex items-center justify-between mt-1">
                 <span className="text-xs text-muted-foreground">
                   {Math.round((data.project_count || 0) * 0.65)} projets en cours
@@ -171,7 +179,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
                 <span className="text-muted-foreground">Ce mois</span>
                 <span className="text-green-500">{formatCurrency(data.time_tracked_hours * 50)}</span>
               </div>
-              <Progress value={70} className="h-1.5" />
+              <Progress value={billableHoursRate} className="h-1.5" />
               <div className="flex items-center justify-between mt-1">
                 <span className="text-xs text-muted-foreground">
                   {Math.round(data.time_tracked_hours * 0.7)}h facturables
