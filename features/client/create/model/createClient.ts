@@ -21,5 +21,5 @@ export async function createClient(data: ClientFormData) {
 
   finalData.user_id = user.id;
 
-  return await supabase.from("clients").insert(finalData);
-} 
+  return await supabase.from("clients").insert(finalData).select().single();
+}

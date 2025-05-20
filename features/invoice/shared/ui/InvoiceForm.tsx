@@ -66,6 +66,13 @@ export function InvoiceForm(props: InvoiceFormProps) {
     total,
   } = useInvoiceForm(props)
 
+  const [clients, setClients] = useState(props.clients)
+
+  const handleClientCreated = (client: any) => {
+    setClients((prev) => [...prev, client])
+    form.setValue('client_id', client.id)
+  }
+
   return (
     <FormProvider {...form}>
       <Form {...form}>
@@ -82,7 +89,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <CardTitle>Informations générales</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <InvoiceGeneralFields control={control} clients={props.clients} />
+                <InvoiceGeneralFields control={control} clients={clients} onClientCreated={handleClientCreated} />
               </CardContent>
             </Card>
             <Card>
