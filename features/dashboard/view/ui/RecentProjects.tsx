@@ -18,6 +18,7 @@ interface Project {
   clients: {
     name: string
   }
+  tasks?: { status: string }[]
 }
 
 interface RecentProjectsProps {
@@ -30,8 +31,10 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
     return <Badge className={statusConfig.color}>{statusConfig.label}</Badge>
   }
 
-  const getRandomProgress = () => {
-    return Math.floor(Math.random() * 100)
+  const getProgress = (tasks?: { status: string }[]) => {
+    if (!tasks || tasks.length === 0) return 0
+    const completed = tasks.filter((t) => t.status === "completed").length
+    return Math.round((completed / tasks.length) * 100)
   }
 
   if (projects.length === 0) {
@@ -73,9 +76,11 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
           <div className="mt-3 space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">Progression</span>
-              <span className="font-medium">{getRandomProgress()}%</span>
+              <span className="font-medium">
+                {getProgress(project.tasks)}%
+              </span>
             </div>
-            <Progress value={getRandomProgress()} className="h-1.5" />
+            <Progress value={getProgress(project.tasks)} className="h-1.5" />
           </div>
         </div>
       ))}

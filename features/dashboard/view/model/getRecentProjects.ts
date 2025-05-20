@@ -7,7 +7,7 @@ export async function getRecentProjects() {
 
   const res = await supabase
     .from("projects")
-    .select("*, clients(name)")
+    .select("*, clients(name), tasks(status)")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(5)
