@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Edit, Eye, MoreHorizontal, Search, Trash } from "lucide-react"
+import { Edit, Eye, MoreHorizontal, Search, Trash, Download } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -132,6 +132,16 @@ export function InvoicesTableView({
                               <Edit className="mr-2 h-4 w-4" />
                               Modifier
                             </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <a
+                                href={`/api/invoices/${invoice.id}/pdf`}
+                                target="_blank"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Download className="mr-2 h-4 w-4" />
+                                Télécharger PDF
+                              </a>
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               className="text-red-600"
@@ -196,6 +206,16 @@ export function InvoicesTableView({
                       >
                         <Edit className="mr-2 h-4 w-4" />
                         Modifier
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <a
+                          href={`/api/invoices/${invoice.id}/pdf`}
+                          target="_blank"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Download className="mr-2 h-4 w-4" />
+                          Télécharger PDF
+                        </a>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
