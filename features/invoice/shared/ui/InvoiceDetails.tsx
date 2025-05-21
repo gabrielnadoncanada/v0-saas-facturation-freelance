@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency, formatDate, getInvoiceStatusColor } from "@/shared/lib/utils"
-import { AlertCircle, ArrowLeft, Download, Edit, Send } from "lucide-react"
+import { AlertCircle, ArrowLeft, Download, Edit, Send, Mail } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { NewPaymentFormView } from "@/features/payment/create/ui/NewPaymentFormView"
@@ -17,6 +17,8 @@ import { InvoicePaymentsTable } from "@/features/invoice/shared/ui/InvoicePaymen
 import { Invoice, InvoiceDetailsProps } from "@/features/invoice/shared/types/invoice.types"
 import { useRouter } from "next/navigation"
 import PaymentForm from "@/features/payment/shared/ui/PaymentForm"
+import { sendInvoiceEmailAction } from "@/features/invoice/email"
+import { useTransition } from "react"
 
 export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
   const router = useRouter()
@@ -29,6 +31,17 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
     updateInvoiceStatus,
     getStatusLabel,
   } = useInvoiceDetails(invoice.id)
+  const [isSending, startSending] = useTransition()
+  const sendEmail = () => {
+    if (!invoice.client.email) return
+    setError(null)
+    startSending(async () => {
+      const res = await sendInvoiceEmailAction(invoice.id, invoice.client.email as string)
+      if (!res.success) {
+        setError(res.error || 'Une erreur est survenue')
+      }
+    })
+  }
 
   // Calculer le total payé
   const totalPaid = invoice.payments.reduce((sum, payment) => sum + payment.amount, 0)
@@ -176,6 +189,10 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
               <Download className="mr-2 h-4 w-4" />
               Télécharger PDF
             </a>
+          </Button>
+          <Button variant="outline" onClick={sendEmail} disabled={isSending || !invoice.client.email}>
+            <Mail className="mr-2 h-4 w-4" />
+            Envoyer par email
           </Button>
         </div>
         <div className="flex space-x-2">
