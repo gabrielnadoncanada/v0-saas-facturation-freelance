@@ -1,4 +1,5 @@
-import PDFDocument from 'pdfkit'
+import { renderToStream } from '@react-pdf/renderer'
+import InvoicePdfView from '../ui/InvoicePdfView'
 import { getInvoice } from '@/features/invoice/view/model/getInvoice'
 import { getInvoiceItems } from '@/features/invoice/view/model/getInvoiceItems'
 
@@ -6,34 +7,20 @@ export async function generateInvoicePdf(invoiceId: string): Promise<{ buffer: B
   const invoice = await getInvoice(invoiceId)
   const items = await getInvoiceItems(invoiceId)
 
-  const doc = new PDFDocument({ margin: 50 })
-  const chunks: Buffer[] = []
+  // Ensure dates are strings
+  const issue_date = typeof invoice.issue_date === 'string' ? invoice.issue_date : invoice.issue_date.toISOString().slice(0, 10)
+  const due_date = typeof invoice.due_date === 'string' ? invoice.due_date : invoice.due_date.toISOString().slice(0, 10)
 
-  doc.on('data', (chunk) => chunks.push(chunk))
-
-  const endPromise = new Promise<{ buffer: Buffer; invoiceNumber: string }>((resolve, reject) => {
-    doc.on('end', () => resolve({ buffer: Buffer.concat(chunks), invoiceNumber: invoice.invoice_number }))
-    doc.on('error', reject)
+  // Use renderToStream for Node.js
+  const stream = await renderToStream(
+    <InvoicePdfView invoice={{ ...invoice, issue_date, due_date }} items={items} />
+  )
+  const buffer = await new Promise<Buffer>((resolve, reject) => {
+    const chunks: Uint8Array[] = [];
+    stream.on('data', (chunk) => chunks.push(chunk))
+    stream.on('end', () => resolve(Buffer.concat(chunks)))
+    stream.on('error', reject)
   })
 
-  doc.fontSize(20).text(`Facture n° ${invoice.invoice_number}`, { align: 'center' })
-  doc.moveDown()
-
-  doc.fontSize(12)
-  doc.text(`Client: ${invoice.client.name}`)
-  doc.text(`Date: ${invoice.issue_date}`)
-  doc.text(`Échéance: ${invoice.due_date}`)
-  doc.moveDown()
-  doc.text('Lignes:')
-  items.forEach((item) => {
-    doc.text(`${item.description} - ${item.quantity} x ${item.unit_price} = ${item.amount}`)
-  })
-  doc.moveDown()
-  doc.text(`Total: ${invoice.total} ${invoice.currency}`)
-  doc.moveDown()
-  doc.text('Mentions légales: ...')
-
-  doc.end()
-
-  return endPromise
+  return { buffer, invoiceNumber: invoice.invoice_number }
 }
