@@ -54,6 +54,7 @@
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
     "next-themes": "latest",
+    "nodemailer": "^6.9.11",
     "pdfkit": "latest",
     "react": "^19",
     "react-day-picker": "8.10.1",
@@ -61,12 +62,12 @@
     "react-hook-form": "latest",
     "react-resizable-panels": "^2.1.7",
     "recharts": "latest",
+    "resend": "^4.5.1",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",
-    "zod": "latest",
-    "nodemailer": "^6.9.11"
+    "zod": "latest"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

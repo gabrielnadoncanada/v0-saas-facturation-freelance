@@ -1,34 +1,26 @@
 'use server'
 
 import { getInvoice } from '@/features/invoice/view/model/getInvoice'
-import { generateInvoicePdf } from '@/features/invoice/email/model/generateInvoicePdf'
-import nodemailer from 'nodemailer'
+import { generateInvoicePdf } from '@/features/invoice/pdf/model/generateInvoicePdf'
 import { Result, success, fail } from '@/shared/utils/result'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendInvoiceEmailAction(invoiceId: string, recipientEmail: string): Promise<Result<null>> {
   try {
     const invoice = await getInvoice(invoiceId)
-    const pdfBuffer = await generateInvoicePdf(invoiceId)
+    const { buffer } = await generateInvoicePdf(invoiceId)
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM!,
       to: recipientEmail,
       subject: `Facture ${invoice.invoice_number}`,
       text: `Veuillez trouver votre facture ${invoice.invoice_number} en pièce jointe.`,
       attachments: [
         {
           filename: `facture-${invoice.invoice_number}.pdf`,
-          content: pdfBuffer,
+          content: buffer.toString('base64'),
         },
       ],
     })
