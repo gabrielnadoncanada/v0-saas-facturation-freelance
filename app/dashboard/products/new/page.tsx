@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ProductForm } from "@/features/product/shared/ui/ProductForm"
 
 export default async function NewProductPage() {
-
   return (
     <div className="flex flex-col gap-6">
       <div>

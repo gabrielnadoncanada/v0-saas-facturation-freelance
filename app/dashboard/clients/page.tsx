@@ -1,4 +1,4 @@
-import { ClientsTable } from "@/features/client/list/ClientsTable"
+import { ClientsTable } from "@/features/client/list/ui/ClientsTable"
 import { Button } from "@/components/ui/button"
 import { getClientsAction } from "@/features/client/list/actions/getClients.action"
 import { Plus } from "lucide-react"

@@ -57,44 +57,31 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="client_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Client *</FormLabel>
-                <FormControl>
-                  <Select value={field.value} onValueChange={field.onChange} required>
-                    <SelectTrigger id="client_id">
-                      <SelectValue placeholder="Sélectionner un client" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {clients.map((client) => (
-                        <SelectItem key={client.id} value={client.id}>
-                          {client.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea rows={4} placeholder="Description du projet" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="grid gap-4 sm:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="client_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Client *</FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange} required>
+                      <SelectTrigger id="client_id">
+                        <SelectValue placeholder="Sélectionner un client" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {clients.map((client) => (
+                          <SelectItem key={client.id} value={client.id}>
+                            {client.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="status"
@@ -118,28 +105,20 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="budget"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Budget (€)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="Budget"
-                      {...field}
-                      value={field.value ?? ""}
-                      onChange={e => field.onChange(e.target.value === "" ? "" : Number.parseFloat(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea rows={4} placeholder="Description du projet" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}

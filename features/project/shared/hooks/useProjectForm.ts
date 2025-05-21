@@ -5,6 +5,7 @@ import { projectFormSchema, ProjectFormSchema } from "@/features/project/shared/
 // import { createProjectAction } from "@/features/project/create/createProject.action" // Décommente si le fichier existe
 import { updateProjectAction } from "@/features/project/edit/actions/updateProject.action"
 import { Project } from "@/features/project/shared/types/project.types"
+import { createProjectAction } from "../../create/actions/createProject.action"
 
 export function useProjectForm({
   project,
@@ -22,7 +23,6 @@ export function useProjectForm({
     status: (project?.status || "active") as ProjectFormSchema["status"],
     start_date: project?.start_date || undefined,
     end_date: project?.end_date || undefined,
-    budget: project?.budget || "",
   }
 
   const form = useForm<ProjectFormSchema>({
@@ -47,7 +47,7 @@ export function useProjectForm({
       if (project?.id) {
         result = await updateProjectAction(project.id, dataToSubmit)
       } else {
-        // result = await createProjectAction(dataToSubmit) // Décommente si le fichier existe
+        result = await createProjectAction(dataToSubmit)
       }
       if (result && !result.success) {
         setError(result.error || "Une erreur est survenue")

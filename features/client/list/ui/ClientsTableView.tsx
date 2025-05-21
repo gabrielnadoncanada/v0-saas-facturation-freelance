@@ -69,7 +69,6 @@ export function ClientsTableView({
                 <TableHead className="px-3 py-3.5 sm:px-6">Nom</TableHead>
                 <TableHead className="px-3 py-3.5 sm:px-6">Email</TableHead>
                 <TableHead className="px-3 py-3.5 sm:px-6">Téléphone</TableHead>
-                <TableHead className="px-3 py-3.5 sm:px-6">Taux horaire</TableHead>
                 <TableHead className="w-[100px] px-3 py-3.5 sm:px-6"></TableHead>
               </TableRow>
             </TableHeader>
@@ -89,10 +88,7 @@ export function ClientsTableView({
                   >
                     <TableCell className="font-medium px-3 py-4 sm:px-6">{client.name}</TableCell>
                     <TableCell className="px-3 py-4 sm:px-6">{client.email || "-"}</TableCell>
-                    <TableCell className="px-3 py-4 sm:px-6">{client.phone || "-"}</TableCell>
-                    <TableCell className="px-3 py-4 sm:px-6">
-                      {client.hourly_rate ? `${client.hourly_rate} €/h` : "-"}
-                    </TableCell>
+                    <TableCell className="px-3 py-4 sm:px-6">{client.phone || "-"}</TableCell>            
                     <TableCell className="px-3 py-4 sm:px-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>

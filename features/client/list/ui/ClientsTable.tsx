@@ -17,8 +17,6 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
     router,
   } = useClientsTable(clients)
 
-
-
   return (
     <ClientsTableView
       filteredClients={filteredClients}

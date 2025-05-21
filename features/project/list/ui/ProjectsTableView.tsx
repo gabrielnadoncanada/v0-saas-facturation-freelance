@@ -95,7 +95,6 @@ export function ProjectsTableView({
                   <TableHead className="px-3 py-3.5 sm:px-6">Statut</TableHead>
                   <TableHead className="px-3 py-3.5 sm:px-6">Date de début</TableHead>
                   <TableHead className="px-3 py-3.5 sm:px-6">Date de fin</TableHead>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Budget</TableHead>
                   <TableHead className="w-[100px] px-3 py-3.5 sm:px-6"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -117,9 +116,6 @@ export function ProjectsTableView({
                       </TableCell>
                       <TableCell className="px-3 py-4 sm:px-6">
                         {project.end_date ? formatDate(project.end_date) : "-"}
-                      </TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">
-                        {project.budget ? formatCurrency(project.budget) : "-"}
                       </TableCell>
                       <TableCell className="px-3 py-4 sm:px-6">
                         <DropdownMenu>

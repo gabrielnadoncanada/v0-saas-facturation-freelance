@@ -11,7 +11,6 @@ export function useCreateClientInlineForm(onCreated: (client: Client) => void) {
     name: "",
     email: "",
     phone: "",
-    hourly_rate: "",
     billing_address: "",
     billing_city: "",
     billing_postal_code: "",

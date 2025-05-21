@@ -1,1 +1,1 @@
-export * from '@/features/client/list/model/getClients'
+export { getClients } from '@/features/client/list/model/getClients'

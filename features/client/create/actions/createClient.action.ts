@@ -1,16 +1,14 @@
 "use server"
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { Client, ClientFormData } from '@/features/client/shared/types/client.types';
+import { ClientFormSchema } from '@/features/client/shared/schema/client.schema';
 import { createClient } from '@/features/client/create/model/createClient';
 import { fail, Result, success } from '@/shared/utils/result'
 
-export async function createClientAction(data: ClientFormData): Promise<Result<Client>> {
+export async function createClientAction(formData: ClientFormSchema): Promise<Result<null>> {
   try {
-    await createClient(data);
-
+    await createClient(formData);
     revalidatePath("/dashboard/clients")
-    redirect("/dashboard/clients")
+    return success(null)
   } catch (error) {
     return fail((error as Error).message)
   }

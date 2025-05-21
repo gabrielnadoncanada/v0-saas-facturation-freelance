@@ -4,7 +4,6 @@ export const clientFormSchema = z.object({
   name: z.string().min(1, "Le nom est requis"),
   email: z.string().email("Email invalide").optional().or(z.literal("")),
   phone: z.string().optional().or(z.literal("")),
-  hourly_rate: z.union([z.string(), z.number()]).optional().or(z.literal("")),
   billing_address: z.string().optional().or(z.literal("")),
   billing_city: z.string().optional().or(z.literal("")),
   billing_postal_code: z.string().optional().or(z.literal("")),

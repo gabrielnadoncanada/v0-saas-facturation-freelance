@@ -1,5 +1,5 @@
-import { EditClientForm } from "@/features/client/edit/ui/EditClientForm"
 import { getClientAction } from "@/features/client/shared/actions/getClient.action"
+import { ClientForm } from "@/features/client/shared/ui/ClientForm"
 
 export default async function EditClientPage({ params, }: { params: { id: string } }) {
   const result = await getClientAction(params.id)
@@ -15,7 +15,7 @@ export default async function EditClientPage({ params, }: { params: { id: string
         <p className="text-muted-foreground">Modifiez les informations du client</p>
       </div>
 
-      <EditClientForm client={result.data} />
+      <ClientForm client={result.data} />
     </div>
   )
 }

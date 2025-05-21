@@ -1,5 +1,5 @@
 import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
-import { getClients } from "@/features/client"
+import { getClients } from "@/features/client/list/model/getClients"
 import { getDefaultCurrency } from "@/features/invoice/view/model/getDefaultCurrency"
 
 export default async function NewInvoicePage() {

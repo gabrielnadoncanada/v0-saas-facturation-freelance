@@ -2,15 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ProductForm } from "@/features/product/shared/ui/ProductForm"
 import { notFound } from "next/navigation"
 import { getProductAction } from "@/features/product/shared/actions/getProduct.action"
-import { Product } from "@/features/product/shared/types/product.types"
 
-interface EditProductPageProps {
-    params: { 
-    id: string
-  }
-}
-
-export default async function EditProductPage({ params }: EditProductPageProps) {
+export default async function EditProductPage({ params }: { params: { id: string } }) {
   const result = await getProductAction(params.id)
 
   if (!result.success) {
@@ -29,7 +22,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
           <CardTitle>Détails du produit</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProductForm product={result.data as Product} />
+          <ProductForm product={result.data} />
         </CardContent>
       </Card>
     </div>

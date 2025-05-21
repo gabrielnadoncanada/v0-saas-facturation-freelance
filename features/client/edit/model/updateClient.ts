@@ -1,7 +1,9 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { ClientFormData } from '@/features/client/shared/types/client.types';
+import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow';
+import { Client } from '@/features/client/shared/types/client.types';
 
-export async function updateClient(clientId: string, data: ClientFormData) {
+export async function updateClient(clientId: string, data: ClientFormData): Promise<Client> {
   const { supabase, user } = await getSessionUser()
 
   const finalData = { ...data };
@@ -15,9 +17,9 @@ export async function updateClient(clientId: string, data: ClientFormData) {
     finalData.shipping_country = data.billing_country;
   }
 
-  if (finalData.hourly_rate) {
-    finalData.hourly_rate = Number.parseFloat(finalData.hourly_rate as string);
-  }
+  const res = await supabase.from("clients").update(finalData).eq("id", clientId).eq("user_id", user.id).select("*").single()
 
-  return await supabase.from("clients").update(finalData).eq("id", clientId).eq("user_id", user.id);
+  if (res.error) throw new Error(res.error.message)
+
+  return extractDataOrThrow<Client>(res)
 } 

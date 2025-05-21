@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ClientForm } from "@/features/client/shared/ui/ClientForm"
 import { useCreateClientInlineForm } from "@/features/client/create/hooks/useCreateClientInlineForm"
 import { DatePicker } from "@/components/ui/date-picker"
-import { Percent } from "lucide-react"
+import { Percent, Plus } from "lucide-react"
 
 import type { InvoiceFormValues } from "@/features/invoice/shared/ui/InvoiceForm"
 
@@ -39,7 +39,19 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
         rules={{ required: "Le client est requis" }}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Client *</FormLabel>
+            <div className="flex items-center justify-between">
+              <FormLabel>Client *</FormLabel>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 gap-1 px-2 text-xs"
+                type="button"
+                onClick={() => setOpen(true)}
+              >
+                <Plus className="h-3 w-3" />
+                Nouveau client
+              </Button>
+            </div>
             <FormControl>
               <Select value={field.value} onValueChange={field.onChange} required>
                 <SelectTrigger id="client_id">
@@ -54,15 +66,12 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
                 </SelectContent>
               </Select>
             </FormControl>
-            <Button type="button" variant="link" className="p-0 text-sm" onClick={() => setOpen(true)}>
-              Ajouter un client
-            </Button>
             <FormMessage />
           </FormItem>
         )}
       />
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-5xl">
           <DialogHeader>
             <DialogTitle>Nouveau client</DialogTitle>
           </DialogHeader>

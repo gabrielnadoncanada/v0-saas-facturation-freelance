@@ -19,6 +19,7 @@ import { InvoiceLineFields } from "@/features/invoice/shared/ui/InvoiceLineField
 import { createInvoiceAction } from '@/features/invoice/create/actions/createInvoice.action'
 import { useInvoiceForm } from "@/features/invoice/shared/hooks/useInvoiceForm"
 import { InvoiceFormProps } from "@/features/invoice/shared/types/invoice.types"
+import { InvoiceFormView } from "@/features/invoice/shared/ui/InvoiceFormView"
 
 // --- Types & Defaults ---
 interface InvoiceItem {
@@ -74,90 +75,28 @@ export function InvoiceForm(props: InvoiceFormProps) {
   }
 
   return (
-    <FormProvider {...form}>
-      <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {error && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Informations générales</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <InvoiceGeneralFields control={control} clients={clients} onClientCreated={handleClientCreated} />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Récapitulatif</CardTitle>
-                {props.invoice && <div className="text-lg font-semibold">{props.invoice.invoice_number}</div>}
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Sous-total HT</span>
-                    <span>{formatCurrency(subtotal, currency)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">TVA ({tax_rate}%)</span>
-                    <span>{formatCurrency(tax, currency)}</span>
-                  </div>
-                  <div className="flex justify-between font-semibold mt-4 text-lg">
-                    <span>Total TTC</span>
-                    <span>{formatCurrency(total, currency)}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          <Card className="overflow-hidden">
-            <InvoiceLineFields
-              fields={fields}
-              control={control}
-              append={append}
-              remove={remove}
-              move={move}
-              sensors={sensors}
-              handleDragEnd={handleDragEnd}
-              tax_rate={tax_rate}
-              currency={currency}
-            />
-            <div className="border-t border-border bg-muted/30 p-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="text-sm text-muted-foreground">
-                  {fields.length} {fields.length > 1 ? "lignes" : "ligne"} au total
-                </div>
-                <div className="flex flex-col items-end gap-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">Total HT:</span>
-                    <span className="font-medium">{formatCurrency(subtotal, currency)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">TVA ({tax_rate}%):</span>
-                    <span className="font-medium">{formatCurrency(tax, currency)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">Total TTC:</span>
-                    <span className="text-lg font-semibold">{formatCurrency(total, currency)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-          <div className="flex flex-col sm:flex-row justify-end gap-3 sm:space-x-4">
-            <Button type="button" variant="outline" onClick={() => router.push("/dashboard/invoices") } className="w-full sm:w-auto">Annuler</Button>
-            <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {props.invoice ? "Mettre à jour" : "Créer la facture"}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </FormProvider>
+    <InvoiceFormView
+      form={form}
+      control={control}
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+      error={error}
+      isLoading={isLoading}
+      fields={fields}
+      append={append}
+      remove={remove}
+      move={move}
+      sensors={sensors}
+      handleDragEnd={handleDragEnd}
+      tax_rate={tax_rate}
+      currency={currency}
+      subtotal={subtotal}
+      tax={tax}
+      total={total}
+      clients={clients}
+      handleClientCreated={handleClientCreated}
+      invoice={props.invoice}
+      onCancel={() => router.push("/dashboard/invoices")}
+    />
   )
 } 
