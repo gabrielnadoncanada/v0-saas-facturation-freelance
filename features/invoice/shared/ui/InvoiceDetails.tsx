@@ -171,9 +171,11 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
               Modifier
             </Button>
           </Link>
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Télécharger
+          <Button variant="outline" asChild>
+            <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank">
+              <Download className="mr-2 h-4 w-4" />
+              Télécharger PDF
+            </a>
           </Button>
         </div>
         <div className="flex space-x-2">
