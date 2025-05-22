@@ -1,29 +1,13 @@
 import { useState, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { profileFormSchema, ProfileFormSchema } from "@/features/setting/schema/profile.schema"
 import { updateUserProfileAction } from "@/features/setting/actions/updateUserProfile.action"
 import { uploadLogoAction } from "@/features/setting/actions/uploadLogo.action"
 import { deleteLogoAction } from "@/features/setting/actions/deleteLogo.action"
 import { useToast } from "@/shared/hooks/use-toast"
 
-const profileFormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Le nom doit contenir au moins 2 caractères.",
-  }),
-  email: z.string().email({
-    message: "Veuillez entrer une adresse email valide.",
-  }),
-  company_name: z.string().optional(),
-  address: z.string().optional(),
-  phone: z.string().optional(),
-  default_currency: z.string(),
-  tax_rate: z.coerce.number().min(0).max(100).optional(),
-  tax_id: z.string().optional(),
-  website: z.string().url({ message: "Veuillez entrer une URL valide" }).optional().or(z.literal("")),
-})
-
-export type ProfileFormValues = z.infer<typeof profileFormSchema>
+export type ProfileFormValues = ProfileFormSchema
 
 export function useProfileForm(profile: any) {
   const { toast } = useToast()
