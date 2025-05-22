@@ -2,6 +2,11 @@
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import type { Notification, QuickAction, TopNavProps } from "@/features/dashboard/view/types/top-nav.types"
+import { getNotificationsAction } from "@/features/notification/list/actions/getNotifications.action"
+import { markAllNotificationsReadAction } from "@/features/notification/edit/actions/markAllRead.action"
+import { updateNotificationAction } from "@/features/notification/edit/actions/updateNotification.action"
+import { formatDistanceToNow } from "date-fns"
+import { fr } from "date-fns/locale"
 import { APP_NAME } from "@/shared/lib/constants"
 import { Users, FileText, Briefcase, Clock, Calendar } from "lucide-react"
 
@@ -43,37 +48,10 @@ const quickActions: QuickAction[] = [
   },
 ]
 
-const mockNotifications: Notification[] = [
-  {
-    id: "1",
-    title: "Nouvelle facture payée",
-    description: "Le client Acme Inc. a payé la facture #INV-2023-001",
-    time: "Il y a 5 minutes",
-    read: false,
-    type: "success",
-  },
-  {
-    id: "2",
-    title: "Rappel d'échéance",
-    description: "La facture #INV-2023-002 est due dans 3 jours",
-    time: "Il y a 2 heures",
-    read: false,
-    type: "warning",
-  },
-  {
-    id: "3",
-    title: "Nouveau commentaire",
-    description: "Jean Dupont a commenté sur le projet 'Site web'",
-    time: "Hier",
-    read: true,
-    type: "info",
-  },
-]
-
 export function useTopNav() {
   const pathname = usePathname()
   const router = useRouter()
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications)
+  const [notifications, setNotifications] = useState<Notification[]>([])
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState<any[]>([])
@@ -125,6 +103,28 @@ export function useTopNav() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Load notifications from server
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const result = await getNotificationsAction()
+      if (result.success) {
+        const items = result.data.map((n) => ({
+          id: n.id,
+          title: n.title,
+          description: n.description,
+          time: n.created_at
+            ? formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: fr })
+            : "",
+          read: n.read,
+          type: n.type,
+        }))
+        setNotifications(items)
+      }
+    }
+
+    fetchNotifications()
+  }, [])
+
   // Mock search functionality
   useEffect(() => {
     if (searchQuery.length > 1) {
@@ -140,11 +140,13 @@ export function useTopNav() {
     }
   }, [searchQuery])
 
-  const markAllAsRead = () => {
+  const markAllAsRead = async () => {
+    await markAllNotificationsReadAction()
     setNotifications(notifications.map((n) => ({ ...n, read: true })))
   }
 
-  const markAsRead = (id: string) => {
+  const markAsRead = async (id: string) => {
+    await updateNotificationAction(id, { read: true })
     setNotifications(notifications.map((n) => (n.id === id ? { ...n, read: true } : n)))
   }
 
