@@ -17,7 +17,7 @@ export async function updateUserProfileAction(form: FormData): Promise<Result<nu
 
   try {
     await updateUserProfile(parsed.data as UserProfileFormData)
-    revalidatePath('/dashboard/settings')
+    revalidatePath('/dashboard/profile')
     return success(null)
   } catch (error) {
     return fail((error as Error).message)
