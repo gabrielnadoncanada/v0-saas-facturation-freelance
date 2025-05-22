@@ -23,10 +23,12 @@ export function ProductSelector({ userId, onSelect, buttonClassName }: ProductSe
   const [dialogOpen, setDialogOpen] = useState(false)
   const supabase = createClient()
 
-  // Fetch products when component mounts
+  // Fetch products when popover opens and no products are loaded yet
   useEffect(() => {
-    fetchProducts()
-  }, [])
+    if (open && products.length === 0) {
+      fetchProducts()
+    }
+  }, [open, products.length])
 
   const fetchProducts = async () => {
     setLoading(true)
