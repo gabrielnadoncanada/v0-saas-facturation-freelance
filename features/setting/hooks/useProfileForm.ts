@@ -6,6 +6,7 @@ import { updateUserProfileAction } from "@/features/setting/actions/updateUserPr
 import { uploadLogoAction } from "@/features/setting/actions/uploadLogo.action"
 import { deleteLogoAction } from "@/features/setting/actions/deleteLogo.action"
 import { useToast } from "@/shared/hooks/use-toast"
+import type { UserProfile } from "@/features/setting/types/profile.types"
 
 const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -25,11 +26,11 @@ const profileFormSchema = z.object({
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-export function useProfileForm(profile: any) {
+export function useProfileForm(profile: UserProfile | null) {
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
-  const [logoUrl, setLogoUrl] = useState(profile?.logo_url || "")
+  const [logoUrl, setLogoUrl] = useState(profile?.logo_url ?? "")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const defaultValues: Partial<ProfileFormValues> = {
