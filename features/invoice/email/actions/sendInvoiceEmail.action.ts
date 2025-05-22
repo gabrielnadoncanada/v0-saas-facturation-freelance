@@ -4,8 +4,9 @@ import { getInvoice } from '@/features/invoice/view/model/getInvoice'
 import { generateInvoicePdf } from '@/features/invoice/pdf/model/generateInvoicePdf'
 import { Result, success, fail } from '@/shared/utils/result'
 import { Resend } from 'resend'
+import { env } from '@/shared/lib/env'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(env.RESEND_API_KEY)
 
 export async function sendInvoiceEmailAction(invoiceId: string, recipientEmail: string): Promise<Result<null>> {
   try {
@@ -13,7 +14,7 @@ export async function sendInvoiceEmailAction(invoiceId: string, recipientEmail: 
     const { buffer } = await generateInvoicePdf(invoiceId)
 
     await resend.emails.send({
-      from: process.env.EMAIL_FROM!,
+      from: env.EMAIL_FROM,
       to: recipientEmail,
       subject: `Facture ${invoice.invoice_number}`,
       text: `Veuillez trouver votre facture ${invoice.invoice_number} en pièce jointe.`,

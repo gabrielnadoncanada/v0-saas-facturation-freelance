@@ -4,6 +4,7 @@ import { ForgotPasswordSchema, forgotPasswordSchema } from '@/features/auth/shar
 import { createClient } from '@/shared/lib/supabase/server'
 import type { FormResult } from '@/shared/types/api.types'
 import { safeParseForm } from '@/shared/utils/safeParseForm'
+import { env } from '@/shared/lib/env'
 
 export async function forgotPasswordAction(formData: FormData): Promise<FormResult<ForgotPasswordSchema>> {
   const parsed = await safeParseForm(formData, forgotPasswordSchema)
@@ -13,7 +14,7 @@ export async function forgotPasswordAction(formData: FormData): Promise<FormResu
   const supabase = await createClient()
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/reset-password`,
+    redirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/reset-password`,
   })
 
   if (error) return { success: false, error: error.message }

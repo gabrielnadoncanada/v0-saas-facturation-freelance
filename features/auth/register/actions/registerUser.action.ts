@@ -5,6 +5,7 @@ import { RegisterSchema, registerSchema } from '@/features/auth/shared/schema/au
 import { revalidatePath } from 'next/cache'
 import { safeParseForm } from '@/shared/utils/safeParseForm'
 import type { FormResult } from '@/shared/types/api.types'
+import { env } from '@/shared/lib/env'
 
 export async function registerUserAction(formData: FormData): Promise<FormResult<RegisterSchema>> {
   const parsed = await safeParseForm(formData, registerSchema)
@@ -19,7 +20,7 @@ export async function registerUserAction(formData: FormData): Promise<FormResult
     password,
     options: {
       data: { full_name },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      emailRedirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   })
 
