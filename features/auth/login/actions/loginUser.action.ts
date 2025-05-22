@@ -1,7 +1,7 @@
 'use server'
 
 import { LoginSchema, loginSchema } from '@/features/auth/shared/schema/auth.schema'
-import { createClient } from '@/shared/lib/supabase/server'
+import { signInWithEmail } from '@/shared/services/auth'
 import { FormResult } from '@/shared/types/api.types'
 import { safeParseForm } from '@/shared/utils/safeParseForm'
 
@@ -10,12 +10,10 @@ export async function loginUserAction(formData: FormData): Promise<FormResult<Lo
   if (!parsed.success) return parsed
 
   const { email, password } = parsed.data
-  const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
-
+  const { error } = await signInWithEmail(email, password)
   if (error) {
-    return { success: false, error: error.message }
+    return { success: false, error }
   }
 
   return { success: true, data: parsed.data }
