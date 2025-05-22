@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { createClient } from "@/shared/lib/supabase/client"
+import { createPaymentAction } from "@/features/payment/create/actions/createPayment.action"
+import { PaymentFormData } from "@/features/payment/shared/types/payment.types"
 
 interface UsePaymentFormProps {
   invoiceId: string
@@ -9,7 +10,6 @@ interface UsePaymentFormProps {
 }
 
 export function usePaymentForm({ invoiceId, balanceDue, currency, onSuccess }: UsePaymentFormProps) {
-  const supabase = createClient()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -30,21 +30,19 @@ export function usePaymentForm({ invoiceId, balanceDue, currency, onSuccess }: U
     setError(null)
 
     try {
-      const { error: insertError } = await supabase.from("payments").insert({
+      const payload: PaymentFormData = {
         invoice_id: invoiceId,
         amount: formData.amount,
-        payment_date: formData.payment_date.toISOString().split("T")[0],
+        payment_date: formData.payment_date,
         payment_method: formData.payment_method,
         notes: formData.notes,
-      })
-
-      if (insertError) {
-        setError(insertError.message)
-        return
       }
+      const result = await createPaymentAction(payload)
 
-      if (onSuccess) {
-        onSuccess()
+      if (result.success) {
+        if (onSuccess) onSuccess()
+      } else {
+        setError(result.error || "Une erreur est survenue")
       }
     } catch (err) {
       setError("Une erreur est survenue")
