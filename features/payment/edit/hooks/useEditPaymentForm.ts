@@ -6,18 +6,11 @@ import { Payment } from "@/features/payment/shared/types/payment.types"
 import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { PaymentFormData } from "@/features/payment/shared/types/payment.types"
-
-const paymentFormSchema = z.object({
-  invoice_id: z.string().min(1, "La facture est requise"),
-  amount: z.number().min(0.01, "Le montant doit être positif"),
-  payment_date: z.date({ required_error: "La date est requise" }),
-  payment_method: z.string().min(1, "La méthode est requise"),
-  notes: z.string(),
-})
-
-export type PaymentFormSchema = z.infer<typeof paymentFormSchema>
+import {
+  paymentFormSchema,
+  PaymentFormSchema,
+} from "@/features/payment/shared/schema/payment.schema"
 
 function usePaymentForm(defaults: Partial<PaymentFormSchema> = {}) {
   return useForm<PaymentFormSchema>({
