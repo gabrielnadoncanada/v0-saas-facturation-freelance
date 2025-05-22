@@ -3,23 +3,9 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { createPaymentAction } from "@/features/payment/create/actions/createPayment.action"
 import { Invoice } from "@/features/invoice/shared/types/invoice.types"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { PaymentFormSchema, paymentFormSchema } from "@/features/payment/shared/schema/payment.schema"
+import { PaymentFormSchema } from "@/features/payment/shared/schema/payment.schema"
+import { usePaymentForm } from "@/shared/hooks/usePaymentForm"
 
-function usePaymentForm(defaults: Partial<PaymentFormSchema> = {}) {
-  return useForm<PaymentFormSchema>({
-    resolver: zodResolver(paymentFormSchema),
-    defaultValues: {
-      invoice_id: defaults.invoice_id || "",
-      amount: defaults.amount ?? 0,
-      payment_date: defaults.payment_date || new Date(),
-      payment_method: defaults.payment_method || "transfer",
-      notes: defaults.notes || "",
-    },
-    mode: "onBlur",
-  })
-}
 
 export function useNewPaymentForm(invoices: Invoice[]) {
   const router = useRouter()
