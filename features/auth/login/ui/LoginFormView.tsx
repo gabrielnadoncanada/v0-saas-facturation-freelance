@@ -1,9 +1,15 @@
+"use client";
+
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { UseFormReturn } from "react-hook-form";
 import { LoginSchema } from "@/features/auth/shared/schema/auth.schema";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { getPasswordStrength } from "@/shared/lib/utils";
 
 interface LoginFormViewProps {
   form: UseFormReturn<LoginSchema>;
@@ -13,6 +19,10 @@ interface LoginFormViewProps {
 }
 
 export function LoginFormView({ form, onSubmit, serverError, isLoading }: LoginFormViewProps) {
+  const [showPassword, setShowPassword] = useState(false)
+  const passwordValue = form.watch("password")
+  const strength = getPasswordStrength(passwordValue || "")
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -46,9 +56,47 @@ export function LoginFormView({ form, onSubmit, serverError, isLoading }: LoginF
                 </Link>
               </div>
               <FormControl>
-                <Input type="password" autoComplete="current-password" {...field} />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    {...field}
+                    className="pr-10"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                    <span className="sr-only">
+                      {showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
+                    </span>
+                  </Button>
+                </div>
               </FormControl>
               <FormMessage />
+              {passwordValue && (
+                <div className="space-y-1 pt-1">
+                  <Progress
+                    value={strength}
+                    className="h-1"
+                    indicatorClassName={
+                      strength < 40 ? "bg-destructive" : strength < 70 ? "bg-yellow-500" : "bg-green-500"
+                    }
+                  />
+                  <div className="text-xs text-muted-foreground font-medium">
+                    {strength < 40 ? "Faible" : strength < 70 ? "Moyen" : "Fort"}
+                  </div>
+                </div>
+              )}
             </FormItem>
           )}
         />
