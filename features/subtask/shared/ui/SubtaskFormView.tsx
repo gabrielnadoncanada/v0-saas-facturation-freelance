@@ -17,9 +17,10 @@ interface SubtaskFormViewProps {
   onSubmit: (e: React.FormEvent) => void
   isLoading: boolean
   error: string | null
+  isEdit?: boolean
 }
 
-export function SubtaskFormView({ formData, onChange, onSubmit, isLoading, error }: SubtaskFormViewProps) {
+export function SubtaskFormView({ formData, onChange, onSubmit, isLoading, error, isEdit = false }: SubtaskFormViewProps) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       {error && (
@@ -62,7 +63,7 @@ export function SubtaskFormView({ formData, onChange, onSubmit, isLoading, error
       <div className="flex justify-end">
         <Button type="submit" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Ajouter
+          {isEdit ? 'Mettre \u00e0 jour' : 'Ajouter'}
         </Button>
       </div>
     </form>

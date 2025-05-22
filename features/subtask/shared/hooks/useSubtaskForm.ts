@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createSubtaskAction } from '@/features/subtask/create/actions/createSubtask.action'
+import { updateSubtaskAction } from '@/features/subtask/edit/actions/updateSubtask.action'
 import { Task, TaskFormData } from '@/features/task/shared/types/task.types'
 
 interface UseSubtaskFormProps {
@@ -33,7 +34,9 @@ export function useSubtaskForm({ taskId, subtask, onSuccess }: UseSubtaskFormPro
     setError(null)
 
     try {
-      const result = await createSubtaskAction(taskId, formData)
+      const result = subtask
+        ? await updateSubtaskAction(subtask.id, formData)
+        : await createSubtaskAction(taskId, formData)
 
       if (!result.success) {
         setError(result.error || 'Erreur inconnue')
