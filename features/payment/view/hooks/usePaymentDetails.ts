@@ -2,26 +2,13 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/shared/lib/supabase/client"
 import { Payment } from "@/features/payment/shared/types/payment.types"
+import { getPaymentMethodLabel } from "@/features/payment/shared/utils/paymentMethod"
 
 export function usePaymentDetails(payment: Payment) {
   const router = useRouter()
   const supabase = createClient()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const getPaymentMethodLabel = (method: string) => {
-    switch (method) {
-      case "card":
-        return "Carte bancaire"
-      case "cash":
-        return "Espèces"
-      case "transfer":
-        return "Virement"
-      case "stripe":
-        return "Stripe"
-      default:
-        return method
-    }
-  }
 
   const handleDelete = async () => {
     setIsDeleting(true)

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { deletePaymentAction } from "@/features/payment/delete/actions/deletePayment.action"
 import { Payment } from "@/features/payment/shared/types/payment.types"
+import { getPaymentMethodLabel } from "@/features/payment/shared/utils/paymentMethod"
 
 export function usePaymentsTable(payments: Payment[]) {
   const router = useRouter()
@@ -37,20 +38,6 @@ export function usePaymentsTable(payments: Payment[]) {
     }
   }
 
-  const getPaymentMethodLabel = (method: string) => {
-    switch (method) {
-      case "card":
-        return "Carte bancaire"
-      case "cash":
-        return "Espèces"
-      case "transfer":
-        return "Virement"
-      case "stripe":
-        return "Stripe"
-      default:
-        return method
-    }
-  }
 
   return {
     searchTerm,
