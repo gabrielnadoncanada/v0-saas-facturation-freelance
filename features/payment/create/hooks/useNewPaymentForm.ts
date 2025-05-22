@@ -48,6 +48,10 @@ export function useNewPaymentForm(invoices: Invoice[]) {
     setError(null)
     const result = await createPaymentAction(values)
     if (result.success) {
+      if (result.data.url) {
+        window.location.href = result.data.url
+        return
+      }
       router.push("/dashboard/payments")
       router.refresh()
     } else {
