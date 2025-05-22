@@ -8,7 +8,7 @@ export async function uploadLogoAction(formData: FormData): Promise<Result<strin
   try {
     const logoFile = formData.get("logo") as File
     const publicUrl = await uploadLogo(logoFile)
-    revalidatePath("/dashboard/settings")
+    revalidatePath("/dashboard/profile")
     return success(publicUrl)
   } catch (error) {
     return fail((error as Error).message)

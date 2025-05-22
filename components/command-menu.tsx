@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Calculator, CreditCard, Search, Settings, Users, FileText, Clock, Briefcase, Plus } from "lucide-react"
+import { Calculator, CreditCard, Search, Settings, Users, FileText, Clock, Briefcase, Plus, UserCircle } from "lucide-react"
 
 import {
   CommandDialog,
@@ -78,6 +78,10 @@ export function CommandMenu() {
             <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/payments"))}>
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Paiements</span>
+            </CommandItem>
+            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/profile"))}>
+              <UserCircle className="mr-2 h-4 w-4" />
+              <span>Profil</span>
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/settings"))}>
               <Settings className="mr-2 h-4 w-4" />

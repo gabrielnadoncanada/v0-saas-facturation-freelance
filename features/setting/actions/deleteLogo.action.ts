@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache'
 export async function deleteLogoAction(): Promise<Result<null>> {
   try {
     await deleteLogo()
-    revalidatePath('/dashboard/settings')
+    revalidatePath('/dashboard/profile')
     return success(null)
   } catch (error) {
     return fail((error as Error).message)

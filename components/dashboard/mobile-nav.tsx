@@ -7,7 +7,7 @@ import { cn } from "@/shared/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Home, Users, FileText, Clock, CreditCard, Settings, Briefcase } from "lucide-react"
+import { Menu, Home, Users, FileText, Clock, CreditCard, Settings, Briefcase, UserCircle } from "lucide-react"
 import { APP_NAME } from "@/shared/lib/constants"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
@@ -79,6 +79,12 @@ export function MobileNav({ className }: MobileNavProps) {
     {
       title: "Système",
       items: [
+        {
+          href: "/dashboard/profile",
+          label: "Profil",
+          icon: UserCircle,
+          active: pathname.includes("/dashboard/profile"),
+        },
         {
           href: "/dashboard/settings",
           label: "Paramètres",

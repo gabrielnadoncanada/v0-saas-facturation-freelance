@@ -9,6 +9,7 @@ import {
   Users,
   FileText,
   CreditCard,
+  UserCircle,
   Settings,
   Briefcase,
   Package,
@@ -98,6 +99,11 @@ export function DashboardSidebar({
     {
       title: "Système",
       items: [
+        {
+          title: "Profil",
+          href: "/dashboard/profile",
+          icon: UserCircle,
+        },
         {
           title: "Paramètres",
           href: "/dashboard/settings",
