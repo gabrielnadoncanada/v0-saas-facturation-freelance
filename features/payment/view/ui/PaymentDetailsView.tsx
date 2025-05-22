@@ -31,7 +31,6 @@ export function PaymentDetailsView({
   getPaymentMethodLabel,
 }: PaymentDetailsViewProps) {
 
-  console.log(payment)
   return (
     <Card>
       <CardHeader>
