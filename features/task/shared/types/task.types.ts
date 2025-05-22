@@ -1,6 +1,7 @@
 export interface Task {
   id: string;
   project_id: string;
+  parent_task_id?: string | null;
   name: string;
   description?: string;
   status: string;
@@ -10,6 +11,7 @@ export interface Task {
   estimated_hours?: number;
   priority: string;
   updated_at?: string;
+  subtasks?: Task[];
 }
 
 export interface TaskFormData {

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { formatDate } from "@/shared/lib/utils"
-import { Edit, Trash2, Clock, AlertTriangle } from "lucide-react"
+import { Edit, Trash2, Clock, AlertTriangle, Plus } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,9 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { TaskForm } from "@/features/task/shared/ui/TaskForm"
+import { SubtaskForm } from "@/features/subtask/shared/ui/SubtaskForm"
+import { SubtaskList } from "@/features/subtask/shared/ui/SubtaskList"
+import { Task as Subtask } from "@/features/task/shared/types/task.types"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Task } from "@/features/task/shared/types/task.types"
@@ -219,12 +222,13 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                               )}
                             </div>
                           )}
-                          {task.estimated_hours && (
+                        {task.estimated_hours && (
                             <div>
                               <span className="font-medium">{task.estimated_hours}h</span> estimées
                             </div>
                           )}
                         </div>
+                        <SubtaskList subtasks={task.subtasks || []} />
                       </div>
                       <div className="flex items-center space-x-1 flex-shrink-0">
                         <Dialog>
@@ -243,6 +247,25 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                               onSuccess={() => {
                                 setEditTask(null)
                                 if (onTaskUpdate) onTaskUpdate()
+                              }}
+                            />
+                          </DialogContent>
+                        </Dialog>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Ajouter une sous-tâche</DialogTitle>
+                            </DialogHeader>
+                            <SubtaskForm
+                              taskId={task.id}
+                              subtask={null}
+                              onSuccess={() => {
+                                onTaskUpdate && onTaskUpdate()
                               }}
                             />
                           </DialogContent>

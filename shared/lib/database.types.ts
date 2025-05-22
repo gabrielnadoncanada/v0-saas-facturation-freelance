@@ -289,6 +289,7 @@ export interface Database {
         Row: {
           id: string
           project_id: string
+          parent_task_id: string | null
           name: string
           description: string | null
           status: string
@@ -302,6 +303,7 @@ export interface Database {
         Insert: {
           id?: string
           project_id: string
+          parent_task_id?: string | null
           name: string
           description?: string | null
           status?: string
@@ -315,6 +317,7 @@ export interface Database {
         Update: {
           id?: string
           project_id?: string
+          parent_task_id?: string | null
           name?: string
           description?: string | null
           status?: string
