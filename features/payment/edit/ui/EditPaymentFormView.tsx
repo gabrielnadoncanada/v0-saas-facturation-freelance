@@ -10,7 +10,7 @@ import { formatCurrency } from "@/shared/lib/utils"
 import { DatePicker } from "@/components/ui/date-picker"
 import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { PaymentFormSchema } from "@/features/payment/edit/hooks/useEditPaymentForm"
+import { PaymentFormSchema } from "@/features/payment/shared/schema/payment.schema"
 
 interface EditPaymentFormViewProps {
   form: any
