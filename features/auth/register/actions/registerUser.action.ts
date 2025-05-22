@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/shared/lib/supabase/server'
+import { signUpWithEmail } from '@/shared/services/auth'
 import { RegisterSchema, registerSchema } from '@/features/auth/shared/schema/auth.schema'
 import { revalidatePath } from 'next/cache'
 import { safeParseForm } from '@/shared/utils/safeParseForm'
@@ -12,27 +12,9 @@ export async function registerUserAction(formData: FormData): Promise<FormResult
 
 
   const { email, password, full_name } = parsed.data
-  const supabase = createClient()
 
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { full_name },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
-  })
-
-  if (authError) return { success: false, error: authError.message }
-
-  if (authData.user) {
-    const { error: profileError } = await supabase.from('profiles').insert({
-      id: authData.user.id,
-      email,
-      full_name,
-    })
-    if (profileError) return { success: false, error: profileError.message }
-  }
+  const { error } = await signUpWithEmail(email, password, full_name)
+  if (error) return { success: false, error }
 
   revalidatePath('/dashboard')
   return { success: true, data: parsed.data }
