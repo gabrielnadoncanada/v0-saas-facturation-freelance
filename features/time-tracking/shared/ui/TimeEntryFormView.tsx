@@ -8,9 +8,11 @@ import { AlertCircle, Loader2 } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Project } from '@/features/project/shared/types/project.types'
+import { Task } from '@/features/task/shared/types/task.types'
 
 interface TimeEntryFormViewProps {
   projects: Project[]
+  tasks: Task[]
   formData: {
     project_id: string
     task_id: string | null
@@ -27,6 +29,7 @@ interface TimeEntryFormViewProps {
 
 export function TimeEntryFormView({
   projects,
+  tasks,
   formData,
   onChange,
   onSubmit,
@@ -59,7 +62,20 @@ export function TimeEntryFormView({
 
       <div className="space-y-2">
         <Label htmlFor="task_id">Tâche (optionnel)</Label>
-        <Input id="task_id" value={formData.task_id || ''} onChange={(e) => onChange('task_id', e.target.value)} />
+        <Select
+          value={formData.task_id || ''}
+          onValueChange={(value) => onChange('task_id', value)}
+        >
+          <SelectTrigger id="task_id">
+            <SelectValue placeholder="Sélectionner une tâche" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">Aucune</SelectItem>
+            {tasks.map((t) => (
+              <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

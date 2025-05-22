@@ -1,3 +1,5 @@
+import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
+
 export interface Task {
   id: string;
   project_id: string;
@@ -12,6 +14,7 @@ export interface Task {
   priority: string;
   updated_at?: string;
   subtasks?: Task[];
+  time_entries?: TimeEntry[];
 }
 
 export interface TaskFormData {
