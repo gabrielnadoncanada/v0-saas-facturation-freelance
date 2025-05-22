@@ -10,7 +10,7 @@ export async function getProjectDetails(projectId: string): Promise<Project> {
     .select(`
       *,
       clients(name),
-      tasks(*)
+      tasks(*, time_entries(*))
     `)
     .eq("id", projectId)
     .eq("user_id", user.id)
