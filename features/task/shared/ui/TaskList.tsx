@@ -20,7 +20,6 @@ import {
 import { TaskForm } from "@/features/task/shared/ui/TaskForm"
 import { SubtaskForm } from "@/features/subtask/shared/ui/SubtaskForm"
 import { SubtaskList } from "@/features/subtask/shared/ui/SubtaskList"
-import { Task as Subtask } from "@/features/task/shared/types/task.types"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Task } from "@/features/task/shared/types/task.types"
@@ -228,7 +227,11 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                             </div>
                           )}
                         </div>
-                        <SubtaskList subtasks={task.subtasks || []} />
+                        <SubtaskList
+                          subtasks={task.subtasks || []}
+                          taskId={task.id}
+                          onSubtaskUpdate={onTaskUpdate}
+                        />
                       </div>
                       <div className="flex items-center space-x-1 flex-shrink-0">
                         <Dialog>

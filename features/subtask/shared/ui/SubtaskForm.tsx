@@ -15,6 +15,7 @@ export function SubtaskForm({ taskId, subtask, onSuccess }: { taskId: string; su
       onSubmit={handleSubmit}
       isLoading={isLoading}
       error={error}
+      isEdit={!!subtask}
     />
   )
 }
