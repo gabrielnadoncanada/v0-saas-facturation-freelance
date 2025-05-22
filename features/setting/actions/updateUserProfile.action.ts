@@ -2,24 +2,21 @@
 
 import { updateUserProfile } from "@/features/setting/model/updateUserProfile"
 import { UserProfileFormData } from '@/features/setting/types/profile.types'
+import { profileFormSchema } from '@/features/setting/schema/profile.schema'
 import { revalidatePath } from 'next/cache'
 import { fail, Result, success } from "@/shared/utils/result"
+import { safeParseForm } from '@/shared/utils/safeParseForm'
 
 export async function updateUserProfileAction(form: FormData): Promise<Result<null>> {
-  try {
-    const data: UserProfileFormData = {
-      name: form.get('name') as string,
-      email: form.get('email') as string,
-      company_name: form.get('company_name') as string,
-      address: form.get('address') as string,
-      phone: form.get('phone') as string,
-      default_currency: form.get('default_currency') as string,
-      tax_rate: Number.parseFloat(form.get('tax_rate') as string) || 0,
-      tax_id: form.get('tax_id') as string,
-      website: form.get('website') as string,
-    }
+  const parsed = await safeParseForm(form, profileFormSchema)
+  if (!parsed.success) {
+    const errorMessage =
+      Object.values(parsed.fieldErrors ?? {}).join(', ') || parsed.error
+    return fail(errorMessage)
+  }
 
-    await updateUserProfile(data)
+  try {
+    await updateUserProfile(parsed.data as UserProfileFormData)
     revalidatePath('/dashboard/settings')
     return success(null)
   } catch (error) {
