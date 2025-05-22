@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { createPaymentAction } from "@/features/payment/create/actions/createPayment.action"
 import { Invoice } from "@/features/invoice/shared/types/invoice.types"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PaymentFormSchema, paymentFormSchema } from "@/features/payment/shared/schema/payment.schema"
 
@@ -29,14 +29,19 @@ export function useNewPaymentForm(invoices: Invoice[]) {
 
   const form = usePaymentForm()
 
+  const invoiceId = useWatch({
+    control: form.control,
+    name: "invoice_id",
+  })
+
   React.useEffect(() => {
-    const invoice = invoices.find((inv) => inv.id === form.watch("invoice_id"))
+    const invoice = invoices.find((inv) => inv.id === invoiceId)
     setSelectedInvoice(invoice || null)
     if (invoice && form.watch("amount") !== invoice.total) {
       form.setValue("amount", invoice.total)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch("invoice_id")])
+  }, [invoiceId])
 
   const onSubmit = async (values: PaymentFormSchema) => {
     setIsLoading(true)

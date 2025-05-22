@@ -4,7 +4,7 @@ import { useState } from "react"
 import { updatePaymentAction } from "@/features/payment/edit/actions/updatePayment.action"
 import { Payment } from "@/features/payment/shared/types/payment.types"
 import { Invoice } from "@/features/invoice/shared/types/invoice.types"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { PaymentFormData } from "@/features/payment/shared/types/payment.types"
@@ -49,15 +49,20 @@ export function useEditPaymentForm(payment: Payment, invoices: Invoice[]) {
     notes: payment.notes || "",
   })
 
+  const invoiceId = useWatch({
+    control: form.control,
+    name: "invoice_id",
+  })
+
   React.useEffect(() => {
-    const invoice = invoices.find((inv) => inv.id === form.watch("invoice_id"))
+    const invoice = invoices.find((inv) => inv.id === invoiceId)
     setSelectedInvoice(invoice || null)
     // Optionally update amount to match invoice total if needed
     // if (invoice && form.watch("amount") !== invoice.total) {
     //   form.setValue("amount", invoice.total)
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch("invoice_id")])
+  }, [invoiceId])
 
   const onSubmit = async (values: PaymentFormSchema) => {
     setIsLoading(true)
