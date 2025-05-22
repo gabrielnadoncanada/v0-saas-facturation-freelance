@@ -9,10 +9,9 @@ interface LoginFormViewProps {
   form: UseFormReturn<LoginSchema>;
   onSubmit: (data: LoginSchema) => void;
   serverError: string | null;
-  isLoading: boolean;
 }
 
-export function LoginFormView({ form, onSubmit, serverError, isLoading }: LoginFormViewProps) {
+export function LoginFormView({ form, onSubmit, serverError }: LoginFormViewProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -53,8 +52,8 @@ export function LoginFormView({ form, onSubmit, serverError, isLoading }: LoginF
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Connexion en cours..." : "Se connecter"}
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Connexion en cours..." : "Se connecter"}
         </Button>
 
         <div className="text-center text-sm">
