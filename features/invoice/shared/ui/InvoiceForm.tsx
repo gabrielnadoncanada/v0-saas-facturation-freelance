@@ -20,6 +20,7 @@ import { createInvoiceAction } from '@/features/invoice/create/actions/createInv
 import { useInvoiceForm } from "@/features/invoice/shared/hooks/useInvoiceForm"
 import { InvoiceFormProps } from "@/features/invoice/shared/types/invoice.types"
 import { InvoiceFormView } from "@/features/invoice/shared/ui/InvoiceFormView"
+import { useRouter } from "next/navigation"
 
 // --- Types & Defaults ---
 interface InvoiceItem {
@@ -46,7 +47,7 @@ interface InvoiceFormValues {
 export type { InvoiceFormValues };
 
 export function InvoiceForm(props: InvoiceFormProps) {
-  const router = typeof window !== 'undefined' ? require('next/navigation').useRouter() : { push: () => {} }
+  const router = useRouter()
   const {
     form,
     control,
