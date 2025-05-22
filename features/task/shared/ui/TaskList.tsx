@@ -23,9 +23,10 @@ import { SubtaskList } from "@/features/subtask/shared/ui/SubtaskList"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Task } from "@/features/task/shared/types/task.types"
+import { TeamMember } from "@/features/team/shared/types/team.types"
 
 
-export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[], onTaskUpdate: () => void, onTaskDelete: () => void }) {
+export function TaskList({ tasks, teamMembers, onTaskUpdate, onTaskDelete }: { tasks: Task[]; teamMembers: TeamMember[]; onTaskUpdate: () => void; onTaskDelete: () => void }) {
   const supabase = createClient()
   const [editTask, setEditTask] = useState<Task | null>(null)
   const [deleteTask, setDeleteTask] = useState<Task | null>(null)
@@ -247,6 +248,7 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                             <TaskForm
                               projectId={task.project_id}
                               task={task}
+                              teamMembers={teamMembers}
                               onSuccess={() => {
                                 setEditTask(null)
                                 if (onTaskUpdate) onTaskUpdate()

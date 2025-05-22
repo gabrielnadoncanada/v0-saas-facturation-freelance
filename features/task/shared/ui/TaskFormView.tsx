@@ -23,6 +23,7 @@ interface TaskFormViewProps {
   isLoading: boolean
   error: string | null
   isEdit?: boolean
+  teamMembers: { id: string; name: string }[]
 }
 
 export function TaskFormView({
@@ -32,6 +33,7 @@ export function TaskFormView({
   isLoading,
   error,
   isEdit = false,
+  teamMembers,
 }: TaskFormViewProps) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -99,7 +101,9 @@ export function TaskFormView({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="unassigned">Non assignée</SelectItem>
-            {/* TODO: teamMembers logic to be handled separately */}
+            {teamMembers.map((member) => (
+              <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

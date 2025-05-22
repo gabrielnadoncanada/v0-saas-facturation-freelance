@@ -8,6 +8,7 @@ import { ArrowLeft, Edit, Plus, Filter } from "lucide-react"
 import Link from "next/link"
 import { TaskList } from "@/features/task/shared/ui/TaskList"
 import { TaskForm } from "@/features/task/shared/ui/TaskForm"
+import { TeamMember } from "@/features/team/shared/types/team.types"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -40,6 +41,7 @@ interface ProjectDetailsViewProps {
   getStatusLabel: (s: string) => string
   getStatusBadgeClass: (s: string) => string
   getTaskStatusLabel: (s: string) => string
+  teamMembers: TeamMember[]
   router: any
 }
 
@@ -60,6 +62,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
   getStatusLabel,
   getStatusBadgeClass,
   getTaskStatusLabel,
+  teamMembers,
   router,
 }) => (
   <div className="space-y-6">
@@ -222,6 +225,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
                 <TaskForm
                   projectId={project.id}
                   task={null as unknown as Task}
+                  teamMembers={teamMembers}
                   onSuccess={() => {
                     setTaskDialogOpen(false)
                     router.refresh()
@@ -236,6 +240,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
       <TabsContent value="tasks" className="space-y-4">
         <TaskList
           tasks={filteredTasks}
+          teamMembers={teamMembers}
           onTaskUpdate={() => router.refresh()}
           onTaskDelete={() => router.refresh()}
         />
