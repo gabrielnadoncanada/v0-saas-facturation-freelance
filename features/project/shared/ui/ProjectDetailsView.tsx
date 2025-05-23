@@ -8,6 +8,9 @@ import { ArrowLeft, Edit, Plus, Filter } from "lucide-react"
 import Link from "next/link"
 import { TaskList } from "@/features/task/shared/ui/TaskList"
 import { TaskForm } from "@/features/task/shared/ui/TaskForm"
+import { TaskCalendar } from "@/features/task/shared/ui/TaskCalendar"
+import { TaskGantt } from "@/features/task/shared/ui/TaskGantt"
+import { TaskKanban } from "@/features/task/shared/ui/TaskKanban"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -142,10 +145,13 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
       </Card>
     </div>
 
-    <Tabs defaultValue="tasks" className="space-y-4">
+    <Tabs defaultValue="table" className="space-y-4">
       <div className="flex items-center justify-between">
         <TabsList>
-          <TabsTrigger value="tasks">Tâches</TabsTrigger>
+          <TabsTrigger value="table">Table</TabsTrigger>
+          <TabsTrigger value="calendar">Calendrier</TabsTrigger>
+          <TabsTrigger value="gantt">Gantt</TabsTrigger>
+          <TabsTrigger value="kanban">Kanban</TabsTrigger>
         </TabsList>
 
         <div className="flex items-center space-x-2">
@@ -233,13 +239,22 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
         </div>
       </div>
 
-      <TabsContent value="tasks" className="space-y-4">
+      <TabsContent value="table" className="space-y-4">
         <TaskList
           tasks={filteredTasks}
           onTaskUpdate={() => router.refresh()}
           onTaskDelete={() => router.refresh()}
         />
       </TabsContent>
+      <TabsContent value="calendar">
+        <TaskCalendar tasks={filteredTasks} />
+      </TabsContent>
+      <TabsContent value="gantt">
+        <TaskGantt tasks={filteredTasks} projectStartDate={project.start_date} />
+      </TabsContent>
+      <TabsContent value="kanban">
+        <TaskKanban tasks={filteredTasks} />
+      </TabsContent>
     </Tabs>
   </div>
-) 
+)
