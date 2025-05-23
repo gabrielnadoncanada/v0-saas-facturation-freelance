@@ -1,6 +1,5 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { DataTable, Column } from "@/components/shared"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
@@ -10,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Edit, Eye, MoreHorizontal, Search, Trash, Download } from "lucide-react"
+import { Edit, Eye, MoreHorizontal, Trash, Download } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -50,121 +49,114 @@ export function InvoicesTableView({
   getStatusLabel,
   router,
 }: InvoicesTableViewProps) {
+  const columns: Column<Invoice>[] = [
+    {
+      header: "Numéro",
+      className: "px-3 py-3.5 sm:px-6",
+      cell: (invoice) => invoice.invoice_number,
+    },
+    {
+      header: "Client",
+      className: "px-3 py-3.5 sm:px-6",
+      cell: (invoice) => invoice.client.name,
+    },
+    {
+      header: "Date",
+      className: "px-3 py-3.5 sm:px-6",
+      cell: (invoice) => formatDate(invoice.issue_date as string),
+    },
+    {
+      header: "Échéance",
+      className: "px-3 py-3.5 sm:px-6",
+      cell: (invoice) => formatDate(invoice.due_date as string),
+    },
+    {
+      header: "Montant",
+      className: "px-3 py-3.5 sm:px-6",
+      cell: (invoice) => formatCurrency(invoice.total, invoice.currency),
+    },
+    {
+      header: "Statut",
+      className: "px-3 py-3.5 sm:px-6",
+      cell: (invoice) => (
+        <Badge className={getInvoiceStatusColor(invoice.status)}>
+          {getStatusLabel(invoice.status)}
+        </Badge>
+      ),
+    },
+    {
+      header: "",
+      className: "w-[100px] px-3 py-3.5 sm:px-6",
+      cell: (invoice) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Ouvrir le menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation()
+                router.push(`/dashboard/invoices/${invoice.id}`)
+              }}
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              Voir
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation()
+                router.push(`/dashboard/invoices/${invoice.id}/edit`)
+              }}
+            >
+              <Edit className="mr-2 h-4 w-4" />
+              Modifier
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a
+                href={`/api/invoices/${invoice.id}/pdf`}
+                target="_blank"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Télécharger PDF
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={(e) => {
+                e.stopPropagation()
+                setInvoiceToDelete(invoice.id)
+                setDeleteDialogOpen(true)
+              }}
+            >
+              <Trash className="mr-2 h-4 w-4" />
+              Supprimer
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ]
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center">
-        <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Rechercher des factures..."
-            className="pl-8 w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
-      {/* Desktop Table View */}
-      <div className="rounded-md border hidden md:block">
-        <div className="overflow-x-auto -mx-4 sm:mx-0">
-          <div className="inline-block min-w-full align-middle sm:px-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Numéro</TableHead>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Client</TableHead>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Date</TableHead>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Échéance</TableHead>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Montant</TableHead>
-                  <TableHead className="px-3 py-3.5 sm:px-6">Statut</TableHead>
-                  <TableHead className="w-[100px] px-3 py-3.5 sm:px-6"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredInvoices.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center">
-                      Aucune facture trouvée.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredInvoices.map((invoice) => (
-                    <TableRow
-                      key={invoice.id}
-                      className="cursor-pointer"
-                      onClick={() => router.push(`/dashboard/invoices/${invoice.id}`)}
-                    >
-                      <TableCell className="font-medium px-3 py-4 sm:px-6">{invoice.invoice_number}</TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">{invoice.client.name}</TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">{formatDate(invoice.issue_date as string)}</TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">{formatDate(invoice.due_date as string)}</TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">{formatCurrency(invoice.total, invoice.currency)}</TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">
-                        <Badge className={getInvoiceStatusColor(invoice.status)}>
-                          {getStatusLabel(invoice.status)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="px-3 py-4 sm:px-6">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Ouvrir le menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                router.push(`/dashboard/invoices/${invoice.id}`)
-                              }}
-                            >
-                              <Eye className="mr-2 h-4 w-4" />
-                              Voir
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                router.push(`/dashboard/invoices/${invoice.id}/edit`)
-                              }}
-                            >
-                              <Edit className="mr-2 h-4 w-4" />
-                              Modifier
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <a
-                                href={`/api/invoices/${invoice.id}/pdf`}
-                                target="_blank"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <Download className="mr-2 h-4 w-4" />
-                                Télécharger PDF
-                              </a>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              className="text-red-600"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setInvoiceToDelete(invoice.id)
-                                setDeleteDialogOpen(true)
-                              }}
-                            >
-                              <Trash className="mr-2 h-4 w-4" />
-                              Supprimer
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+      <DataTable
+        items={filteredInvoices}
+        searchTerm={searchTerm}
+        onSearchTermChange={setSearchTerm}
+        searchPlaceholder="Rechercher des factures..."
+        noDataText="Aucune facture trouvée."
+        columns={columns}
+        getRowProps={(invoice) => ({
+          className: "cursor-pointer",
+          onClick: () => router.push(`/dashboard/invoices/${invoice.id}`),
+        })}
+      />
       {/* Mobile Card View */}
       <div className="grid grid-cols-1 gap-4 md:hidden">
         {filteredInvoices.length === 0 ? (
