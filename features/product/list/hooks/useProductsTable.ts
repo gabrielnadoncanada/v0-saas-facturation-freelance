@@ -4,15 +4,13 @@ import { useRouter } from "next/navigation"
 
 export function useProductsTable() {
   const router = useRouter()
-  const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const handleDelete = async () => {
-    if (!deleteId) return
+  const handleDelete = async (id: string) => {
     setIsDeleting(true)
     try {
-      const result = await deleteProductAction(deleteId)
-      if (result.error) {
+      const result = await deleteProductAction(id)
+      if (!result.success) {
         console.error("Error deleting product:", result.error)
       } else {
         router.refresh()
@@ -21,13 +19,10 @@ export function useProductsTable() {
       console.error("Unexpected error:", err)
     } finally {
       setIsDeleting(false)
-      setDeleteId(null)
     }
   }
 
   return {
-    deleteId,
-    setDeleteId,
     isDeleting,
     handleDelete,
     router,

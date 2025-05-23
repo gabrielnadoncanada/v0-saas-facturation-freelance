@@ -1,25 +1,26 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { deleteInvoiceAction } from "@/features/invoice/delete/actions/deleteInvoice.action"
-import { Invoice } from "@/features/invoice/shared/types/invoice.types"
 
-export function useInvoicesTable(invoices: Invoice[]) {
+export function useInvoicesTable() {
   const router = useRouter()
-  const [searchTerm, setSearchTerm] = useState("")
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [invoiceToDelete, setInvoiceToDelete] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  const filteredInvoices = invoices.filter(
-    (invoice) =>
-      invoice.invoice_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.client.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
 
-  const handleDelete = async () => {
-    if (!invoiceToDelete) return
-    await deleteInvoiceAction(invoiceToDelete)
-    setDeleteDialogOpen(false)
-    setInvoiceToDelete(null)
+  const handleDelete = async (id: string) => {
+    setIsDeleting(true)
+    try {
+      const result = await deleteInvoiceAction(id)
+      if (!result.success) {
+        console.error("Error deleting invoice:", result.error)
+      } else {
+        router.refresh()
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err)
+    } finally {
+      setIsDeleting(false)
+    }
   }
 
   const getStatusLabel = (status: string) => {
@@ -38,13 +39,7 @@ export function useInvoicesTable(invoices: Invoice[]) {
   }
 
   return {
-    searchTerm,
-    setSearchTerm,
-    deleteDialogOpen,
-    setDeleteDialogOpen,
-    invoiceToDelete,
-    setInvoiceToDelete,
-    filteredInvoices,
+    isDeleting,
     handleDelete,
     getStatusLabel,
     router,

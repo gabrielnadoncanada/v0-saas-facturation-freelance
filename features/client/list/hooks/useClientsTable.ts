@@ -1,39 +1,29 @@
 import { useState } from "react"
 import { deleteClientAction } from "@/features/client/delete/actions/deleteClient.action"
-import { Client } from "@/features/client/shared/types/client.types"
 import { useRouter } from "next/navigation"
 
-export function useClientsTable(clients: Client[]) {
+export function useClientsTable() {
   const router = useRouter()
-  const [searchTerm, setSearchTerm] = useState("")
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [clientToDelete, setClientToDelete] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  const filteredClients = clients.filter(
-    (client) =>
-      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.phone?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-
-  const handleDelete = async () => {
-    if (!clientToDelete) return
-    const result = await deleteClientAction(clientToDelete)
-    if (result.success) {
-      router.refresh()
+  const handleDelete = async (id: string) => {
+    setIsDeleting(true)
+    try {
+      const result = await deleteClientAction(id)
+      if (!result.success) {
+        console.error("Error deleting client:", result.error)
+      } else {
+        router.refresh()
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err)
+    } finally {
+      setIsDeleting(false)
     }
-    setDeleteDialogOpen(false)
-    setClientToDelete(null)
   }
 
   return {
-    searchTerm,
-    setSearchTerm,
-    deleteDialogOpen,
-    setDeleteDialogOpen,
-    clientToDelete,
-    setClientToDelete,
-    filteredClients,
+    isDeleting,
     handleDelete,
     router,
   }
