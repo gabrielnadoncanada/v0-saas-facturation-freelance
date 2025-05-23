@@ -7,16 +7,17 @@ interface UseTaskFormProps {
   projectId: string
   task: Task | null
   onSuccess: () => void
+  defaultStatus?: string
 }
 
-export function useTaskForm({ projectId, task, onSuccess }: UseTaskFormProps) {
+export function useTaskForm({ projectId, task, onSuccess, defaultStatus }: UseTaskFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     name: task?.name || "",
     description: task?.description || "",
-    status: task?.status || "pending",
+    status: task?.status || defaultStatus || "pending",
     priority: task?.priority || "medium",
     estimated_hours: task?.estimated_hours ? String(task.estimated_hours) : "",
     due_date: task?.due_date ? new Date(task.due_date) : null,
