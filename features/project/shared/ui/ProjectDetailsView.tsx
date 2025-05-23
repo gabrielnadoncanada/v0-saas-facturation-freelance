@@ -229,7 +229,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
                 </DialogHeader>
                 <TaskForm
                   projectId={project.id}
-                  task={null as unknown as Task}
+                  task={null}
                   onSuccess={() => {
                     setTaskDialogOpen(false)
                     router.refresh()
@@ -258,7 +258,11 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
         <TaskGantt tasks={filteredTasks} projectStartDate={project.start_date} />
       </TabsContent>
       <TabsContent value="kanban">
-        <TaskKanban tasks={filteredTasks} />
+        <TaskKanban
+          tasks={filteredTasks}
+          projectId={project.id}
+          onTaskUpdate={() => router.refresh()}
+        />
       </TabsContent>
     </Tabs>
   </div>
