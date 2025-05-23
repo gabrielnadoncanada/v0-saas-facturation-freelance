@@ -11,6 +11,7 @@ import { TaskForm } from "@/features/task/shared/ui/TaskForm"
 import { TaskCalendar } from "@/features/task/shared/ui/TaskCalendar"
 import { TaskGantt } from "@/features/task/shared/ui/TaskGantt"
 import { TaskKanban } from "@/features/task/shared/ui/TaskKanban"
+import { TaskHierarchyTable } from "@/features/task/shared/ui/TaskHierarchyTable"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -149,6 +150,7 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
       <div className="flex items-center justify-between">
         <TabsList>
           <TabsTrigger value="table">Table</TabsTrigger>
+          <TabsTrigger value="hierarchy">Hiérarchie</TabsTrigger>
           <TabsTrigger value="calendar">Calendrier</TabsTrigger>
           <TabsTrigger value="gantt">Gantt</TabsTrigger>
           <TabsTrigger value="kanban">Kanban</TabsTrigger>
@@ -245,6 +247,9 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
           onTaskUpdate={() => router.refresh()}
           onTaskDelete={() => router.refresh()}
         />
+      </TabsContent>
+      <TabsContent value="hierarchy" className="space-y-4">
+        <TaskHierarchyTable tasks={filteredTasks} />
       </TabsContent>
       <TabsContent value="calendar">
         <TaskCalendar tasks={filteredTasks} />
