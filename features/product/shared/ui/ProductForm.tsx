@@ -14,7 +14,7 @@ import { ProductFormView } from "@/features/product/shared/ui/ProductFormView"
 export function ProductForm({ product }: { product: Product | null }) {
   const router = useRouter()
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
-  const { categories, isLoading: isLoadingCategories } = useCategories()
+  const { categories, isLoading: isLoadingCategories, fetchCategories } = useCategories()
 
   const {
     form,
@@ -48,6 +48,7 @@ export function ProductForm({ product }: { product: Product | null }) {
         error={error}
         categories={categories}
         isLoadingCategories={isLoadingCategories}
+        loadCategories={fetchCategories}
         onSubmit={onSubmit}
         onOpenCategoryModal={() => setIsCategoryModalOpen(true)}
       />
