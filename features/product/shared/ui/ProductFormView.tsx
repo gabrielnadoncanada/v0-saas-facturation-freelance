@@ -23,6 +23,7 @@ interface ProductFormViewProps {
   error: string | null
   categories: { id: string; name: string; color?: string }[]
   isLoadingCategories: boolean
+  loadCategories: () => void
   onSubmit: (values: ProductFormSchema) => void
   onOpenCategoryModal: () => void
 }
@@ -33,6 +34,7 @@ export const ProductFormView: React.FC<ProductFormViewProps> = ({
   error,
   categories,
   isLoadingCategories,
+  loadCategories,
   onSubmit,
   onOpenCategoryModal,
 }) => (
@@ -95,6 +97,11 @@ export const ProductFormView: React.FC<ProductFormViewProps> = ({
               <Select
                 value={field.value ?? ""}
                 onValueChange={(value) => field.onChange(value === "none" ? null : value)}
+                onOpenChange={(open) => {
+                  if (open) {
+                    loadCategories()
+                  }
+                }}
               >
                 <FormControl>
                   <SelectTrigger className="w-full">

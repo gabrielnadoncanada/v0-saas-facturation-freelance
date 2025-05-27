@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { createClient } from "@/shared/lib/supabase/client"
 
 export function useCategories() {
@@ -8,9 +8,31 @@ export function useCategories() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const supabase = createClient()
+
+  const fetchCategories = async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const { data, error } = await supabase
+        .from("product_categories")
+        .select("*")
+        .order("name", { ascending: true })
+
+      if (error) throw error
+
+      setCategories(data || [])
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return {
     categories,
     isLoading,
     error,
+    fetchCategories,
   }
 }
