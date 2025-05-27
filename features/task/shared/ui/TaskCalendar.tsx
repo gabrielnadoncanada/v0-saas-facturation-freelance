@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Calendar } from "@/components/ui/calendar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
 import { Task } from "@/features/task/shared/types/task.types"
 import {
   format,
@@ -16,6 +17,17 @@ import { fr } from "date-fns/locale"
 export function TaskCalendar({ tasks }: { tasks: Task[] }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
   const [view, setView] = useState<"day" | "week" | "month" | "agenda">("month")
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "t") {
+        e.preventDefault()
+        setSelectedDate(new Date())
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   const tasksByDate = tasks.reduce<Record<string, Task[]>>((acc, task) => {
     if (!task.due_date) return acc
@@ -44,14 +56,23 @@ export function TaskCalendar({ tasks }: { tasks: Task[] }) {
 
   return (
     <div className="space-y-4">
-      <Tabs value={view} onValueChange={(v) => setView(v as any)}>
-        <TabsList>
-          <TabsTrigger value="day">Jour</TabsTrigger>
-          <TabsTrigger value="week">Semaine</TabsTrigger>
-          <TabsTrigger value="month">Mois</TabsTrigger>
-          <TabsTrigger value="agenda">Agenda</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex items-center justify-between">
+        <Tabs value={view} onValueChange={(v) => setView(v as any)}>
+          <TabsList>
+            <TabsTrigger value="day">Jour</TabsTrigger>
+            <TabsTrigger value="week">Semaine</TabsTrigger>
+            <TabsTrigger value="month">Mois</TabsTrigger>
+            <TabsTrigger value="agenda">Agenda</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setSelectedDate(new Date())}
+        >
+          Aujourd'hui
+        </Button>
+      </div>
 
       {view === "month" && (
         <div className="flex flex-col md:flex-row gap-6">
