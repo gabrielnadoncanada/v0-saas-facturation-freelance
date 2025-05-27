@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency, formatDate, getInvoiceStatusColor } from "@/shared/lib/utils"
-import { AlertCircle, ArrowLeft, Download, Edit, Send, Mail } from "lucide-react"
+import { AlertCircle, ArrowLeft, Download, Edit, Send, Mail, Loader2 } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { NewPaymentFormView } from "@/features/payment/create/ui/NewPaymentFormView"
@@ -19,9 +19,11 @@ import { useRouter } from "next/navigation"
 import PaymentForm from "@/features/payment/shared/ui/PaymentForm"
 import { sendInvoiceEmailAction } from "@/features/invoice/email"
 import { useTransition } from "react"
+import { useToast } from "@/shared/hooks/use-toast"
 
 export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const {
     isLoading,
     error,
@@ -39,6 +41,11 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
       const res = await sendInvoiceEmailAction(invoice.id, invoice.client.email as string)
       if (!res.success) {
         setError(res.error || 'Une erreur est survenue')
+      } else {
+        toast({
+          title: 'Email envoyé',
+          description: 'La facture a été envoyée avec succès.',
+        })
       }
     })
   }
@@ -191,7 +198,11 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
             </a>
           </Button>
           <Button variant="outline" onClick={sendEmail} disabled={isSending || !invoice.client.email}>
-            <Mail className="mr-2 h-4 w-4" />
+            {isSending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Mail className="mr-2 h-4 w-4" />
+            )}
             Envoyer par email
           </Button>
         </div>
