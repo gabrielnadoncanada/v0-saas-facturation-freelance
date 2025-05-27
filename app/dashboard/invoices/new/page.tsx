@@ -1,18 +1,19 @@
 import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
 import { getClients } from "@/features/client/list/model/getClients"
 import { getDefaultCurrency } from "@/features/invoice/view/model/getDefaultCurrency"
+import FormPageLayout from "@/shared/ui/FormPageLayout"
 
 export default async function NewInvoicePage() {
   const clients = await getClients()
   const defaultCurrency = await getDefaultCurrency()
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Nouvelle facture</h1>
-        <p className="text-muted-foreground">Créez une nouvelle facture</p>
-      </div>
+    <FormPageLayout
+      title="Nouvelle facture"
+      subtitle="Créez une nouvelle facture"
+      backHref="/dashboard/invoices"
+    >
       <InvoiceForm clients={clients} defaultCurrency={defaultCurrency} />
-    </div>
+    </FormPageLayout>
   )
 }

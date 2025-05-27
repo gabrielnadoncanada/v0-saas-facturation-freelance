@@ -22,6 +22,7 @@ interface ClientFormViewProps {
   error: string | null
   isLoading: boolean
   onSubmit: (values: ClientFormSchema) => void
+  isEdit: boolean
 }
 
 export function ClientFormView({
@@ -29,6 +30,7 @@ export function ClientFormView({
   error,
   isLoading,
   onSubmit,
+  isEdit,
 }: ClientFormViewProps) {
 
   return (
@@ -235,10 +237,12 @@ export function ClientFormView({
             )}
           </CardContent>
         </Card>
-        <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Ajouter / Mettre à jour
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isEdit ? "Mettre à jour" : "Créer le client"}
+          </Button>
+        </div>
       </form>
     </Form>
   )

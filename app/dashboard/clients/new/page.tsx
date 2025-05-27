@@ -1,15 +1,14 @@
 import { ClientForm } from "@/features/client/shared/ui/ClientForm";
+import FormPageLayout from "@/shared/ui/FormPageLayout";
 
 export default async function NewClientPage() {
-
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Nouveau client</h1>
-        <p className="text-muted-foreground">Créez un nouveau client</p>
-      </div>
-
+    <FormPageLayout
+      title="Nouveau client"
+      subtitle="Créez un nouveau client"
+      backHref="/dashboard/clients"
+    >
       <ClientForm client={null} />
-    </div>
+    </FormPageLayout>
   )
 }

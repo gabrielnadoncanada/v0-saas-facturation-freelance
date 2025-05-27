@@ -208,15 +208,9 @@ export const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({
           </DropdownMenu>
 
           <div className="flex space-x-2">
-            <Link href={`/dashboard/projects/${project.id}/tasks/new`}>
-              <Button size="sm">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvelle tâche
-              </Button>
-            </Link>
             <Dialog open={taskDialogOpen} onOpenChange={setTaskDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="sm" variant="outline">
+                <Button size="sm" >
                   <Plus className="mr-2 h-4 w-4" />
                   Ajout rapide
                 </Button>

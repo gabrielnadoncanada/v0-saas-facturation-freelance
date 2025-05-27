@@ -31,6 +31,7 @@ export function ClientForm({ client }: { client: Client | null }) {
       error={error}
       isLoading={isLoading}
       onSubmit={onSubmit}
+      isEdit={!!client}
     />
   )
 } 
