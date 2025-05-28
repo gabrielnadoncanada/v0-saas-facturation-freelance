@@ -11,7 +11,7 @@ import { useCreateClientInlineForm } from "@/features/client/create/hooks/useCre
 import { DatePicker } from "@/components/ui/date-picker"
 import { Percent, Plus } from "lucide-react"
 
-import type { InvoiceFormValues } from "@/features/invoice/shared/ui/InvoiceForm"
+import type { InvoiceFormValues } from "@/features/invoice/shared/hooks/useInvoiceForm"
 
 interface Client {
   id: string
@@ -41,16 +41,7 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
           <FormItem>
             <div className="flex items-center justify-between">
               <FormLabel>Client *</FormLabel>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 gap-1 px-2 text-xs"
-                type="button"
-                onClick={() => setOpen(true)}
-              >
-                <Plus className="h-3 w-3" />
-                Nouveau client
-              </Button>
+           
             </div>
             <FormControl>
               <Select value={field.value} onValueChange={field.onChange} required>
@@ -70,21 +61,7 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
           </FormItem>
         )}
       />
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-5xl">
-          <DialogHeader>
-            <DialogTitle>Nouveau client</DialogTitle>
-          </DialogHeader>
-          <ClientForm
-            defaultValues={defaultValues}
-            onSubmit={onSubmit}
-            isLoading={isLoading}
-            error={error}
-            onCancel={() => setOpen(false)}
-            submitLabel="Créer le client"
-          />
-        </DialogContent>
-      </Dialog>
+   
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
           control={control}

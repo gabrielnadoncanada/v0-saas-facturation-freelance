@@ -1,9 +1,6 @@
-import { useState, useEffect, useMemo } from "react"
-import { useForm, useFieldArray } from "react-hook-form"
-import { useSensors, useSensor, PointerSensor, KeyboardSensor } from "@dnd-kit/core"
-import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 import { InvoiceFormProps } from "@/features/invoice/shared/types/invoice.types"
-import { createInvoiceAction } from '@/features/invoice/create/actions/createInvoice.action'
 
 export interface InvoiceItem {
   id: string
@@ -26,8 +23,16 @@ export interface InvoiceFormValues {
   items: InvoiceItem[]
 }
 
-function getDefaultValues(props: InvoiceFormProps): InvoiceFormValues {
-  const { invoice, invoiceItems = [], defaultCurrency } = props
+interface UseInvoiceFormOptions {
+  invoice?: any
+  invoiceItems?: InvoiceItem[]
+  clients: any[]
+  defaultCurrency?: string
+  onSubmitSuccess?: () => void
+  createInvoiceAction: (invoice: any, items: any[]) => Promise<any>
+}
+
+function getDefaultValues({ invoice, invoiceItems = [], defaultCurrency }: UseInvoiceFormOptions): InvoiceFormValues {
   return {
     client_id: invoice?.client.id || "",
     issue_date: invoice?.issue_date ? new Date(invoice.issue_date) : new Date(),
@@ -77,33 +82,22 @@ function mapItemsPayload(data: InvoiceFormValues) {
   }))
 }
 
-export function useInvoiceForm(props: InvoiceFormProps) {
-  const [error, setError] = useState<string | null>(null)
+export function useInvoiceForm({
+  invoice,
+  invoiceItems,
+  clients,
+  defaultCurrency,
+  onSubmitSuccess,
+  createInvoiceAction,
+}: UseInvoiceFormOptions) {
   const [isLoading, setIsLoading] = useState(false)
-  const form = useForm<InvoiceFormValues>({ defaultValues: getDefaultValues(props), mode: "onBlur" })
-  const { control, handleSubmit, watch, setValue, getValues } = form
-  const { fields, append, remove, move } = useFieldArray({ control, name: "items" })
+  const [error, setError] = useState<string | null>(null)
 
-  // Memoized totals
-  const items = watch("items")
-  const tax_rate = watch("tax_rate")
-  const currency = watch("currency")
-  const subtotal = useMemo(() => items.reduce((sum, item) => sum + Number(item.quantity) * Number(item.unit_price), 0), [items])
-  const tax = useMemo(() => (subtotal * Number(tax_rate)) / 100, [subtotal, tax_rate])
-  const total = useMemo(() => subtotal + tax, [subtotal, tax])
+  const form = useForm<InvoiceFormValues>({
+    defaultValues: getDefaultValues({ invoice, invoiceItems, defaultCurrency, clients, createInvoiceAction }),
+    mode: "onBlur",
+  })
 
-  // DnD sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  )
-
-  // Keep all item tax_rate in sync with global
-  useEffect(() => {
-    getValues("items").forEach((_, idx) => setValue(`items.${idx}.tax_rate`, Number(tax_rate)))
-  }, [tax_rate])
-
-  // Submission
   const onSubmit = async (data: InvoiceFormValues) => {
     setIsLoading(true)
     setError(null)
@@ -112,44 +106,27 @@ export function useInvoiceForm(props: InvoiceFormProps) {
       setIsLoading(false)
       return
     }
+    // Calculate subtotal, tax, total
+    const subtotal = data.items.reduce((sum, item) => sum + Number(item.quantity) * Number(item.unit_price), 0)
+    const tax = (subtotal * Number(data.tax_rate)) / 100
+    const total = subtotal + tax
     try {
       await createInvoiceAction(
-        mapInvoicePayload(data, props.clients, subtotal, tax, total),
+        mapInvoicePayload(data, clients, subtotal, tax, total),
         mapItemsPayload(data)
       )
       setIsLoading(false)
+      if (onSubmitSuccess) onSubmitSuccess()
     } catch (err: any) {
-      setError(err.message || "Une erreur est survenue")
+      setError(err.message || "Une erreur inattendue est survenue")
       setIsLoading(false)
-    }
-  }
-
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event
-    if (over && active.id !== over.id) {
-      const oldIndex = fields.findIndex((item) => item.id === active.id)
-      const newIndex = fields.findIndex((item) => item.id === over.id)
-      move(oldIndex, newIndex)
     }
   }
 
   return {
     form,
-    control,
-    handleSubmit,
-    onSubmit,
-    error,
     isLoading,
-    fields,
-    append,
-    remove,
-    move,
-    sensors,
-    handleDragEnd,
-    tax_rate,
-    currency,
-    subtotal,
-    tax,
-    total,
+    error,
+    onSubmit,
   }
 } 

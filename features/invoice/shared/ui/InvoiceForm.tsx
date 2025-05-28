@@ -1,78 +1,70 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from "react"
-import { useForm, useFieldArray, FormProvider } from "react-hook-form"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, Loader2, Plus, Percent } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { formatCurrency } from "@/shared/lib/utils"
-import { DatePicker } from "@/components/ui/date-picker"
-import { DndContext, closestCenter, useSensors, useSensor, PointerSensor, KeyboardSensor } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { InvoiceGeneralFields } from "@/features/invoice/shared/ui/InvoiceGeneralFields"
-import { InvoiceLineFields } from "@/features/invoice/shared/ui/InvoiceLineFields"
+import { useFieldArray } from "react-hook-form"
+import { useSensors, useSensor, PointerSensor, KeyboardSensor } from "@dnd-kit/core"
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import { createInvoiceAction } from '@/features/invoice/create/actions/createInvoice.action'
-import { useInvoiceForm } from "@/features/invoice/shared/hooks/useInvoiceForm"
+import { useInvoiceForm, InvoiceItem } from "@/features/invoice/shared/hooks/useInvoiceForm"
 import { InvoiceFormProps } from "@/features/invoice/shared/types/invoice.types"
 import { InvoiceFormView } from "@/features/invoice/shared/ui/InvoiceFormView"
 import { useRouter } from "next/navigation"
 
-// --- Types & Defaults ---
-interface InvoiceItem {
-  id: string
-  description: string
-  quantity: number
-  unit_price: number
-  tax_rate: number
-  amount: number
-  isNew?: boolean
-}
-
-interface InvoiceFormValues {
-  client_id: string
-  issue_date: Date | null
-  due_date: Date | null
-  status: string
-  currency: string
-  notes: string
-  tax_rate: number
-  items: InvoiceItem[]
-}
-
-export type { InvoiceFormValues };
-
 export function InvoiceForm(props: InvoiceFormProps) {
   const router = useRouter()
-  const {
-    form,
-    control,
-    handleSubmit,
-    onSubmit,
-    error,
-    isLoading,
-    fields,
-    append,
-    remove,
-    move,
-    sensors,
-    handleDragEnd,
-    tax_rate,
-    currency,
-    subtotal,
-    tax,
-    total,
-  } = useInvoiceForm(props)
-
   const [clients, setClients] = useState(props.clients)
 
+  const {
+    form,
+    isLoading,
+    error,
+    onSubmit,
+  } = useInvoiceForm({
+    invoice: props.invoice,
+    invoiceItems: props.invoiceItems,
+    clients: clients,
+    defaultCurrency: props.defaultCurrency,
+    createInvoiceAction,
+    onSubmitSuccess: () => router.push("/dashboard/invoices"),
+  })
+
+  // Field array for invoice items
+  const { control, handleSubmit, watch, setValue } = form
+  const { fields, append, remove, move } = useFieldArray({ control, name: "items" })
+
+  // DnD sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
+
+  // DnD handler
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event
+    if (over && active.id !== over.id) {
+      const oldIndex = fields.findIndex((item) => item.id === active.id)
+      const newIndex = fields.findIndex((item) => item.id === over.id)
+      move(oldIndex, newIndex)
+    }
+  }
+
+  // Keep all item tax_rate in sync with global
+  const tax_rate = watch("tax_rate")
+  useEffect(() => {
+    watch("items").forEach((_: any, idx: number) => setValue(`items.${idx}.tax_rate`, Number(tax_rate)))
+  }, [tax_rate])
+
+  // Calculations
+  const items = watch("items")
+  const currency = watch("currency")
+  const subtotal = useMemo(() => items.reduce((sum: number, item: InvoiceItem) => sum + Number(item.quantity) * Number(item.unit_price), 0), [items])
+  const tax = useMemo(() => (subtotal * Number(tax_rate)) / 100, [subtotal, tax_rate])
+  const total = useMemo(() => subtotal + tax, [subtotal, tax])
+
+  // Handle client created inline
   const handleClientCreated = (client: any) => {
     setClients((prev) => [...prev, client])
-    form.setValue('client_id', client.id)
+    setValue('client_id', client.id)
   }
 
   return (

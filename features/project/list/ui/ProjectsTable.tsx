@@ -97,6 +97,7 @@ export function ProjectsTable({ projects = [] }: { projects: ProjectWithClient[]
       data={projects}
       columns={columns}
       actions={actions}
+      onRowClick={(project: ProjectWithClient) => router.push(`/dashboard/projects/${project.id}`)}
       searchPlaceholder="Rechercher des projets..."
       searchFields={["name"]}
       emptyState={emptyState}

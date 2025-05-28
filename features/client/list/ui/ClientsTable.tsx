@@ -66,6 +66,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
       actions={actions}
       searchPlaceholder="Rechercher des clients..."
       searchFields={["name", "email", "phone"]}
+      onRowClick={(client: Client) => router.push(`/dashboard/clients/${client.id}`)}
       emptyState={emptyState}
       deleteAction={{
         title: "Êtes-vous sûr?",

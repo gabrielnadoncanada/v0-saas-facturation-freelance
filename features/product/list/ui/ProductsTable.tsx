@@ -104,6 +104,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
       actions={actions}
       searchFields={["name"]}
       emptyState={emptyState}
+      onRowClick={(product: Product) => router.push(`/dashboard/products/${product.id}/edit`)}
       deleteAction={{
         title: "Êtes-vous sûr de vouloir supprimer ce produit ?",
         description: "Cette action est irréversible. Le produit sera définitivement supprimé de votre catalogue.",

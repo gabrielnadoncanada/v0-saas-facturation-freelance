@@ -1,16 +1,13 @@
 import React from "react"
 import { FormProvider } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { formatCurrency } from "@/shared/lib/utils"
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { InvoiceGeneralFields } from "@/features/invoice/shared/ui/InvoiceGeneralFields"
 import { InvoiceLineFields } from "@/features/invoice/shared/ui/InvoiceLineFields"
-import { InvoiceFormValues } from "@/features/invoice/shared/ui/InvoiceForm"
 
 interface InvoiceFormViewProps {
   form: any
