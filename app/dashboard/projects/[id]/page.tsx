@@ -1,5 +1,5 @@
-import { getProjectAction } from "@/features/project/shared/actions/getProject.action"
-import { ProjectDetails } from "@/features/project/shared/ui/ProjectDetails"
+import { getProjectAction } from "@/features/project/view/actions/getProject.action"
+import { Project } from "@/features/project/view/Project"
 import { notFound, redirect } from "next/navigation"
 
 export default async function ProjectPage({
@@ -17,7 +17,7 @@ export default async function ProjectPage({
   }
 
   return (
-    <ProjectDetails
+    <Project
       project={result.data}
     />
   )

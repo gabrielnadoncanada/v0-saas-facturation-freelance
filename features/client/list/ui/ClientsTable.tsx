@@ -3,7 +3,7 @@
 import { useClientsTable } from "@/features/client/list/hooks/useClientsTable"
 import { Client } from "@/features/client/shared/types/client.types"
 import { DataTable } from "@/components/ui/data-table"
-import { Edit, Package, Trash, FileText } from "lucide-react"
+import { Edit, Package, Trash, FileText, Eye } from "lucide-react"
 import Link from "next/link"
 
 export function ClientsTable({ clients }: { clients: Client[] }) {
@@ -30,6 +30,11 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
   ]
 
   const actions = [
+    {
+      label: "Voir",
+      icon: <Eye className="h-4 w-4" />,
+      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`)
+    },
     {
       label: "Modifier",
       icon: <Edit className="h-4 w-4" />,

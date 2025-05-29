@@ -1,25 +1,16 @@
-import { getClientAction } from "@/features/client/shared/actions/getClient.action"
-import { ClientForm } from "@/features/client/shared/ui/ClientForm"
-import { getInvoicesByClientAction } from "@/features/invoice/list/actions/getInvoicesByClient.action"
-import { InvoicesTable } from "@/features/invoice/list/ui/InvoicesTable"
-import FormPageLayout from "@/shared/ui/FormPageLayout"
+import { getClientDetailAction } from '@/features/client/view/actions/getClientDetail.action';
+import { ClientDetailView } from '@/features/client/view/ui/ClientDetailView';
+import FormPageLayout from '@/components/layout/FormPageLayout';
 
-export default async function EditClientPage({ params, }: { params: { id: string } }) {
-  const result = await getClientAction(params.id)
-  const invoicesResult = await getInvoicesByClientAction(params.id)
-
-  if (!result.success) {
-    return <div>{result.error}</div>
-  }
-
+export default async function ClientPage({ params }: { params: { id: string } }) {
+  const data = await getClientDetailAction(params.id);
   return (
     <FormPageLayout
-      title="Modifier le client"
-      subtitle="Modifiez les informations du client"
+      title="Détails du client"
+      subtitle="Informations, statistiques et factures du client"
       backHref="/dashboard/clients"
     >
-      <ClientForm client={result.data} />
-      {invoicesResult.success && <InvoicesTable invoices={invoicesResult.data} />}
+      <ClientDetailView data={data} isLoading={false} error={null} />
     </FormPageLayout>
   )
 }

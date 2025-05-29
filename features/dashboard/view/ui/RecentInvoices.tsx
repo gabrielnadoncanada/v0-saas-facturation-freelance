@@ -13,7 +13,7 @@ interface Invoice {
   due_date: string
   total: number
   status: string
-  clients: {
+  client: {
     name: string
   }
 }
@@ -54,7 +54,7 @@ export function RecentInvoices({ invoices }: RecentInvoicesProps) {
                   </Badge>
                 </div>
                 <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="truncate">{invoice.clients.name}</span>
+                  <span className="truncate">{invoice.client.name}</span>
                   <span>•</span>
                   <span>{formatDate(invoice.issue_date)}</span>
                 </div>

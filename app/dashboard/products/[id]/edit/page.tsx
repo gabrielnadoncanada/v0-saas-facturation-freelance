@@ -1,7 +1,7 @@
 import { ProductForm } from "@/features/product/shared/ui/ProductForm"
 import { notFound } from "next/navigation"
 import { getProductAction } from "@/features/product/shared/actions/getProduct.action"
-import FormPageLayout from "@/shared/ui/FormPageLayout"
+import FormPageLayout from "@/components/layout/FormPageLayout"
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
   const result = await getProductAction(params.id)

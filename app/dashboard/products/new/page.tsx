@@ -1,5 +1,5 @@
 import { ProductForm } from "@/features/product/shared/ui/ProductForm"
-import FormPageLayout from "@/shared/ui/FormPageLayout"
+import FormPageLayout from "@/components/layout/FormPageLayout"
 
 export default async function NewProductPage() {
   return (

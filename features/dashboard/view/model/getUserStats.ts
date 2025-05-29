@@ -7,6 +7,8 @@ export async function getUserStats() {
     user_id_param: user.id,
   })
 
+  console.log(data)
+
   if (error) throw new Error(error.message)
   return data?.[0] || null
 }

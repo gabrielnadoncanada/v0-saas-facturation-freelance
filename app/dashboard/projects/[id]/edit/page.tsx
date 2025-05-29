@@ -2,7 +2,7 @@ import { ProjectForm } from "@/features/project/shared/ui/ProjectForm"
 import { getProjectAction } from "@/features/project/shared/actions/getProject.action"
 import { redirect } from "next/navigation"
 import { getClientsAction } from "@/features/client/list/actions/getClients.action"
-import FormPageLayout from "@/shared/ui/FormPageLayout"
+import FormPageLayout from "@/components/layout/FormPageLayout"
 
 export default async function EditProjectPage({
   params,

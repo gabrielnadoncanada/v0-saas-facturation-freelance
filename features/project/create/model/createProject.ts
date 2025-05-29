@@ -15,7 +15,6 @@ export async function createProject(formData: ProjectFormData) {
       status: formData.status,
       start_date: formData.start_date,
       end_date: formData.end_date,
-      budget: formData.budget,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })

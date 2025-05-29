@@ -7,7 +7,7 @@ export async function getRecentInvoices() {
 
   const res = await supabase
     .from("invoices")
-    .select("*, clients(name)")
+    .select("*, client:clients(name)")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(5)

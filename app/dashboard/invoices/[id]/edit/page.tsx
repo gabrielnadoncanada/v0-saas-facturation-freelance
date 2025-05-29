@@ -1,7 +1,7 @@
 import { InvoiceForm } from "@/features/invoice/shared/ui/InvoiceForm"
 import { getInvoiceAction } from "@/features/invoice/shared/actions/getInvoice.action"
 import { redirect } from "next/navigation"
-import FormPageLayout from "@/shared/ui/FormPageLayout"
+import FormPageLayout from "@/components/layout/FormPageLayout"
 
 export default async function EditInvoicePage({ params }: { params: { id: string } }) {
   const result = await getInvoiceAction(params.id)

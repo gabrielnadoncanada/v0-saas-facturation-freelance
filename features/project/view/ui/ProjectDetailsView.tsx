@@ -77,7 +77,6 @@ export function ProjectDetailsView({
           </Link>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{project.name}</h1>
-            {/* Adapter ici si project.clients n'existe pas dans le type Project */}
             <p className="text-muted-foreground">Client: {project.client?.name || "-"}</p>
           </div>
         </div>
@@ -248,4 +247,4 @@ export function ProjectDetailsView({
       </Tabs>
     </div>
   )
-}
+} 
