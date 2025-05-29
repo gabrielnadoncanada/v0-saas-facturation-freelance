@@ -9,7 +9,7 @@ export async function getProjectDetails(projectId: string): Promise<Project> {
     .from("projects")
     .select(`
       *,
-      clients(name),
+      client:clients(name),
       tasks(*, time_entries(*))
     `)
     .eq("id", projectId)

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { formatDate } from "@/shared/lib/utils"
-import { Edit, Trash2, Clock, AlertTriangle, Plus } from "lucide-react"
+import { Edit, Trash2, Clock, AlertTriangle, Plus, MoreHorizontal } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -23,11 +23,12 @@ import { SubtaskList } from "@/features/subtask/shared/ui/SubtaskList"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Task } from "@/features/task/shared/types/task.types"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 
 export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[], onTaskUpdate: () => void, onTaskDelete: () => void }) {
   const supabase = createClient()
-  const [editTask, setEditTask] = useState<Task | null>(null)
+  const [dialogState, setDialogState] = useState<{ type: 'edit' | 'subtask', task: Task } | null>(null)
   const [deleteTask, setDeleteTask] = useState<Task | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -234,12 +235,32 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                         />
                       </div>
                       <div className="flex items-center space-x-1 flex-shrink-0">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="ghost" size="icon" onClick={() => setEditTask(task)}>
-                              <Edit className="h-4 w-4" />
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <span className="sr-only">Ouvrir le menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
                             </Button>
-                          </DialogTrigger>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem onClick={() => setDialogState({ type: 'edit', task })}>
+                              <Edit className="mr-2 h-4 w-4" />
+                              Modifier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setDeleteTask(task)} className="text-red-600">
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Supprimer
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => setDialogState({ type: 'subtask', task })}>
+                              <Plus className="mr-2 h-4 w-4" />
+                              Ajouter une sous-tâche
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        {/* Edit Task Dialog */}
+                        <Dialog open={dialogState?.type === 'edit' && dialogState.task.id === task.id} onOpenChange={(open) => !open && setDialogState(null)}>
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Modifier la tâche</DialogTitle>
@@ -248,18 +269,14 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                               projectId={task.project_id}
                               task={task}
                               onSuccess={() => {
-                                setEditTask(null)
+                                setDialogState(null)
                                 if (onTaskUpdate) onTaskUpdate()
                               }}
                             />
                           </DialogContent>
                         </Dialog>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <Plus className="h-4 w-4" />
-                            </Button>
-                          </DialogTrigger>
+                        {/* Add Subtask Dialog */}
+                        <Dialog open={dialogState?.type === 'subtask' && dialogState.task.id === task.id} onOpenChange={(open) => !open && setDialogState(null)}>
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Ajouter une sous-tâche</DialogTitle>
@@ -268,19 +285,12 @@ export function TaskList({ tasks, onTaskUpdate, onTaskDelete }: { tasks: Task[],
                               taskId={task.id}
                               subtask={null}
                               onSuccess={() => {
+                                setDialogState(null)
                                 onTaskUpdate && onTaskUpdate()
                               }}
                             />
                           </DialogContent>
                         </Dialog>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setDeleteTask(task)}
-                          className="text-red-500 hover:text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
                       </div>
                     </div>
                   </CardContent>

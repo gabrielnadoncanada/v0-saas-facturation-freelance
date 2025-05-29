@@ -12,6 +12,7 @@ import { Project } from "@/features/project/shared/types/project.types"
 import { Client } from "@/features/client/shared/types/client.types"
 import { UseFormReturn } from "react-hook-form"
 import { ProjectFormSchema } from "@/features/project/shared/schema/project.schema"
+import { parseLocalDate, formatYMD } from "@/shared/utils/date"
 
 interface ProjectFormViewProps {
   form: UseFormReturn<ProjectFormSchema>
@@ -128,8 +129,8 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
                   <FormLabel>Date de début</FormLabel>
                   <FormControl>
                     <DatePicker
-                      date={field.value ? new Date(field.value) : new Date()}
-                      setDate={date => field.onChange(date ? date.toISOString().split("T")[0] : "")}
+                      date={parseLocalDate(field.value)}
+                      setDate={date => field.onChange(formatYMD(date))}
                       className="w-full"
                     />
                   </FormControl>
@@ -145,8 +146,8 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
                   <FormLabel>Date de fin</FormLabel>
                   <FormControl>
                     <DatePicker
-                      date={field.value ? new Date(field.value) : new Date()}
-                      setDate={date => field.onChange(date ? date.toISOString().split("T")[0] : "")}
+                      date={parseLocalDate(field.value)}
+                      setDate={date => field.onChange(formatYMD(date))}
                       className="w-full"
                     />
                   </FormControl>

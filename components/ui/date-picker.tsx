@@ -14,6 +14,8 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ date, setDate, className }: DatePickerProps) {
+  console.log("DatePicker.selected", date)
+
   return (
     <Popover>
       <PopoverTrigger asChild>
