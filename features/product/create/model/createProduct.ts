@@ -1,6 +1,6 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Product } from '@/features/product/shared/types/product.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createProduct(formData: Product): Promise<Product> {
   const { supabase, user } = await getSessionUser()
@@ -25,9 +25,9 @@ export async function createProduct(formData: Product): Promise<Product> {
     updated_at: new Date().toISOString(),
   }
 
-  const res = await supabase.from("products").insert(productData).select("*").single()
-
-  if (res.error) throw new Error(res.error.message)
-
-  return extractDataOrThrow<Product>(res)
+  return await insertRecord<Product>(
+    supabase,
+    'products',
+    productData
+  )
 }

@@ -1,38 +1,37 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { TaskFormData } from '@/features/task/shared/types/task.types'
+import { fetchById, fetchList, updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateSubtask(subtaskId: string, formData: TaskFormData): Promise<{ projectId: string }> {
   const { supabase, user } = await getSessionUser()
 
-  const { data: task, error: taskError } = await supabase
-    .from('tasks')
-    .select('project_id')
-    .eq('id', subtaskId)
-    .single()
+  // Vérifier que la sous-tâche existe
+  const task = await fetchById<{ project_id: string }>(
+    supabase,
+    'tasks',
+    subtaskId,
+    'project_id'
+  )
 
-  if (taskError || !task) {
-    throw new Error('Sous-tâche non trouvée')
-  }
+  // Vérifier que le projet appartient à l'utilisateur
+  const projects = await fetchList(
+    supabase,
+    'projects',
+    'id',
+    { id: task.project_id, user_id: user.id }
+  )
 
-  const { data: project, error: projectError } = await supabase
-    .from('projects')
-    .select('id')
-    .eq('id', task.project_id)
-    .eq('user_id', user.id)
-    .single()
-
-  if (projectError || !project) {
+  if (!projects.length) {
     throw new Error('Projet non trouvé ou non autorisé')
   }
 
-  const { error: updateError } = await supabase
-    .from('tasks')
-    .update(formData)
-    .eq('id', subtaskId)
-
-  if (updateError) {
-    throw new Error(updateError.message)
-  }
+  // Mettre à jour la sous-tâche
+  await updateRecord(
+    supabase,
+    'tasks',
+    subtaskId,
+    formData
+  )
 
   return { projectId: task.project_id }
 }

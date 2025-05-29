@@ -1,16 +1,16 @@
 import { Invoice } from '@/features/invoice/shared/types/invoice.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { fetchList } from '@/shared/services/supabase/crud'
 
-export async function getRecentInvoices() {
+export async function getRecentInvoices(): Promise<Invoice[]> {
   const { supabase, user } = await getSessionUser()
 
-  const res = await supabase
-    .from("invoices")
-    .select("*, client:clients(name)")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(5)
-
-  return extractDataOrThrow<Invoice[]>(res)
+  return await fetchList<Invoice>(
+    supabase,
+    'invoices',
+    '*, client:clients(name)',
+    { user_id: user.id },
+    { column: 'created_at', ascending: false },
+    5 // limit to 5 invoices
+  )
 }

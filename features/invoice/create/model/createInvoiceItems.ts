@@ -1,5 +1,6 @@
 import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { bulkInsert } from '@/shared/services/supabase/crud'
 
 export async function createInvoiceItems(
   invoiceId: string,
@@ -20,9 +21,9 @@ export async function createInvoiceItems(
     position: index + 1,
   }))
 
-  const { error } = await supabase.from('invoice_items').insert(payloads)
-
-  if (error) {
-    throw new Error(error.message || 'Erreur lors de la création des lignes de facture')
-  }
+  await bulkInsert<InvoiceItem>(
+    supabase,
+    'invoice_items',
+    payloads
+  )
 }

@@ -1,41 +1,37 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { TaskFormData } from '@/features/task/shared/types/task.types'
+import { fetchById, fetchList, updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateTask(taskId: string, formData: TaskFormData): Promise<{ projectId: string }> {
   const { supabase, user } = await getSessionUser()
 
   // Vérifier que la tâche existe
-  const { data: task, error: taskError } = await supabase
-    .from("tasks")
-    .select("project_id")
-    .eq("id", taskId)
-    .single()
-
-  if (taskError || !task) {
-    throw new Error("Tâche non trouvée")
-  }
+  const task = await fetchById<{ project_id: string }>(
+    supabase,
+    'tasks',
+    taskId,
+    'project_id'
+  )
 
   // Vérifier que le projet appartient à l'utilisateur
-  const { data: project, error: projectError } = await supabase
-    .from("projects")
-    .select("id")
-    .eq("id", task.project_id)
-    .eq("user_id", user.id)
-    .single()
+  const projects = await fetchList(
+    supabase,
+    'projects',
+    'id',
+    { id: task.project_id, user_id: user.id }
+  )
 
-  if (projectError || !project) {
+  if (!projects.length) {
     throw new Error("Projet non trouvé ou non autorisé")
   }
 
   // Mettre à jour la tâche
-  const { error: updateError } = await supabase
-    .from("tasks")
-    .update(formData)
-    .eq("id", taskId)
-
-  if (updateError) {
-    throw new Error(updateError.message)
-  }
+  await updateRecord(
+    supabase,
+    'tasks',
+    taskId,
+    formData
+  )
 
   return { projectId: task.project_id }
 }

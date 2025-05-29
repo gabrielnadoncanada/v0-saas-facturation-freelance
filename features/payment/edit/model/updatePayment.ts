@@ -1,34 +1,40 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Payment, PaymentFormData } from '@/features/payment/shared/types/payment.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { fetchById, updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updatePayment(paymentId: string, formData: PaymentFormData): Promise<void> {
   const { supabase, user } = await getSessionUser()
 
   // 1. Récupérer le paiement courant + la facture d'origine
-  const res = await supabase
-    .from("payments")
-    .select("id, invoice_id, amount, invoice:invoices(id, total, user_id)")
-    .eq("id", paymentId)
-    .single()
-  const currentPayment = extractDataOrThrow<any>(res)
+  const currentPayment = await fetchById<{
+    id: string;
+    invoice_id: string;
+    amount: number;
+    invoice: { id: string; total: number; user_id: string };
+  }>(
+    supabase,
+    'payments',
+    paymentId,
+    'id, invoice_id, amount, invoice:invoices(id, total, user_id)'
+  )
 
   if (!currentPayment.invoice || currentPayment.invoice.user_id !== user.id) {
     throw new Error("Paiement non trouvé ou non autorisé")
   }
 
   // 2. Mettre à jour le paiement
-  const { error: updateError } = await supabase
-    .from("payments")
-    .update({
+  await updateRecord(
+    supabase,
+    'payments',
+    paymentId,
+    {
       invoice_id: formData.invoice_id,
       amount: formData.amount,
       payment_date: formData.payment_date.toISOString().split("T")[0],
       payment_method: formData.payment_method,
       notes: formData.notes,
-    })
-    .eq("id", paymentId)
-  if (updateError) throw new Error(updateError.message)
+    }
+  )
 
   // 3. Si la facture a changé, recalculer l'ancienne facture (statut)
   if (formData.invoice_id !== currentPayment.invoice_id) {
@@ -37,28 +43,34 @@ export async function updatePayment(paymentId: string, formData: PaymentFormData
     if (oldSumError) throw new Error(oldSumError.message)
 
     if ((oldSum ?? 0) < Number(currentPayment.invoice.total)) {
-      await supabase
-        .from("invoices")
-        .update({ status: "sent" })
-        .eq("id", currentPayment.invoice_id)
+      await updateRecord(
+        supabase,
+        'invoices',
+        currentPayment.invoice_id,
+        { status: "sent" }
+      )
     }
   }
 
-  // 4. Vérifier la nouvelle facture (statut paid/sent)
-  const [{ data: newSum, error: newSumError }, { data: selectedInvoice, error: selectedInvoiceError }] = await Promise.all([
-    supabase.rpc("sum_payments_by_invoice", { invoiceid: formData.invoice_id }),
-    supabase.from("invoices").select("total").eq("id", formData.invoice_id).single(),
-  ])
+  // 4. Recalculer la nouvelle facture
+  const { data: newSum, error: newSumError } = await supabase
+    .rpc("sum_payments_by_invoice", { invoiceid: formData.invoice_id })
   if (newSumError) throw new Error(newSumError.message)
-  if (selectedInvoiceError) throw new Error(selectedInvoiceError.message)
 
-  if (selectedInvoice) {
-    const newTotalPaid = newSum ?? 0
-    const newStatus = newTotalPaid >= Number(selectedInvoice.total) ? "paid" : "sent"
+  // 5. Vérifier si on doit actualiser le statut de la nouvelle facture
+  const newInvoice = await fetchById<{ total: number }>(
+    supabase,
+    'invoices',
+    formData.invoice_id,
+    'total'
+  )
 
-    await supabase
-      .from("invoices")
-      .update({ status: newStatus })
-      .eq("id", formData.invoice_id)
+  if ((newSum ?? 0) >= Number(newInvoice.total)) {
+    await updateRecord(
+      supabase,
+      'invoices',
+      formData.invoice_id,
+      { status: "paid" }
+    )
   }
 }

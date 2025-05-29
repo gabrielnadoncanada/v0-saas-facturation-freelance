@@ -1,11 +1,10 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Task } from '@/features/task/shared/types/task.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 
-export async function getUpcomingTasks() {
+export async function getUpcomingTasks(): Promise<Task[]> {
   const { supabase, user } = await getSessionUser()
 
-  const res = await supabase
+  const { data, error } = await supabase
     .from("tasks")
     .select("*, projects(name)")
     .in("status", ["pending", "in_progress"])
@@ -13,5 +12,6 @@ export async function getUpcomingTasks() {
     .order("due_date", { ascending: true })
     .limit(5)
 
-  return extractDataOrThrow<Task[]>(res)
+  if (error) throw new Error(error.message)
+  return data as Task[]
 }

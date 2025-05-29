@@ -1,12 +1,12 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { ClientFormData } from '@/features/client/shared/types/client.types';
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow';
 import { Client } from '@/features/client/shared/types/client.types';
+import { updateRecord } from '@/shared/services/supabase/crud';
 
 export async function updateClient(clientId: string, data: ClientFormData): Promise<Client> {
   const { supabase, user } = await getSessionUser()
 
-  const finalData = { ...data };
+  const finalData = { ...data } as any;
 
   delete finalData.sameAsShipping;
 
@@ -17,9 +17,17 @@ export async function updateClient(clientId: string, data: ClientFormData): Prom
     finalData.shipping_country = data.billing_country;
   }
 
-  const res = await supabase.from("clients").update(finalData).eq("id", clientId).eq("user_id", user.id).select("*").single()
+  // Convert hourly_rate to number if it's a string
+  if (typeof finalData.hourly_rate === 'string') {
+    finalData.hourly_rate = parseFloat(finalData.hourly_rate) || null;
+  }
 
-  if (res.error) throw new Error(res.error.message)
-
-  return extractDataOrThrow<Client>(res)
+  return await updateRecord<Client>(
+    supabase,
+    'clients',
+    clientId,
+    finalData,
+    '*',
+    { user_id: user.id }
+  )
 } 

@@ -1,13 +1,14 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { deleteRecord } from '@/shared/services/supabase/crud'
 
 export async function deleteTimeEntry(entryId: string): Promise<void> {
   const { supabase, user } = await getSessionUser()
-  const { error } = await supabase
-    .from('time_entries')
-    .delete()
-    .eq('id', entryId)
-    .eq('user_id', user.id)
-  if (error) {
-    throw new Error(error.message)
-  }
+  
+  await deleteRecord(
+    supabase,
+    'time_entries',
+    entryId,
+    '*',
+    { user_id: user.id }
+  )
 }

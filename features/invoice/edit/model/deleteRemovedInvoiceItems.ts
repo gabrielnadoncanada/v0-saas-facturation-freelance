@@ -1,7 +1,8 @@
 import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { batchDelete } from '@/shared/services/supabase/crud'
 
-export async function deleteRemovedInvoiceItems(items: InvoiceItem[], originalItems: InvoiceItem[]) {
+export async function deleteRemovedInvoiceItems(items: InvoiceItem[], originalItems: InvoiceItem[]): Promise<void> {
   const { supabase } = await getSessionUser()
 
   const itemsToDelete = originalItems
@@ -9,13 +10,6 @@ export async function deleteRemovedInvoiceItems(items: InvoiceItem[], originalIt
     .map(item => item.id)
 
   if (itemsToDelete.length > 0) {
-    const res = await supabase
-      .from("invoice_items")
-      .delete()
-      .in("id", itemsToDelete as string[])
-
-    if (res.error) throw new Error(res.error.message)
-
-    return null
+    await batchDelete(supabase, 'invoice_items', itemsToDelete as string[])
   }
 }

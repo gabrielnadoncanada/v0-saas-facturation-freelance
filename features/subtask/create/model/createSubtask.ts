@@ -1,42 +1,36 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Task, TaskFormData } from '@/features/task/shared/types/task.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { fetchById, fetchList, insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createSubtask(taskId: string, formData: TaskFormData): Promise<{ subtask: Task; projectId: string }> {
   const { supabase, user } = await getSessionUser()
 
-  // Vérifier que la tâche appartient à l'utilisateur via le projet
-  const { data: task, error: taskError } = await supabase
-    .from('tasks')
-    .select('project_id')
-    .eq('id', taskId)
-    .single()
+  // Vérifier que la tâche existe
+  const task = await fetchById<{ project_id: string }>(
+    supabase,
+    'tasks',
+    taskId,
+    'project_id'
+  )
 
-  if (taskError || !task) {
-    throw new Error('Tâche non trouvée')
-  }
+  // Vérifier que le projet appartient à l'utilisateur
+  const projects = await fetchList(
+    supabase,
+    'projects',
+    'id',
+    { id: task.project_id, user_id: user.id }
+  )
 
-  const { data: project, error: projectError } = await supabase
-    .from('projects')
-    .select('id')
-    .eq('id', task.project_id)
-    .eq('user_id', user.id)
-    .single()
-
-  if (projectError || !project) {
+  if (!projects.length) {
     throw new Error('Projet non trouvé ou non autorisé')
   }
 
-  const { data, error: insertError } = await supabase
-    .from('tasks')
-    .insert({ ...formData, project_id: project.id, parent_task_id: taskId })
-    .select()
+  // Créer la sous-tâche
+  const subtask = await insertRecord<Task>(
+    supabase,
+    'tasks',
+    { ...formData, project_id: task.project_id, parent_task_id: taskId }
+  )
 
-  if (insertError) {
-    throw new Error(insertError.message)
-  }
-
-  const subtask = extractDataOrThrow<Task>(data?.[0])
-
-  return { subtask, projectId: project.id }
+  return { subtask, projectId: task.project_id }
 }

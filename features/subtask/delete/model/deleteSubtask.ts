@@ -1,37 +1,35 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { fetchById, fetchList, deleteRecord } from '@/shared/services/supabase/crud'
 
 export async function deleteSubtask(subtaskId: string): Promise<{ projectId: string }> {
   const { supabase, user } = await getSessionUser()
 
-  const { data: task, error: taskError } = await supabase
-    .from('tasks')
-    .select('project_id')
-    .eq('id', subtaskId)
-    .single()
+  // Récupérer la sous-tâche
+  const task = await fetchById<{ project_id: string }>(
+    supabase,
+    'tasks',
+    subtaskId,
+    'project_id'
+  )
 
-  if (taskError || !task) {
-    throw new Error('Sous-tâche non trouvée')
-  }
+  // Vérifier que le projet appartient à l'utilisateur
+  const projects = await fetchList(
+    supabase,
+    'projects',
+    'id',
+    { id: task.project_id, user_id: user.id }
+  )
 
-  const { data: project, error: projectError } = await supabase
-    .from('projects')
-    .select('id')
-    .eq('id', task.project_id)
-    .eq('user_id', user.id)
-    .single()
-
-  if (projectError || !project) {
+  if (!projects.length) {
     throw new Error('Projet non trouvé ou non autorisé')
   }
 
-  const { error: deleteError } = await supabase
-    .from('tasks')
-    .delete()
-    .eq('id', subtaskId)
-
-  if (deleteError) {
-    throw new Error(deleteError.message)
-  }
+  // Supprimer la sous-tâche
+  await deleteRecord(
+    supabase,
+    'tasks',
+    subtaskId
+  )
 
   return { projectId: task.project_id }
 }

@@ -1,5 +1,6 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { UserProfileFormData } from '@/features/setting/types/profile.types'
+import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateUserProfile(formData: UserProfileFormData): Promise<void> {
   const { supabase, user } = await getSessionUser()
@@ -16,9 +17,11 @@ export async function updateUserProfile(formData: UserProfileFormData): Promise<
     website,
   } = formData
 
-  const { error: updateError } = await supabase
-    .from("profiles")
-    .update({
+  await updateRecord(
+    supabase,
+    'profiles',
+    user.id,
+    {
       name,
       company_name,
       address,
@@ -27,10 +30,8 @@ export async function updateUserProfile(formData: UserProfileFormData): Promise<
       tax_rate,
       tax_id,
       website,
-    })
-    .eq("id", user.id)
-
-  if (updateError) throw new Error(updateError.message)
+    }
+  )
 
   if (email !== user.email) {
     const { error: emailError } = await supabase.auth.updateUser({ email })

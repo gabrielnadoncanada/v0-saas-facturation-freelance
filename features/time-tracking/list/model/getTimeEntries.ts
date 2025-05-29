@@ -1,15 +1,15 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
+import { fetchList } from '@/shared/services/supabase/crud'
 
 export async function getTimeEntries(): Promise<TimeEntry[]> {
   const { supabase, user } = await getSessionUser()
 
-  const res = await supabase
-    .from('time_entries')
-    .select('*, project:projects(name), task:tasks(name)')
-    .eq('user_id', user.id)
-    .order('date', { ascending: false })
-
-  return extractDataOrThrow<TimeEntry[]>(res)
+  return await fetchList<TimeEntry>(
+    supabase,
+    'time_entries',
+    '*, project:projects(name), task:tasks(name)',
+    { user_id: user.id },
+    { column: 'date', ascending: false }
+  )
 }

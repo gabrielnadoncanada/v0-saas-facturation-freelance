@@ -1,23 +1,23 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Project } from '@/features/project/shared/types/project.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { fetchById } from '@/shared/services/supabase/crud'
 
 export async function getProjectDetails(projectId: string): Promise<Project> {
   const { supabase, user } = await getSessionUser()
 
-  const res = await supabase
-    .from("projects")
-    .select(`
+  const project = await fetchById<Project>(
+    supabase,
+    'projects',
+    projectId,
+    `
       *,
       client:clients(name),
       tasks(*, time_entries(*))
-    `)
-    .eq("id", projectId)
-    .eq("user_id", user.id)
-    .single()
+    `,
+    { user_id: user.id }
+  )
 
-  const project = extractDataOrThrow<Project>(res)
-
+  // Transform tasks into a hierarchical structure
   const tasks = project.tasks as any[]
   const map = new Map<string, any>()
   tasks.forEach((t) => {

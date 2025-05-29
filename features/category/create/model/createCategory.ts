@@ -1,6 +1,6 @@
 import { Category, CategoryFormData } from '@/features/category/shared/types/category.types'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createCategory(data: CategoryFormData): Promise<Category> {
   const { supabase, user } = await getSessionUser()
@@ -12,11 +12,9 @@ export async function createCategory(data: CategoryFormData): Promise<Category> 
     updated_at: new Date().toISOString(),
   }
 
-  const res = await supabase
-    .from("product_categories")
-    .insert(finalData)
-    .select("*")
-    .single()
-
-  return extractDataOrThrow<Category>(res)
+  return await insertRecord<Category>(
+    supabase,
+    'product_categories',
+    finalData
+  )
 }

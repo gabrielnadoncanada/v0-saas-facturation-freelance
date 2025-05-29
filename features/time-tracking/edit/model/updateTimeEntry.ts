@@ -1,31 +1,31 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { TimeEntryFormData } from '@/features/time-tracking/shared/types/timeEntry.types'
+import { fetchById, updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateTimeEntry(entryId: string, formData: TimeEntryFormData): Promise<void> {
   const { supabase, user } = await getSessionUser()
 
-  const { data: entry, error: fetchError } = await supabase
-    .from('time_entries')
-    .select('user_id')
-    .eq('id', entryId)
-    .single()
+  // Vérifier que l'entrée existe et appartient à l'utilisateur
+  const entry = await fetchById(
+    supabase,
+    'time_entries',
+    entryId,
+    'user_id',
+    { user_id: user.id }
+  )
 
-  if (fetchError || !entry || entry.user_id !== user.id) {
-    throw new Error('Entrée non trouvée')
+  const updateData = {
+    project_id: formData.project_id,
+    task_id: formData.task_id || null,
+    date: formData.date.toISOString().split('T')[0],
+    hours: formData.hours,
+    description: formData.description,
   }
 
-  const { error } = await supabase
-    .from('time_entries')
-    .update({
-      project_id: formData.project_id,
-      task_id: formData.task_id || null,
-      date: formData.date.toISOString().split('T')[0],
-      hours: formData.hours,
-      description: formData.description,
-    })
-    .eq('id', entryId)
-
-  if (error) {
-    throw new Error(error.message)
-  }
+  await updateRecord(
+    supabase,
+    'time_entries',
+    entryId,
+    updateData
+  )
 }

@@ -1,6 +1,6 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Product } from '@/features/product/shared/types/product.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateProduct(productId: string, formData: Product): Promise<Product> {
   const { supabase, user } = await getSessionUser()
@@ -23,13 +23,12 @@ export async function updateProduct(productId: string, formData: Product): Promi
     updated_at: new Date().toISOString(),
   }
 
-  const res = await supabase
-    .from("products")
-    .update(productData)
-    .eq("id", productId)
-    .eq("user_id", user.id)
-    .select("*")
-    .single()
-
-  return extractDataOrThrow<Product>(res)
+  return await updateRecord<Product>(
+    supabase,
+    'products',
+    productId,
+    productData,
+    '*',
+    { user_id: user.id }
+  )
 }

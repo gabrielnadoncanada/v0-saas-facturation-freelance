@@ -1,16 +1,16 @@
 import { Project } from '@/features/project/shared/types/project.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
+import { fetchList } from '@/shared/services/supabase/crud'
 
-export async function getRecentProjects() {
+export async function getRecentProjects(): Promise<Project[]> {
   const { supabase, user } = await getSessionUser()
 
-  const res = await supabase
-    .from("projects")
-    .select("*, clients(name), tasks(status)")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(5)
-
-  return extractDataOrThrow<Project[]>(res)
+  return await fetchList<Project>(
+    supabase,
+    'projects',
+    '*, clients(name), tasks(status)',
+    { user_id: user.id },
+    { column: 'created_at', ascending: false },
+    5 // limit to 5 projects
+  )
 }

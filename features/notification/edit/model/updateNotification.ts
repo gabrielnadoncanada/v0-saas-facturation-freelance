@@ -1,6 +1,6 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 import { DbNotification } from '@/features/notification/shared/types/notification.types'
+import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateNotification(
   id: string,
@@ -8,13 +8,17 @@ export async function updateNotification(
 ): Promise<DbNotification> {
   const { supabase, user } = await getSessionUser()
 
-  const res = await supabase
-    .from('notifications')
-    .update({ ...data, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .eq('user_id', user.id)
-    .select('*')
-    .single()
+  const updateData = { 
+    ...data, 
+    updated_at: new Date().toISOString() 
+  }
 
-  return extractDataOrThrow<DbNotification>(res)
+  return await updateRecord<DbNotification>(
+    supabase,
+    'notifications',
+    id,
+    updateData,
+    '*',
+    { user_id: user.id }
+  )
 }

@@ -1,6 +1,6 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 import { DbNotification, NotificationFormData } from '@/features/notification/shared/types/notification.types'
+import { insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createNotification(data: NotificationFormData): Promise<DbNotification> {
   const { supabase, user } = await getSessionUser()
@@ -13,7 +13,9 @@ export async function createNotification(data: NotificationFormData): Promise<Db
     updated_at: new Date().toISOString(),
   }
 
-  const res = await supabase.from('notifications').insert(finalData).select('*').single()
-
-  return extractDataOrThrow<DbNotification>(res)
+  return await insertRecord<DbNotification>(
+    supabase,
+    'notifications',
+    finalData
+  )
 }

@@ -1,10 +1,11 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
+import { bulkUpsert } from '@/shared/services/supabase/crud'
 
-export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[], taxRate: number): Promise<null> {
+export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[], taxRate: number): Promise<void> {
   const { supabase } = await getSessionUser()
 
-  if (items.length === 0) return null
+  if (items.length === 0) return
 
   const payloads = items.map((item, index) => {
     const basePayload = {
@@ -24,11 +25,9 @@ export async function upsertInvoiceItems(invoiceId: string, items: InvoiceItem[]
     return { id: item.id, ...basePayload }
   })
 
-  const { error } = await supabase.from('invoice_items').upsert(payloads)
-
-  if (error) {
-    throw new Error(error.message || 'Erreur lors de la mise à jour des lignes de facture')
-  }
-
-  return null
+  await bulkUpsert<InvoiceItem>(
+    supabase,
+    'invoice_items',
+    payloads
+  )
 }

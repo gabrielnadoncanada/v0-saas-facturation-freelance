@@ -1,10 +1,7 @@
 import { createClient } from "@/shared/lib/supabase/server"
+import { countRecords } from "@/shared/services/supabase/crud"
 
-export async function countInvoices() {
+export async function countInvoices(): Promise<number> {
   const supabase = await createClient()
-  const { count, error } = await supabase
-    .from("invoices")
-    .select("*", { count: "exact", head: true })
-  if (error) throw error
-  return count ?? 0
+  return await countRecords(supabase, "invoices")
 } 

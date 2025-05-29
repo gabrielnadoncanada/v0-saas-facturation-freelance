@@ -1,6 +1,6 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { Category, CategoryFormData } from '@/features/category/shared/types/category.types'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateCategory(categoryId: string, data: CategoryFormData): Promise<Category> {
   const { supabase, user } = await getSessionUser()
@@ -10,13 +10,12 @@ export async function updateCategory(categoryId: string, data: CategoryFormData)
     updated_at: new Date().toISOString(),
   }
 
-  const res = await supabase
-    .from("product_categories")
-    .update(finalData)
-    .eq("id", categoryId)
-    .eq("user_id", user.id)
-    .select("*")
-    .single()
-
-  return extractDataOrThrow<Category>(res)
+  return await updateRecord<Category>(
+    supabase,
+    'product_categories',
+    categoryId,
+    finalData,
+    '*',
+    { user_id: user.id }
+  )
 }
