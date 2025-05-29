@@ -11,6 +11,8 @@ A reusable table component that can be used across different features to maintai
 - Responsive design with desktop and mobile views
 - Empty state customization
 - Row click handling for navigation
+- Client-side sorting by clicking on column headers
+- Built-in pagination with configurable page size
 
 ## Usage
 
@@ -58,6 +60,7 @@ return (
     actions={actions}
     searchPlaceholder="Search items..."
     searchFields={["name", "email"]}
+    itemsPerPage={10}
     onRowClick={(item) => router.push(`/dashboard/items/${item.id}`)}
     deleteAction={{
       title: "Are you sure?",
@@ -83,6 +86,7 @@ return (
 | `onRowClick` | `(item: T) => void` | The function to call when a row is clicked |
 | `searchPlaceholder` | `string` | The placeholder text for the search input |
 | `searchFields` | `(keyof T)[]` | The fields to search when filtering the data |
+| `itemsPerPage` | `number` | Number of rows per page (default: 10) |
 | `emptyState` | `React.ReactNode` | The content to display when there is no data |
 | `deleteAction` | `DeleteAction` | The configuration for the delete action |
 

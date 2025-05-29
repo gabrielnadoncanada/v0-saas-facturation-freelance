@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table"
@@ -25,7 +25,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { MoreHorizontal, Search } from "lucide-react"
+import { MoreHorizontal, Search, ChevronUp, ChevronDown } from "lucide-react"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 export type Column<T> = {
   header: string
@@ -51,6 +59,7 @@ export type DataTableProps<T> = {
   searchPlaceholder?: string
   searchFields?: (keyof T)[]
   emptyState?: React.ReactNode
+  itemsPerPage?: number
   deleteAction?: {
     title: string
     description: string
@@ -69,11 +78,15 @@ export function DataTable<T extends Record<string, any>>({
   searchPlaceholder = "Rechercher...",
   searchFields,
   emptyState,
+  itemsPerPage = 10,
   deleteAction,
 }: DataTableProps<T>) {
   const [searchTerm, setSearchTerm] = useState("")
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
+  const [sortKey, setSortKey] = useState<keyof T | null>(null)
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [page, setPage] = useState(1)
 
   const filteredData = searchTerm && searchFields
     ? data.filter((item) =>
@@ -83,6 +96,28 @@ export function DataTable<T extends Record<string, any>>({
         })
       )
     : data
+
+  useEffect(() => {
+    setPage(1)
+  }, [searchTerm, sortKey, sortOrder, itemsPerPage])
+
+  const sortedData = useMemo(() => {
+    if (!sortKey) return filteredData
+    return [...filteredData].sort((a, b) => {
+      const aVal = a[sortKey]
+      const bVal = b[sortKey]
+      if (aVal === undefined || bVal === undefined) return 0
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return sortOrder === 'asc' ? aVal - bVal : bVal - aVal
+      }
+      return sortOrder === 'asc'
+        ? String(aVal).localeCompare(String(bVal))
+        : String(bVal).localeCompare(String(aVal))
+    })
+  }, [filteredData, sortKey, sortOrder])
+
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage)
+  const paginatedData = sortedData.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
   const handleDelete = async () => {
    
@@ -130,7 +165,7 @@ export function DataTable<T extends Record<string, any>>({
   if (filteredData.length === 0) {
     return emptyState || (
       <div className="text-center py-8 text-muted-foreground">
-        {searchTerm ? "Aucun résultat trouvé." : "Aucune donnée disponible."}
+      {searchTerm ? "Aucun résultat trouvé." : "Aucune donnée disponible."}
       </div>
     )
   }
@@ -159,15 +194,30 @@ export function DataTable<T extends Record<string, any>>({
             <TableHeader>
               <TableRow>
                 {columns.filter(c => c.hide !== "always").map((column, i) => (
-                  <TableHead key={i} className={column.className || "px-3 py-3.5 sm:px-6"}>
+                  <TableHead
+                    key={i}
+                    onClick={() => {
+                      if (typeof column.accessorKey !== 'string') return
+                      if (sortKey === column.accessorKey) {
+                        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+                      } else {
+                        setSortKey(column.accessorKey)
+                        setSortOrder('asc')
+                      }
+                    }}
+                    className={(typeof column.accessorKey === 'string' ? 'cursor-pointer ' : '') + (column.className || 'px-3 py-3.5 sm:px-6')}
+                  >
                     {column.header}
+                    {typeof column.accessorKey === 'string' && sortKey === column.accessorKey && (
+                      sortOrder === 'asc' ? <ChevronUp className="inline ml-1 h-3 w-3" /> : <ChevronDown className="inline ml-1 h-3 w-3" />
+                    )}
                   </TableHead>
                 ))}
                 {actions && <TableHead className="w-[100px] px-3 py-3.5 sm:px-6" />}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredData.map((item) => (
+              {paginatedData.map((item) => (
                 <TableRow
                   key={String(item[idField])}
                   className={onRowClick ? "cursor-pointer" : ""}
@@ -191,12 +241,45 @@ export function DataTable<T extends Record<string, any>>({
               ))}
             </TableBody>
           </Table>
+
         </div>
       </div>
 
+      {totalPages > 1 && (
+        <Pagination className="justify-end">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => { e.preventDefault(); setPage(Math.max(1, page - 1)) }}
+                className={page === 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink
+                  href="#"
+                  isActive={page === i + 1}
+                  onClick={(e) => { e.preventDefault(); setPage(i + 1) }}
+                >
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => { e.preventDefault(); setPage(Math.min(totalPages, page + 1)) }}
+                className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
+
       {/* Mobile cards */}
       <div className="grid grid-cols-1 gap-4 md:hidden">
-        {filteredData.map((item) => (
+        {paginatedData.map((item) => (
           <Card key={String(item[idField])} className={onRowClick ? "cursor-pointer hover:shadow-md transition-shadow" : ""}>
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
