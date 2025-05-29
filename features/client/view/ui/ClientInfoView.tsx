@@ -14,7 +14,7 @@ export function ClientInfoView({ client }: ClientInfoProps) {
 
   return (
     <Card className="mb-6">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-xl font-bold">{client.name}</CardTitle>
         <div className="flex gap-2">
           <Link 

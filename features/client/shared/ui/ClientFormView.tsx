@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, FileText, Loader2, MapPin, Truck, User } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -103,8 +103,10 @@ export function ClientFormView({
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <h3 className="text-lg font-medium mb-4">Adresse de facturation</h3>
+          <CardHeader>
+            <CardTitle className="text-lg font-medium">Adresse de facturation</CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField
                 control={form.control}

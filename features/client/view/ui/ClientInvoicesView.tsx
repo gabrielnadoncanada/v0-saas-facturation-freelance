@@ -26,7 +26,7 @@ export function ClientInvoicesView({ invoices, currency = 'EUR' }: ClientInvoice
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-xl">Factures</CardTitle>
         <Link href={`/dashboard/invoices/new`} passHref>
           <Button variant="outline" size="sm">
