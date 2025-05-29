@@ -1,7 +1,7 @@
 import { ClientFormSchema } from '@/features/client/shared/schema/client.schema';
 import { Client } from '@/features/client/shared/types/client.types';
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
+import { insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createClient(formData: ClientFormSchema): Promise<Client> {
   const { supabase, user } = await getSessionUser() 
@@ -19,9 +19,5 @@ export async function createClient(formData: ClientFormSchema): Promise<Client> 
 
   finalData.user_id = user.id;
 
-  const res = await supabase.from("clients").insert(finalData).select("*").single()
-
-  if (res.error) throw new Error(res.error.message)
-
-  return extractDataOrThrow<Client>(res)
+  return await insertRecord<Client>(supabase, 'clients', finalData)
 }
