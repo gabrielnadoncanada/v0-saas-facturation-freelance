@@ -1,17 +1,12 @@
 'use server'
 
 import { deleteInvoice } from '@/features/invoice/delete/model/deleteInvoice'
-import { Invoice } from '@/features/invoice/shared/types/invoice.types'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { fail, Result } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
-export async function deleteInvoiceAction(invoiceId: string): Promise<Result<Invoice>> {
-  try {
+export async function deleteInvoiceAction(invoiceId: string): Promise<Result<null>> {
+  return withAction(async () => {
     await deleteInvoice(invoiceId)
-    revalidatePath('/dashboard/invoices')
-    redirect('/dashboard/invoices')
-  } catch (err: any) {
-    return fail((err as Error).message)
-  }
+    return null
+  }, { revalidatePath: '/dashboard/invoices', redirect: '/dashboard/invoices' })
 }

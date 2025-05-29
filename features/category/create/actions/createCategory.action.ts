@@ -4,15 +4,15 @@ import { CategoryFormData } from '@/features/category/shared/types/category.type
 import { createCategory } from '@/features/category/create/model/createCategory'
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { fail, Result } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function createCategoryAction(data: CategoryFormData): Promise<Result<null>> {
-  try {
+  return withAction(async () => {
     await createCategory(data)
     revalidatePath("/dashboard/products/categories")
     revalidatePath("/dashboard/products")
     redirect("/dashboard/products/categories")
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  })
 }

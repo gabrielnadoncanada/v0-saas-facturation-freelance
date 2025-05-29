@@ -2,13 +2,12 @@
 
 import { Client } from '@/features/client/shared/types/client.types'
 import { getClients } from '@/features/client/list/model/getClients'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function getClientsAction(): Promise<Result<Client[]>> {
-  try {
+  return withAction(async () => {
     const clients = await getClients()
-    return success(clients)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return clients
+  })
 }

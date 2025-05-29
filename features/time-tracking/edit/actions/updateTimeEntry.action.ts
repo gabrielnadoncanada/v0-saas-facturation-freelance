@@ -3,17 +3,15 @@
 import { revalidatePath } from 'next/cache'
 import { updateTimeEntry } from '@/features/time-tracking/edit/model/updateTimeEntry'
 import { TimeEntryFormData } from '@/features/time-tracking/shared/types/timeEntry.types'
-import { Result, fail, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function updateTimeEntryAction(
   entryId: string,
   formData: TimeEntryFormData,
 ): Promise<Result<null>> {
-  try {
+  return withAction(async () => {
     await updateTimeEntry(entryId, formData)
-    revalidatePath('/dashboard/time-tracking')
-    return success(null)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  }, { revalidatePath: '/dashboard/time-tracking' })
 }

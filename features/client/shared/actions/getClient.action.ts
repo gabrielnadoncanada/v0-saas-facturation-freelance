@@ -1,13 +1,12 @@
 "use server"
 import { Client } from '@/features/client/shared/types/client.types';
 import { getClient } from '@/features/client/shared/model/getClient';
-import { fail, Result, success } from '@/shared/utils/result';
+import { Result } from '@/shared/utils/result';
+import { withAction } from '@/shared/utils/withAction';
 
 export async function getClientAction(clientId: string): Promise<Result<Client>> {
-  try {
+  return withAction(async () => {
     const client = await getClient(clientId);
-    return success(client);
-  } catch (error) {
-    return fail((error as Error).message);
-  }
-} 
+    return client;
+  });
+}

@@ -2,13 +2,12 @@
 
 import { getTimeEntries } from '../model/getTimeEntries'
 import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
-import { Result, success, fail } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function getTimeEntriesAction(): Promise<Result<TimeEntry[]>> {
-  try {
+  return withAction(async () => {
     const entries = await getTimeEntries()
-    return success(entries)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return entries
+  })
 }

@@ -6,10 +6,11 @@ import { PaymentFormData } from '@/features/payment/shared/types/payment.types'
 import { createPayment } from '@/features/payment/create/model/createPayment'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function createPaymentAction(formData: PaymentFormData): Promise<Result<{ url: string | null }>> {
-  try {
+  return withAction(async () => {
     if (formData.payment_method === 'stripe') {
       const { supabase, user } = await getSessionUser()
 
@@ -44,13 +45,11 @@ export async function createPaymentAction(formData: PaymentFormData): Promise<Re
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/payments`,
       })
 
-      return success({ url: session.url })
+      return { url: session.url }
     }
 
     await createPayment(formData)
     revalidatePath('/dashboard/payments')
-    return success({ url: null })
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return { url: null }
+  })
 }

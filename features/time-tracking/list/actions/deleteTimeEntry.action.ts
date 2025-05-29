@@ -1,15 +1,13 @@
 'use server'
 
 import { deleteTimeEntry } from '../model/deleteTimeEntry'
-import { Result, success, fail } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 import { revalidatePath } from 'next/cache'
 
 export async function deleteTimeEntryAction(entryId: string): Promise<Result<null>> {
-  try {
+  return withAction(async () => {
     await deleteTimeEntry(entryId)
-    revalidatePath('/dashboard/time-tracking')
-    return success(null)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  }, { revalidatePath: '/dashboard/time-tracking' })
 }

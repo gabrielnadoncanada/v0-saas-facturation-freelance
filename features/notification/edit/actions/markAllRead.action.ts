@@ -1,13 +1,12 @@
 'use server'
 
 import { markAllNotificationsRead } from '@/features/notification/edit/model/markAllRead'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function markAllNotificationsReadAction(): Promise<Result<null>> {
-  try {
+  return withAction(async () => {
     await markAllNotificationsRead()
-    return success(null)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  })
 }

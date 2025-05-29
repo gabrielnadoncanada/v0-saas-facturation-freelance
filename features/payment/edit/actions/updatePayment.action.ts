@@ -3,17 +3,15 @@
 import { revalidatePath } from 'next/cache'
 import { updatePayment } from '@/features/payment/edit/model/updatePayment'
 import { PaymentFormData } from '@/features/payment/shared/types/payment.types'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function updatePaymentAction(
   paymentId: string,
   formData: PaymentFormData
 ): Promise<Result<null>> {
-  try {
+  return withAction(async () => {
     await updatePayment(paymentId, formData)
-    revalidatePath("/dashboard/payments")
-    return success(null)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  }, { revalidatePath: '/dashboard/payments' })
 }

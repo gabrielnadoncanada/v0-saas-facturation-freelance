@@ -1,16 +1,13 @@
 'use server'
 
 import { deleteProject } from '@/features/project/delete/model/deleteProject'
-import { fail, Result } from '@/shared/utils/result'
-import { success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 import { revalidatePath } from 'next/cache'
 
 export async function deleteProjectAction(projectId: string): Promise<Result<null>> {
-  try {
+  return withAction(async () => {
     await deleteProject(projectId)
-    revalidatePath('/dashboard/projects')
-    return success(null)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  }, { revalidatePath: '/dashboard/projects' })
 }

@@ -2,14 +2,12 @@
 
 import { getProduct } from "@/features/product/shared/model/getProduct"
 import { Product } from '@/features/product/shared/types/product.types'
-import { fail, Result } from "@/shared/utils/result"
-import { success } from "@/shared/utils/result"
+import { Result } from "@/shared/utils/result"
+import { withAction } from "@/shared/utils/withAction"
 
 export async function getProductAction(productId: string): Promise<Result<Product>> {
-  try {
+  return withAction(async () => {
     const product = await getProduct(productId)
-    return success(product)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return product
+  })
 }

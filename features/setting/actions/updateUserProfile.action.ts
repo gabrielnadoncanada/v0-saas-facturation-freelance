@@ -4,7 +4,8 @@ import { updateUserProfile } from "@/features/setting/model/updateUserProfile"
 import { UserProfileFormData } from '@/features/setting/types/profile.types'
 import { profileFormSchema } from '@/features/setting/schema/profile.schema'
 import { revalidatePath } from 'next/cache'
-import { fail, Result, success } from "@/shared/utils/result"
+import { Result, fail } from "@/shared/utils/result"
+import { withAction } from "@/shared/utils/withAction"
 import { safeParseForm } from '@/shared/utils/safeParseForm'
 
 export async function updateUserProfileAction(form: FormData): Promise<Result<null>> {
@@ -15,11 +16,8 @@ export async function updateUserProfileAction(form: FormData): Promise<Result<nu
     return fail(errorMessage)
   }
 
-  try {
+  return withAction(async () => {
     await updateUserProfile(parsed.data as UserProfileFormData)
-    revalidatePath('/dashboard/profile')
-    return success(null)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return null
+  }, { revalidatePath: '/dashboard/profile' })
 }

@@ -2,18 +2,16 @@
 
 import { revalidatePath } from 'next/cache'
 import { updateInvoiceStatus } from '@/features/invoice/shared/model/updateInvoiceStatus'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 import { Invoice } from '@/features/invoice/shared/types/invoice.types'
 
 export async function updateInvoiceStatusAction(
   invoiceId: string,
   status: string
 ): Promise<Result<Invoice>> {
-  try {
+  return withAction(async () => {
     const invoice = await updateInvoiceStatus(invoiceId, status)
-    revalidatePath('/dashboard/invoices')
-    return success(invoice)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return invoice
+  }, { revalidatePath: '/dashboard/invoices' })
 }
