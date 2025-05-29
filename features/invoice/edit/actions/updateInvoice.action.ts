@@ -5,6 +5,9 @@ import { deleteRemovedInvoiceItems } from '@/features/invoice/edit/model/deleteR
 import { upsertInvoiceItems } from '@/features/invoice/edit/model/upsertInvoiceItems'
 import { Result } from '@/shared/utils/result'
 import { withAction } from '@/shared/utils/withAction'
+import { INVOICES_PATH } from '@/shared/lib/routes'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'  
 
 export async function updateInvoiceAction(
   invoiceId: string,
@@ -16,6 +19,8 @@ export async function updateInvoiceAction(
     await updateInvoice(invoiceId, formData)
     await deleteRemovedInvoiceItems(items, originalItems)
     await upsertInvoiceItems(invoiceId, items, formData.tax_rate)
+    revalidatePath(INVOICES_PATH)
+    redirect(`${INVOICES_PATH}/${invoiceId}`)
     return null
-  }, { revalidatePath: '/dashboard/invoices', redirect: `/dashboard/invoices/${invoiceId}` })
+  })
 }

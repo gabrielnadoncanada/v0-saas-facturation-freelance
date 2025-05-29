@@ -5,11 +5,12 @@ import { Client, ClientFormData } from "@/features/client/shared/types/client.ty
 import { createClient } from "@/features/client/create/model/createClient"
 import { Result } from "@/shared/utils/result"
 import { withAction } from "@/shared/utils/withAction"
+import { CLIENTS_PATH } from "@/shared/lib/routes"  
 
 export async function createClientInlineAction(data: ClientFormData): Promise<Result<Client>> {
   return withAction(async () => {
     const client = await createClient(data)
-    revalidatePath("/dashboard/clients")
+    revalidatePath(CLIENTS_PATH)
     return client as Client
   })
 }

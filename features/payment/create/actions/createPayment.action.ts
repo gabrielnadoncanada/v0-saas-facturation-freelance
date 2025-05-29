@@ -8,6 +8,7 @@ import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
 import { Result } from '@/shared/utils/result'
 import { withAction } from '@/shared/utils/withAction'
+import { PAYMENTS_PATH } from '@/shared/lib/routes'
 
 export async function createPaymentAction(formData: PaymentFormData): Promise<Result<{ url: string | null }>> {
   return withAction(async () => {
@@ -23,7 +24,7 @@ export async function createPaymentAction(formData: PaymentFormData): Promise<Re
       const invoice = extractDataOrThrow<any>(res)
       if (invoice.user_id !== user.id) throw new Error('Facture non trouvée ou non autorisée')
 
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-04-10' })
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-04-30.basil' })
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -49,7 +50,7 @@ export async function createPaymentAction(formData: PaymentFormData): Promise<Re
     }
 
     await createPayment(formData)
-    revalidatePath('/dashboard/payments')
+    revalidatePath(PAYMENTS_PATH)
     return { url: null }
   })
 }
