@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import { createClient } from "@/shared/lib/supabase/client"
+import type { Category } from "@/features/category/shared/types/category.types"
 
 export function useCategories() {
-  const [categories, setCategories] = useState<any[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -22,8 +23,12 @@ export function useCategories() {
       if (error) throw error
 
       setCategories(data || [])
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("Une erreur inconnue est survenue")
+      }
     } finally {
       setIsLoading(false)
     }
