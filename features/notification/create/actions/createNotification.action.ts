@@ -2,15 +2,14 @@
 
 import { createNotification } from '@/features/notification/create/model/createNotification'
 import { NotificationFormData, DbNotification } from '@/features/notification/shared/types/notification.types'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function createNotificationAction(
   data: NotificationFormData,
 ): Promise<Result<DbNotification>> {
-  try {
+  return withAction(async () => {
     const notification = await createNotification(data)
-    return success(notification)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return notification
+  })
 }

@@ -2,13 +2,12 @@
 
 import { getNotifications } from '@/features/notification/list/model/getNotifications'
 import { DbNotification } from '@/features/notification/shared/types/notification.types'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function getNotificationsAction(): Promise<Result<DbNotification[]>> {
-  try {
+  return withAction(async () => {
     const notifications = await getNotifications()
-    return success(notifications)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return notifications
+  })
 }

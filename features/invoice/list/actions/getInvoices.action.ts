@@ -2,13 +2,12 @@
 
 import { getInvoices } from '../model/getInvoices'
 import { Invoice } from '@/features/invoice/shared/types/invoice.types'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function getInvoicesAction(): Promise<Result<Invoice[]>> {
-  try {
+  return withAction(async () => {
     const invoices = await getInvoices()
-    return success(invoices)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return invoices
+  })
 }

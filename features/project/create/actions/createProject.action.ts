@@ -2,14 +2,12 @@
 
 import { createProject } from '@/features/project/create/model/createProject'
 import { Project, ProjectFormData } from '@/features/project/shared/types/project.types'
-import { fail, Result } from '@/shared/utils/result'
-import { success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function createProjectAction(formData: ProjectFormData): Promise<Result<Project>> {
-  try {
+  return withAction(async () => {
     const project = await createProject(formData)
-    return success(project)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return project
+  })
 }

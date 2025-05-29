@@ -2,13 +2,12 @@
 
 import { getProjectDetails } from '@/features/project/view/model/getProjectDetails'
 import { Project } from '@/features/project/shared/types/project.types'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function getProjectAction(projectId: string): Promise<Result<Project>> {
-  try {
+  return withAction(async () => {
     const project = await getProjectDetails(projectId)
-    return success(project)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
-} 
+    return project
+  })
+}

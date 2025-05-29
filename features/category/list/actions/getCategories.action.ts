@@ -2,14 +2,13 @@
 
 import { getCategories } from '@/features/category/list/model/getCategories'
 import { Category } from '@/features/category/shared/types/category.types'
-import { fail, Result, success } from '@/shared/utils/result'
+import { Result } from '@/shared/utils/result'
+import { withAction } from '@/shared/utils/withAction'
 
 export async function getCategoriesAction(): Promise<Result<Category[]>> {
-  try {
+  return withAction(async () => {
     const categories = await getCategories()
-    return success(categories)
-  } catch (error) {
-    return fail((error as Error).message)
-  }
+    return categories
+  })
 }
 
