@@ -5,13 +5,13 @@ import { createInvoiceItems } from '@/features/invoice/create/model/createInvoic
 import { Invoice, InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
 import { fail, Result, success } from '@/shared/utils/result'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { INVOICES_PATH } from '@/shared/lib/routes'
 
 export async function createInvoiceAction(formData: Invoice, items: InvoiceItem[]): Promise<Result<null>> {
   try {
     const invoiceId = await createInvoice(formData)
     await createInvoiceItems(invoiceId, items, formData.tax_rate)
-    revalidatePath('/dashboard/invoices')
+    revalidatePath(INVOICES_PATH)
     return success(null)
   } catch (error) {
     return fail((error as Error).message)

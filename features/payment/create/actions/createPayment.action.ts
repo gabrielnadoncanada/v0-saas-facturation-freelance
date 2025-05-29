@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { PAYMENTS_PATH } from '@/shared/lib/routes'
 import Stripe from 'stripe'
 import { PaymentFormData } from '@/features/payment/shared/types/payment.types'
 import { createPayment } from '@/features/payment/create/model/createPayment'
@@ -48,7 +49,7 @@ export async function createPaymentAction(formData: PaymentFormData): Promise<Re
     }
 
     await createPayment(formData)
-    revalidatePath('/dashboard/payments')
+    revalidatePath(PAYMENTS_PATH)
     return success({ url: null })
   } catch (error) {
     return fail((error as Error).message)

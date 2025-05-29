@@ -5,6 +5,7 @@ import { CategoryFormData } from '@/features/category/shared/types/category.type
 import { fail, Result } from '@/shared/utils/result'
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { PRODUCT_CATEGORIES_PATH, PRODUCTS_PATH } from '@/shared/lib/routes'
 
 export async function updateCategoryAction(
   categoryId: string,
@@ -12,9 +13,9 @@ export async function updateCategoryAction(
 ): Promise<Result<null>> {
   try {
     await updateCategory(categoryId, data)
-    revalidatePath("/dashboard/products/categories")
-    revalidatePath("/dashboard/products")
-    redirect("/dashboard/products/categories")
+    revalidatePath(PRODUCT_CATEGORIES_PATH)
+    revalidatePath(PRODUCTS_PATH)
+    redirect(PRODUCT_CATEGORIES_PATH)
   } catch (error) {
     return fail((error as Error).message)
   }
