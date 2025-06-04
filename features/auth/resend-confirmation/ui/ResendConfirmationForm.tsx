@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { useResendConfirmationForm } from '@/features/auth/resend-confirmation/hooks/useResendConfirmationForm'
-import { ResendConfirmationFormView } from '@/features/auth/resend-confirmation/ui/ResendConfirmationFormView'
+import { useResendConfirmationForm } from '@/features/auth/resend-confirmation/hooks/useResendConfirmationForm';
+import { ResendConfirmationFormView } from '@/features/auth/resend-confirmation/ui/ResendConfirmationFormView';
 
 export function ResendConfirmationForm() {
-  const { form, onSubmit, serverError, sent } = useResendConfirmationForm()
+  const { form, onSubmit, serverError, sent } = useResendConfirmationForm();
   return (
     <ResendConfirmationFormView
       form={form}
@@ -12,5 +12,5 @@ export function ResendConfirmationForm() {
       serverError={serverError}
       sent={sent}
     />
-  )
+  );
 }

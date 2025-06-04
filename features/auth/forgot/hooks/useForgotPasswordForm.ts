@@ -1,7 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { forgotPasswordSchema, ForgotPasswordSchema } from '@/features/auth/shared/schema/auth.schema';
+import {
+  forgotPasswordSchema,
+  ForgotPasswordSchema,
+} from '@/features/auth/shared/schema/auth.schema';
 import { forgotPasswordAction } from '@/features/auth/forgot/actions/forgotPassword.action';
 
 export function useForgotPasswordForm() {
@@ -28,4 +31,4 @@ export function useForgotPasswordForm() {
   };
 
   return { form, onSubmit, serverError, sent };
-} 
+}

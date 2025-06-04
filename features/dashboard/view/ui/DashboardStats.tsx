@@ -1,5 +1,5 @@
-import { DashboardCards } from '@/components/dashboard/dashboard-cards'
+import { DashboardCards } from '@/components/dashboard/dashboard-cards';
 
 export function DashboardStats({ stats }: { stats: any }) {
-  return <DashboardCards stats={stats} />
+  return <DashboardCards stats={stats} />;
 }

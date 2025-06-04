@@ -34,4 +34,3 @@ export interface ClientFormData {
   notes?: string;
   sameAsShipping?: boolean;
 }
-

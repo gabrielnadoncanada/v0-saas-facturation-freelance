@@ -1,22 +1,18 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { CategoryFormView } from "@/features/category/shared/ui/CategoryFormView"
-import { useCategoryForm } from "@/features/category/shared/hooks/useCategoryForm"
+import { CategoryFormView } from '@/features/category/shared/ui/CategoryFormView';
+import { useCategoryForm } from '@/features/category/shared/hooks/useCategoryForm';
 
 interface CategoryFormUIProps {
-  category?: any
-  isModal?: boolean
-  onSuccess?: (categoryId: string | null) => void
+  category?: any;
+  isModal?: boolean;
+  onSuccess?: (categoryId: string | null) => void;
 }
 
-export function CategoryForm({
-  category,
-  isModal = false,
-  onSuccess,
-}: CategoryFormUIProps) {
-  const { form, isLoading, error, success } = useCategoryForm({ category, isModal, onSuccess })
+export function CategoryForm({ category, isModal = false, onSuccess }: CategoryFormUIProps) {
+  const { form, isLoading, error, success } = useCategoryForm({ category, isModal, onSuccess });
 
   return (
     <CategoryFormView
@@ -26,5 +22,5 @@ export function CategoryForm({
       success={success}
       category={category}
     />
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { Invoice } from "@/features/invoice/shared/types/invoice.types";
+import { Invoice } from '@/features/invoice/shared/types/invoice.types';
 
 export interface Payment {
   id: string;

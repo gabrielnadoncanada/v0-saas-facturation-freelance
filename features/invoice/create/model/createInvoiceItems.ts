@@ -1,15 +1,15 @@
-import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types'
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { bulkInsert } from '@/shared/services/supabase/crud'
+import { InvoiceItem } from '@/features/invoice/shared/types/invoice.types';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { bulkInsert } from '@/shared/services/supabase/crud';
 
 export async function createInvoiceItems(
   invoiceId: string,
   items: InvoiceItem[],
-  globalTaxRate: number
+  globalTaxRate: number,
 ): Promise<void> {
-  const { supabase } = await getSessionUser()
+  const { supabase } = await getSessionUser();
 
-  if (items.length === 0) return
+  if (items.length === 0) return;
 
   const payloads = items.map((item, index) => ({
     invoice_id: invoiceId,
@@ -19,11 +19,7 @@ export async function createInvoiceItems(
     tax_rate: Number(globalTaxRate),
     amount: Number(item.quantity) * Number(item.unit_price),
     position: index + 1,
-  }))
+  }));
 
-  await bulkInsert<InvoiceItem>(
-    supabase,
-    'invoice_items',
-    payloads
-  )
+  await bulkInsert<InvoiceItem>(supabase, 'invoice_items', payloads);
 }

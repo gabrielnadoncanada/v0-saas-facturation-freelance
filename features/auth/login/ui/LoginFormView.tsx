@@ -1,9 +1,16 @@
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { UseFormReturn } from "react-hook-form";
-import { LoginSchema } from "@/features/auth/shared/schema/auth.schema";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { UseFormReturn } from 'react-hook-form';
+import { LoginSchema } from '@/features/auth/shared/schema/auth.schema';
 
 interface LoginFormViewProps {
   form: UseFormReturn<LoginSchema>;
@@ -54,11 +61,11 @@ export function LoginFormView({ form, onSubmit, serverError, isLoading }: LoginF
         />
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Connexion en cours..." : "Se connecter"}
+          {isLoading ? 'Connexion en cours...' : 'Se connecter'}
         </Button>
 
         <div className="text-center text-sm">
-          Pas encore de compte?{" "}
+          Pas encore de compte?{' '}
           <Link href="/register" className="text-primary hover:underline">
             S'inscrire
           </Link>
@@ -66,4 +73,4 @@ export function LoginFormView({ form, onSubmit, serverError, isLoading }: LoginF
       </form>
     </Form>
   );
-} 
+}

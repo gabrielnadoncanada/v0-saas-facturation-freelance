@@ -1,17 +1,17 @@
-import { PaymentsTable } from "@/features/payment/list/ui/PaymentsTable"
-import { Button } from "@/components/ui/button"
-import { getPaymentsAction } from "@/features/payment/list/actions/getPayments.action"
-import { Plus } from "lucide-react"
-import Link from "next/link"
-import { redirect } from "next/navigation"
+import { PaymentsTable } from '@/features/payment/list/ui/PaymentsTable';
+import { Button } from '@/components/ui/button';
+import { getPaymentsAction } from '@/features/payment/list/actions/getPayments.action';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function PaymentsPage() {
-  const result = await getPaymentsAction()
+  const result = await getPaymentsAction();
 
   if (!result.success) {
-    redirect("/login")
+    redirect('/login');
   }
-  
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
@@ -29,5 +29,5 @@ export default async function PaymentsPage() {
 
       <PaymentsTable payments={result.data!} />
     </div>
-  )
+  );
 }

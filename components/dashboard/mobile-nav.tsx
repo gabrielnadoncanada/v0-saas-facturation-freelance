@@ -1,106 +1,119 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/shared/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Home, Users, FileText, Clock, CreditCard, Settings, Briefcase, UserCircle } from "lucide-react"
-import { APP_NAME } from "@/shared/lib/constants"
-import Image from "next/image"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Menu,
+  Home,
+  Users,
+  FileText,
+  Clock,
+  CreditCard,
+  Settings,
+  Briefcase,
+  UserCircle,
+} from 'lucide-react';
+import { APP_NAME } from '@/shared/lib/constants';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 interface MobileNavProps {
-  className?: string
+  className?: string;
 }
 
 export function MobileNav({ className }: MobileNavProps) {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(false)
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   const navSections = [
     {
-      title: "Principal",
+      title: 'Principal',
       items: [
         {
-          href: "/dashboard",
-          label: "Tableau de bord",
+          href: '/dashboard',
+          label: 'Tableau de bord',
           icon: Home,
-          active: pathname === "/dashboard",
+          active: pathname === '/dashboard',
         },
         {
-          href: "/dashboard/clients",
-          label: "Clients",
+          href: '/dashboard/clients',
+          label: 'Clients',
           icon: Users,
-          active: pathname.includes("/dashboard/clients"),
+          active: pathname.includes('/dashboard/clients'),
           badge: 3,
         },
         {
-          href: "/dashboard/projects",
-          label: "Projets",
+          href: '/dashboard/projects',
+          label: 'Projets',
           icon: Briefcase,
-          active: pathname.includes("/dashboard/projects"),
+          active: pathname.includes('/dashboard/projects'),
           badge: 2,
         },
       ],
     },
     {
-      title: "Finance",
+      title: 'Finance',
       items: [
         {
-          href: "/dashboard/invoices",
-          label: "Factures",
+          href: '/dashboard/invoices',
+          label: 'Factures',
           icon: FileText,
-          active: pathname.includes("/dashboard/invoices"),
+          active: pathname.includes('/dashboard/invoices'),
           badge: 1,
         },
         {
-          href: "/dashboard/payments",
-          label: "Paiements",
+          href: '/dashboard/payments',
+          label: 'Paiements',
           icon: CreditCard,
-          active: pathname.includes("/dashboard/payments"),
+          active: pathname.includes('/dashboard/payments'),
         },
       ],
     },
     {
-      title: "Productivité",
+      title: 'Productivité',
       items: [
         {
-          href: "/dashboard/time-tracking",
-          label: "Suivi du temps",
+          href: '/dashboard/time-tracking',
+          label: 'Suivi du temps',
           icon: Clock,
-          active: pathname.includes("/dashboard/time-tracking"),
+          active: pathname.includes('/dashboard/time-tracking'),
         },
       ],
     },
     {
-      title: "Système",
+      title: 'Système',
       items: [
         {
-          href: "/dashboard/profile",
-          label: "Profil",
+          href: '/dashboard/profile',
+          label: 'Profil',
           icon: UserCircle,
-          active: pathname.includes("/dashboard/profile"),
+          active: pathname.includes('/dashboard/profile'),
         },
         {
-          href: "/dashboard/settings",
-          label: "Paramètres",
+          href: '/dashboard/settings',
+          label: 'Paramètres',
           icon: Settings,
-          active: pathname.includes("/dashboard/settings"),
+          active: pathname.includes('/dashboard/settings'),
         },
       ],
     },
-  ]
+  ];
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className={cn("mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent md:hidden", className)}
+          className={cn(
+            'mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent md:hidden',
+            className,
+          )}
         >
           <Menu className="h-5 w-5" />
           <span className="sr-only">Menu</span>
@@ -110,7 +123,13 @@ export function MobileNav({ className }: MobileNavProps) {
         <div className="flex h-16 items-center border-b px-4">
           <div className="flex items-center gap-2">
             <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary">
-              <Image src="/logo.png" alt="Logo" width={24} height={24} className="h-5 w-5 object-contain" />
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={24}
+                height={24}
+                className="h-5 w-5 object-contain"
+              />
             </div>
             <span className="text-lg font-semibold tracking-tight text-primary">{APP_NAME}</span>
           </div>
@@ -130,10 +149,10 @@ export function MobileNav({ className }: MobileNavProps) {
                       href={item.href}
                       onClick={() => setOpen(false)}
                       className={cn(
-                        "flex items-center justify-between rounded-md px-4 py-3 text-sm font-medium transition-all",
+                        'flex items-center justify-between rounded-md px-4 py-3 text-sm font-medium transition-all',
                         item.active
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                          ? 'bg-primary text-primary-foreground'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                       )}
                     >
                       <div className="flex items-center">
@@ -144,10 +163,10 @@ export function MobileNav({ className }: MobileNavProps) {
                         <Badge
                           variant="outline"
                           className={cn(
-                            "ml-auto flex h-5 min-w-5 items-center justify-center rounded-full p-0 px-1 text-xs font-medium",
+                            'ml-auto flex h-5 min-w-5 items-center justify-center rounded-full p-0 px-1 text-xs font-medium',
                             item.active
-                              ? "border-primary-foreground/30 bg-primary-foreground/20 text-primary-foreground"
-                              : "border-muted bg-muted/50 text-muted-foreground",
+                              ? 'border-primary-foreground/30 bg-primary-foreground/20 text-primary-foreground'
+                              : 'border-muted bg-muted/50 text-muted-foreground',
                           )}
                         >
                           {item.badge}
@@ -167,5 +186,5 @@ export function MobileNav({ className }: MobileNavProps) {
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

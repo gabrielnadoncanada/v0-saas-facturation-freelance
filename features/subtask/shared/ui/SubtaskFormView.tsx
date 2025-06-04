@@ -1,26 +1,39 @@
-import type React from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertCircle, Loader2 } from 'lucide-react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import type React from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface SubtaskFormViewProps {
   formData: {
-    name: string
-    description: string
-    status: string
-  }
-  onChange: (name: string, value: any) => void
-  onSubmit: (e: React.FormEvent) => void
-  isLoading: boolean
-  error: string | null
-  isEdit?: boolean
+    name: string;
+    description: string;
+    status: string;
+  };
+  onChange: (name: string, value: any) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  isLoading: boolean;
+  error: string | null;
+  isEdit?: boolean;
 }
 
-export function SubtaskFormView({ formData, onChange, onSubmit, isLoading, error, isEdit = false }: SubtaskFormViewProps) {
+export function SubtaskFormView({
+  formData,
+  onChange,
+  onSubmit,
+  isLoading,
+  error,
+  isEdit = false,
+}: SubtaskFormViewProps) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       {error && (
@@ -32,7 +45,12 @@ export function SubtaskFormView({ formData, onChange, onSubmit, isLoading, error
 
       <div className="space-y-2">
         <Label htmlFor="name">Nom de la sous-tâche *</Label>
-        <Input id="name" value={formData.name} onChange={(e) => onChange('name', e.target.value)} required />
+        <Input
+          id="name"
+          value={formData.name}
+          onChange={(e) => onChange('name', e.target.value)}
+          required
+        />
       </div>
 
       <div className="space-y-2">
@@ -67,5 +85,5 @@ export function SubtaskFormView({ formData, onChange, onSubmit, isLoading, error
         </Button>
       </div>
     </form>
-  )
+  );
 }

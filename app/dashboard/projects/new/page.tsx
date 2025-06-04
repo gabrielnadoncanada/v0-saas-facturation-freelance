@@ -1,13 +1,13 @@
-import { ProjectForm } from "@/features/project/shared/ui/ProjectForm"
-import { getClientsAction } from "@/features/client/list/actions/getClients.action"
-import { redirect } from "next/navigation"
-import FormPageLayout from "@/components/layout/FormPageLayout"
+import { ProjectForm } from '@/features/project/shared/ui/ProjectForm';
+import { getClientsAction } from '@/features/client/list/actions/getClients.action';
+import { redirect } from 'next/navigation';
+import FormPageLayout from '@/components/layout/FormPageLayout';
 
 export default async function NewProjectPage() {
-  const result = await getClientsAction()
+  const result = await getClientsAction();
 
   if (!result.success) {
-    redirect("/login")
+    redirect('/login');
   }
 
   return (
@@ -18,5 +18,5 @@ export default async function NewProjectPage() {
     >
       <ProjectForm clients={result.data} project={null} />
     </FormPageLayout>
-  )
+  );
 }

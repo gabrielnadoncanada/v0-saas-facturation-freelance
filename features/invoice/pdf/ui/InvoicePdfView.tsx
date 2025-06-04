@@ -1,15 +1,15 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 interface InvoicePdfViewProps {
   invoice: {
-    invoice_number: string
-    client: { name: string }
-    issue_date: string
-    due_date: string
-    total: number
-    currency: string
-  }
-  items: { description: string; quantity: number; unit_price: number; amount: number }[]
+    invoice_number: string;
+    client: { name: string };
+    issue_date: string;
+    due_date: string;
+    total: number;
+    currency: string;
+  };
+  items: { description: string; quantity: number; unit_price: number; amount: number }[];
 }
 
 const styles = StyleSheet.create({
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   item: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 },
   total: { marginTop: 10, fontWeight: 'bold' },
   legal: { marginTop: 20, fontSize: 10, color: '#888' },
-})
+});
 
 export default function InvoicePdfView({ invoice, items }: InvoicePdfViewProps) {
   return (
@@ -48,5 +48,5 @@ export default function InvoicePdfView({ invoice, items }: InvoicePdfViewProps) 
         <Text style={styles.legal}>Mentions légales: ...</Text>
       </Page>
     </Document>
-  )
-} 
+  );
+}

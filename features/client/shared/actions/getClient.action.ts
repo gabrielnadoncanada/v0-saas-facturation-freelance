@@ -1,4 +1,4 @@
-"use server"
+'use server';
 import { Client } from '@/features/client/shared/types/client.types';
 import { getClient } from '@/features/client/shared/model/getClient';
 import { Result } from '@/shared/utils/result';

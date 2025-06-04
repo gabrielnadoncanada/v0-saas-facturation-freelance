@@ -1,47 +1,56 @@
-import React, { useState } from "react"
-import { Control, FieldValues, Path } from "react-hook-form"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ClientForm } from "@/features/client/shared/ui/ClientForm"
-import { useCreateClientInlineForm } from "@/features/client/create/hooks/useCreateClientInlineForm"
-import { DatePicker } from "@/components/ui/date-picker"
-import { Percent, Plus } from "lucide-react"
+import React, { useState } from 'react';
+import { Control, FieldValues, Path } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ClientForm } from '@/features/client/shared/ui/ClientForm';
+import { useCreateClientInlineForm } from '@/features/client/create/hooks/useCreateClientInlineForm';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Percent, Plus } from 'lucide-react';
 
-import type { InvoiceFormValues } from "@/features/invoice/shared/hooks/useInvoiceForm"
+import type { InvoiceFormValues } from '@/features/invoice/shared/hooks/useInvoiceForm';
 
 interface Client {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 type InvoiceGeneralFieldsProps<T extends FieldValues = InvoiceFormValues> = {
-  control: Control<T>
-  clients: Client[]
-  onClientCreated: (client: Client) => void
-}
+  control: Control<T>;
+  clients: Client[];
+  onClientCreated: (client: Client) => void;
+};
 
-export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>({ control, clients, onClientCreated }: InvoiceGeneralFieldsProps<T>) {
-  const [open, setOpen] = useState(false)
+export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>({
+  control,
+  clients,
+  onClientCreated,
+}: InvoiceGeneralFieldsProps<T>) {
+  const [open, setOpen] = useState(false);
   const { isLoading, error, defaultValues, onSubmit } = useCreateClientInlineForm((client) => {
-    onClientCreated(client)
-    setOpen(false)
-  })
+    onClientCreated(client);
+    setOpen(false);
+  });
 
   return (
     <>
       <FormField
         control={control}
-        name={"client_id" as Path<T>}
-        rules={{ required: "Le client est requis" }}
+        name={'client_id' as Path<T>}
+        rules={{ required: 'Le client est requis' }}
         render={({ field }) => (
           <FormItem>
             <div className="flex items-center justify-between">
               <FormLabel>Client *</FormLabel>
-           
             </div>
             <FormControl>
               <Select value={field.value} onValueChange={field.onChange} required>
@@ -61,11 +70,11 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
           </FormItem>
         )}
       />
-   
+
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
           control={control}
-          name={"issue_date" as Path<T>}
+          name={'issue_date' as Path<T>}
           rules={{ required: "Date d'émission requise" }}
           render={({ field }) => (
             <FormItem>
@@ -79,7 +88,7 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
         />
         <FormField
           control={control}
-          name={"due_date" as Path<T>}
+          name={'due_date' as Path<T>}
           rules={{ required: "Date d'échéance requise" }}
           render={({ field }) => (
             <FormItem>
@@ -95,8 +104,8 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
           control={control}
-          name={"status" as Path<T>}
-          rules={{ required: "Statut requis" }}
+          name={'status' as Path<T>}
+          rules={{ required: 'Statut requis' }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Statut</FormLabel>
@@ -119,8 +128,8 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
         />
         <FormField
           control={control}
-          name={"currency" as Path<T>}
-          rules={{ required: "Devise requise" }}
+          name={'currency' as Path<T>}
+          rules={{ required: 'Devise requise' }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Devise</FormLabel>
@@ -144,14 +153,22 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
       </div>
       <FormField
         control={control}
-        name={"tax_rate" as Path<T>}
-        rules={{ required: "Taux de TVA requis" }}
+        name={'tax_rate' as Path<T>}
+        rules={{ required: 'Taux de TVA requis' }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Taux de TVA global (%)</FormLabel>
             <FormControl>
               <div className="relative">
-                <Input type="number" min="0" step="0.1" {...field} value={field.value} placeholder="Taux de TVA" className="pl-9 h-10 bg-background focus-visible:ring-primary/30" />
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  {...field}
+                  value={field.value}
+                  placeholder="Taux de TVA"
+                  className="pl-9 h-10 bg-background focus-visible:ring-primary/30"
+                />
                 <Percent className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               </div>
             </FormControl>
@@ -161,17 +178,21 @@ export function InvoiceGeneralFields<T extends FieldValues = InvoiceFormValues>(
       />
       <FormField
         control={control}
-        name={"notes" as Path<T>}
+        name={'notes' as Path<T>}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Notes</FormLabel>
             <FormControl>
-              <Textarea {...field} rows={4} placeholder="Conditions de paiement, informations supplémentaires..." />
+              <Textarea
+                {...field}
+                rows={4}
+                placeholder="Conditions de paiement, informations supplémentaires..."
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     </>
-  )
-} 
+  );
+}

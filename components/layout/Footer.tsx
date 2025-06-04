@@ -1,4 +1,4 @@
-import { APP_NAME } from "@/shared/lib/constants";
+import { APP_NAME } from '@/shared/lib/constants';
 
 export function Footer() {
   return (
@@ -7,5 +7,5 @@ export function Footer() {
         <p className="font-medium">{APP_NAME} v1.0 - Tous droits réservés</p>
       </div>
     </footer>
-  )
+  );
 }

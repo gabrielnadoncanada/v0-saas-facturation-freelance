@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { useTimeEntriesTable } from '@/features/time-tracking/list/hooks/useTimeEntriesTable'
-import { TimeEntriesTableView } from '@/features/time-tracking/list/ui/TimeEntriesTableView'
-import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
+import { useTimeEntriesTable } from '@/features/time-tracking/list/hooks/useTimeEntriesTable';
+import { TimeEntriesTableView } from '@/features/time-tracking/list/ui/TimeEntriesTableView';
+import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types';
 
 export function TimeEntriesTable({ entries }: { entries: TimeEntry[] }) {
   const {
@@ -15,7 +15,7 @@ export function TimeEntriesTable({ entries }: { entries: TimeEntry[] }) {
     filteredEntries,
     handleDelete,
     router,
-  } = useTimeEntriesTable(entries)
+  } = useTimeEntriesTable(entries);
 
   return (
     <TimeEntriesTableView
@@ -29,5 +29,5 @@ export function TimeEntriesTable({ entries }: { entries: TimeEntry[] }) {
       handleDelete={handleDelete}
       router={router}
     />
-  )
+  );
 }

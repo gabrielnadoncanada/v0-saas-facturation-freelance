@@ -20,4 +20,4 @@ export interface ClientStatsProps {
 export interface ClientInvoicesProps {
   invoices: Invoice[];
   currency?: string;
-} 
+}

@@ -1,12 +1,12 @@
-import { Category } from '@/features/category/shared/types/category.types'
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { fetchList } from '@/shared/services/supabase/crud'
+import { Category } from '@/features/category/shared/types/category.types';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { fetchList } from '@/shared/services/supabase/crud';
 
 export async function getCategories(): Promise<Category[]> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    return []
+    return [];
   }
 
   return await fetchList<Category>(
@@ -14,6 +14,6 @@ export async function getCategories(): Promise<Category[]> {
     'product_categories',
     '*, products:products(count)',
     { organization_id: organization.id },
-    { column: 'name', ascending: true }
-  )
+    { column: 'name', ascending: true },
+  );
 }

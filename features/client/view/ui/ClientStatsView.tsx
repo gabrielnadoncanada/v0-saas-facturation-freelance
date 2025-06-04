@@ -58,4 +58,4 @@ export function ClientStatsView({ stats, currency = 'EUR' }: ClientStatsProps) {
       </CardContent>
     </Card>
   );
-} 
+}

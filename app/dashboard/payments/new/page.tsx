@@ -1,12 +1,12 @@
-import { NewPaymentForm } from "@/features/payment/create/ui/NewPaymentForm"
-import { getInvoicesAction } from "@/features/invoice/list/actions/getInvoices.action"
-import FormPageLayout from "@/components/layout/FormPageLayout"
+import { NewPaymentForm } from '@/features/payment/create/ui/NewPaymentForm';
+import { getInvoicesAction } from '@/features/invoice/list/actions/getInvoices.action';
+import FormPageLayout from '@/components/layout/FormPageLayout';
 
 export default async function NewPaymentPage() {
-  const result = await getInvoicesAction()
+  const result = await getInvoicesAction();
 
   if (!result.success) {
-    return <div>Error: {result.error}</div>
+    return <div>Error: {result.error}</div>;
   }
 
   return (
@@ -17,5 +17,5 @@ export default async function NewPaymentPage() {
     >
       <NewPaymentForm invoices={result.data} />
     </FormPageLayout>
-  )
+  );
 }

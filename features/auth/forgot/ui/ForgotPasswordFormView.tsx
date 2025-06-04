@@ -1,4 +1,11 @@
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert } from '@/components/ui/alert';
@@ -12,7 +19,12 @@ interface ForgotPasswordFormViewProps {
   sent: boolean;
 }
 
-export function ForgotPasswordFormView({ form, onSubmit, serverError, sent }: ForgotPasswordFormViewProps) {
+export function ForgotPasswordFormView({
+  form,
+  onSubmit,
+  serverError,
+  sent,
+}: ForgotPasswordFormViewProps) {
   if (sent) {
     return (
       <Alert variant="default">
@@ -48,4 +60,4 @@ export function ForgotPasswordFormView({ form, onSubmit, serverError, sent }: Fo
       </form>
     </Form>
   );
-} 
+}

@@ -78,4 +78,4 @@ export function ClientInvoicesView({ invoices, currency = 'EUR' }: ClientInvoice
       </CardContent>
     </Card>
   );
-} 
+}

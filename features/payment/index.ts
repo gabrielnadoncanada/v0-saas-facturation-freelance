@@ -1,1 +1,1 @@
-export * from '@/features/payment/list/model/getPayments'
+export * from '@/features/payment/list/model/getPayments';

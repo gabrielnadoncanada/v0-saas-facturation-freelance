@@ -1,10 +1,10 @@
-import { revalidatePath as revalidate, } from 'next/cache'
-import { redirect as nextRedirect } from 'next/navigation'
-import { Result, success, fail } from '@/shared/utils/result'
+import { revalidatePath as revalidate } from 'next/cache';
+import { redirect as nextRedirect } from 'next/navigation';
+import { Result, success, fail } from '@/shared/utils/result';
 
 interface ActionOptions {
-  revalidatePath?: string | string[]
-  redirect?: string
+  revalidatePath?: string | string[];
+  redirect?: string;
 }
 
 export async function withAction<T>(
@@ -12,20 +12,20 @@ export async function withAction<T>(
   options: ActionOptions = {},
 ): Promise<Result<T>> {
   try {
-    const data = await callback()
+    const data = await callback();
     if (options.revalidatePath) {
       const paths = Array.isArray(options.revalidatePath)
         ? options.revalidatePath
-        : [options.revalidatePath]
+        : [options.revalidatePath];
       for (const path of paths) {
-        revalidate(path)
+        revalidate(path);
       }
     }
     if (options.redirect) {
-      nextRedirect(options.redirect)
+      nextRedirect(options.redirect);
     }
-    return success(data)
+    return success(data);
   } catch (error) {
-    return fail((error as Error).message)
+    return fail((error as Error).message);
   }
 }

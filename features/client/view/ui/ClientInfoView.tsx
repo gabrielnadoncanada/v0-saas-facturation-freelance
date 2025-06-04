@@ -1,11 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ClientInfoProps } from '../types/client-view.types';
-import { 
-  Building2, 
-  Mail, 
-  MapPin, 
-  Phone
-} from 'lucide-react';
+import { Building2, Mail, MapPin, Phone } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -17,9 +12,9 @@ export function ClientInfoView({ client }: ClientInfoProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-xl font-bold">{client.name}</CardTitle>
         <div className="flex gap-2">
-          <Link 
-            href={`/dashboard/clients/${client.id}/edit`} 
-            className={buttonVariants({ variant: "outline", size: "sm" })}
+          <Link
+            href={`/dashboard/clients/${client.id}/edit`}
+            className={buttonVariants({ variant: 'outline', size: 'sm' })}
           >
             Modifier
           </Link>
@@ -30,15 +25,17 @@ export function ClientInfoView({ client }: ClientInfoProps) {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-muted-foreground" />
-              <span>{client.email || "Non spécifié"}</span>
+              <span>{client.email || 'Non spécifié'}</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-muted-foreground" />
-              <span>{client.phone || "Non spécifié"}</span>
+              <span>{client.phone || 'Non spécifié'}</span>
             </div>
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4 text-muted-foreground" />
-              <span>Taux horaire: {client.hourly_rate ? `${client.hourly_rate}€/h` : "Non spécifié"}</span>
+              <span>
+                Taux horaire: {client.hourly_rate ? `${client.hourly_rate}€/h` : 'Non spécifié'}
+              </span>
             </div>
           </div>
 
@@ -57,7 +54,7 @@ export function ClientInfoView({ client }: ClientInfoProps) {
                       <div>{client.billing_country}</div>
                     </>
                   ) : (
-                    "Non spécifiée"
+                    'Non spécifiée'
                   )}
                 </div>
               </div>
@@ -66,9 +63,7 @@ export function ClientInfoView({ client }: ClientInfoProps) {
             {client.notes && (
               <div className="mt-4">
                 <div className="text-sm font-medium">Notes</div>
-                <p className="text-sm text-muted-foreground whitespace-pre-line">
-                  {client.notes}
-                </p>
+                <p className="text-sm text-muted-foreground whitespace-pre-line">{client.notes}</p>
               </div>
             )}
           </div>
@@ -76,4 +71,4 @@ export function ClientInfoView({ client }: ClientInfoProps) {
       </CardContent>
     </Card>
   );
-} 
+}

@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, FileText, Loader2, MapPin, Truck, User } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, FileText, Loader2, MapPin, Truck, User } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormField,
@@ -12,27 +12,20 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form"
+} from '@/components/ui/form';
 
-import { ClientFormSchema } from "@/features/client/shared/schema/client.schema"
-import { UseFormReturn } from "react-hook-form"
+import { ClientFormSchema } from '@/features/client/shared/schema/client.schema';
+import { UseFormReturn } from 'react-hook-form';
 
 interface ClientFormViewProps {
-  form: UseFormReturn<ClientFormSchema>
-  error: string | null
-  isLoading: boolean
-  onSubmit: (values: ClientFormSchema) => void
-  isEdit: boolean
+  form: UseFormReturn<ClientFormSchema>;
+  error: string | null;
+  isLoading: boolean;
+  onSubmit: (values: ClientFormSchema) => void;
+  isEdit: boolean;
 }
 
-export function ClientFormView({
-  form,
-  error,
-  isLoading,
-  onSubmit,
-  isEdit,
-}: ClientFormViewProps) {
-
+export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: ClientFormViewProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -176,12 +169,14 @@ export function ClientFormView({
                         id="sameAsShipping"
                       />
                     </FormControl>
-                    <FormLabel htmlFor="sameAsShipping">Identique à l'adresse de facturation</FormLabel>
+                    <FormLabel htmlFor="sameAsShipping">
+                      Identique à l'adresse de facturation
+                    </FormLabel>
                   </FormItem>
                 )}
               />
             </div>
-            {!form.watch("sameAsShipping") && (
+            {!form.watch('sameAsShipping') && (
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -242,10 +237,10 @@ export function ClientFormView({
         <div className="flex justify-end">
           <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isEdit ? "Mettre à jour" : "Créer le client"}
+            {isEdit ? 'Mettre à jour' : 'Créer le client'}
           </Button>
         </div>
       </form>
     </Form>
-  )
-} 
+  );
+}

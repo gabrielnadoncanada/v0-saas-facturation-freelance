@@ -1,1 +1,1 @@
-export * from '@/features/notification/list/model/getNotifications'
+export * from '@/features/notification/list/model/getNotifications';

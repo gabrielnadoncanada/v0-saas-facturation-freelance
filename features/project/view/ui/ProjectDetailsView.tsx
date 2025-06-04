@@ -1,20 +1,26 @@
-import React from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { formatCurrency, formatDate, formatDuration } from "@/shared/lib/utils"
-import { ArrowLeft, Edit, Plus, Filter } from "lucide-react"
-import Link from "next/link"
-import { TaskList } from "@/features/task/shared/ui/TaskList"
-import { TaskForm } from "@/features/task/shared/ui/TaskForm"
-import { TaskCalendar } from "@/features/task/shared/ui/TaskCalendar"
-import { TaskGantt } from "@/features/task/shared/ui/TaskGantt"
-import { TaskKanban } from "@/features/task/shared/ui/TaskKanban"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
-import { Progress } from "@/components/ui/progress"
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { formatCurrency, formatDate, formatDuration } from '@/shared/lib/utils';
+import { ArrowLeft, Edit, Plus, Filter } from 'lucide-react';
+import Link from 'next/link';
+import { TaskList } from '@/features/task/shared/ui/TaskList';
+import { TaskForm } from '@/features/task/shared/ui/TaskForm';
+import { TaskCalendar } from '@/features/task/shared/ui/TaskCalendar';
+import { TaskGantt } from '@/features/task/shared/ui/TaskGantt';
+import { TaskKanban } from '@/features/task/shared/ui/TaskKanban';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,27 +28,31 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Task } from "@/features/task/shared/types/task.types"
-import { Project } from "@/features/project/shared/types/project.types"
-import { getStatusLabel, getStatusBadgeClass, getTaskStatusLabel } from "@/features/project/shared/lib/statusHelpers"
+} from '@/components/ui/dropdown-menu';
+import { Task } from '@/features/task/shared/types/task.types';
+import { Project } from '@/features/project/shared/types/project.types';
+import {
+  getStatusLabel,
+  getStatusBadgeClass,
+  getTaskStatusLabel,
+} from '@/features/project/shared/lib/statusHelpers';
 
 type ProjectDetailsViewProps = {
-  project: Project
-  error: string | null
-  setError: (e: string | null) => void
-  taskDialogOpen: boolean
-  setTaskDialogOpen: (b: boolean) => void
-  statusFilter: string | null
-  setStatusFilter: (s: string | null) => void
-  assigneeFilter: string | null
-  setAssigneeFilter: (s: string | null) => void
-  completedTasks: number
-  totalTasks: number
-  completionPercentage: number
-  filteredTasks: Task[]
-  router: any
-}
+  project: Project;
+  error: string | null;
+  setError: (e: string | null) => void;
+  taskDialogOpen: boolean;
+  setTaskDialogOpen: (b: boolean) => void;
+  statusFilter: string | null;
+  setStatusFilter: (s: string | null) => void;
+  assigneeFilter: string | null;
+  setAssigneeFilter: (s: string | null) => void;
+  completedTasks: number;
+  totalTasks: number;
+  completionPercentage: number;
+  filteredTasks: Task[];
+  router: any;
+};
 
 export function ProjectDetailsView({
   project,
@@ -77,11 +87,13 @@ export function ProjectDetailsView({
           </Link>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{project.name}</h1>
-            <p className="text-muted-foreground">Client: {project.client?.name || "-"}</p>
+            <p className="text-muted-foreground">Client: {project.client?.name || '-'}</p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <Badge className={getStatusBadgeClass(project.status)}>{getStatusLabel(project.status)}</Badge>
+          <Badge className={getStatusBadgeClass(project.status)}>
+            {getStatusLabel(project.status)}
+          </Badge>
           <Link href={`/dashboard/projects/${project.id}/edit`}>
             <Button variant="outline" size="sm">
               <Edit className="mr-2 h-4 w-4" />
@@ -107,11 +119,11 @@ export function ProjectDetailsView({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Date de début</p>
-                <p>{project.start_date ? formatDate(project.start_date) : "Non définie"}</p>
+                <p>{project.start_date ? formatDate(project.start_date) : 'Non définie'}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Date de fin</p>
-                <p>{project.end_date ? formatDate(project.end_date) : "Non définie"}</p>
+                <p>{project.end_date ? formatDate(project.end_date) : 'Non définie'}</p>
               </div>
             </div>
           </CardContent>
@@ -154,30 +166,33 @@ export function ProjectDetailsView({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>Filtrer par statut</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => setStatusFilter(null)} className={!statusFilter ? "bg-muted" : ""}>
+                <DropdownMenuItem
+                  onClick={() => setStatusFilter(null)}
+                  className={!statusFilter ? 'bg-muted' : ''}
+                >
                   Tous les statuts
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setStatusFilter("pending")}
-                  className={statusFilter === "pending" ? "bg-muted" : ""}
+                  onClick={() => setStatusFilter('pending')}
+                  className={statusFilter === 'pending' ? 'bg-muted' : ''}
                 >
                   À faire
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setStatusFilter("in_progress")}
-                  className={statusFilter === "in_progress" ? "bg-muted" : ""}
+                  onClick={() => setStatusFilter('in_progress')}
+                  className={statusFilter === 'in_progress' ? 'bg-muted' : ''}
                 >
                   En cours
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setStatusFilter("completed")}
-                  className={statusFilter === "completed" ? "bg-muted" : ""}
+                  onClick={() => setStatusFilter('completed')}
+                  className={statusFilter === 'completed' ? 'bg-muted' : ''}
                 >
                   Terminée
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setStatusFilter("blocked")}
-                  className={statusFilter === "blocked" ? "bg-muted" : ""}
+                  onClick={() => setStatusFilter('blocked')}
+                  className={statusFilter === 'blocked' ? 'bg-muted' : ''}
                 >
                   Bloquée
                 </DropdownMenuItem>
@@ -185,12 +200,15 @@ export function ProjectDetailsView({
                 <DropdownMenuSeparator />
 
                 <DropdownMenuLabel>Filtrer par assigné</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => setAssigneeFilter(null)} className={!assigneeFilter ? "bg-muted" : ""}>
+                <DropdownMenuItem
+                  onClick={() => setAssigneeFilter(null)}
+                  className={!assigneeFilter ? 'bg-muted' : ''}
+                >
                   Tous les assignés
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setAssigneeFilter("unassigned")}
-                  className={assigneeFilter === "unassigned" ? "bg-muted" : ""}
+                  onClick={() => setAssigneeFilter('unassigned')}
+                  className={assigneeFilter === 'unassigned' ? 'bg-muted' : ''}
                 >
                   Non assignées
                 </DropdownMenuItem>
@@ -200,7 +218,7 @@ export function ProjectDetailsView({
             <div className="flex space-x-2">
               <Dialog open={taskDialogOpen} onOpenChange={setTaskDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button size="sm" >
+                  <Button size="sm">
                     <Plus className="mr-2 h-4 w-4" />
                     Ajout rapide
                   </Button>
@@ -213,8 +231,8 @@ export function ProjectDetailsView({
                     projectId={project.id}
                     task={null}
                     onSuccess={() => {
-                      setTaskDialogOpen(false)
-                      router.refresh()
+                      setTaskDialogOpen(false);
+                      router.refresh();
                     }}
                   />
                 </DialogContent>
@@ -246,5 +264,5 @@ export function ProjectDetailsView({
         </TabsContent>
       </Tabs>
     </div>
-  )
-} 
+  );
+}

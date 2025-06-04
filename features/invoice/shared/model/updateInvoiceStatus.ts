@@ -1,12 +1,12 @@
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow'
-import { Invoice } from '@/features/invoice/shared/types/invoice.types'
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { extractDataOrThrow } from '@/shared/utils/extractDataOrThrow';
+import { Invoice } from '@/features/invoice/shared/types/invoice.types';
 
 export async function updateInvoiceStatus(invoiceId: string, status: string): Promise<Invoice> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    throw new Error("Aucune organisation active")
+    throw new Error('Aucune organisation active');
   }
 
   const res = await supabase
@@ -15,7 +15,7 @@ export async function updateInvoiceStatus(invoiceId: string, status: string): Pr
     .eq('id', invoiceId)
     .eq('organization_id', organization.id)
     .select('*')
-    .single()
+    .single();
 
-  return extractDataOrThrow<Invoice>(res)
+  return extractDataOrThrow<Invoice>(res);
 }

@@ -1,17 +1,17 @@
-"use client"
+'use client';
 
-import { usePaymentForm } from "@/features/payment/shared/hooks/usePaymentForm"
-import { PaymentFormView } from "@/features/payment/shared/ui/PaymentFormView"
+import { usePaymentForm } from '@/features/payment/shared/hooks/usePaymentForm';
+import { PaymentFormView } from '@/features/payment/shared/ui/PaymentFormView';
 
 interface PaymentFormProps {
-  invoiceId: string
-  balanceDue: number
-  currency: string
-  onSuccess?: () => void
+  invoiceId: string;
+  balanceDue: number;
+  currency: string;
+  onSuccess?: () => void;
 }
 
 export function PaymentForm(props: PaymentFormProps) {
-  const form = usePaymentForm(props)
+  const form = usePaymentForm(props);
   return (
     <PaymentFormView
       formData={form.formData}
@@ -22,7 +22,7 @@ export function PaymentForm(props: PaymentFormProps) {
       handleChange={form.handleChange}
       handleSubmit={form.handleSubmit}
     />
-  )
+  );
 }
 
 export default PaymentForm;

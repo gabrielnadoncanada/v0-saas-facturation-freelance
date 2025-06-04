@@ -1,15 +1,15 @@
-import { ResetPasswordForm } from '@/features/auth/reset/ui/ResetPasswordForm'
-import { createClient } from '@/shared/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { ResetPasswordForm } from '@/features/auth/reset/ui/ResetPasswordForm';
+import { createClient } from '@/shared/lib/supabase/server';
+import { redirect } from 'next/navigation';
 
 export default async function ResetPasswordPage() {
-  const supabase = await createClient()
+  const supabase = await createClient();
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/login')
+    redirect('/login');
   }
 
   return (
@@ -22,5 +22,5 @@ export default async function ResetPasswordPage() {
         <ResetPasswordForm />
       </div>
     </div>
-  )
+  );
 }

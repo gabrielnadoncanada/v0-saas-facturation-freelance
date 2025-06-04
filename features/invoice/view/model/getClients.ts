@@ -1,12 +1,12 @@
-import { Client } from "@/features/client/shared/types/client.types"
-import { getSessionUser } from "@/shared/utils/getSessionUser"
-import { fetchList } from "@/shared/services/supabase/crud"
+import { Client } from '@/features/client/shared/types/client.types';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { fetchList } from '@/shared/services/supabase/crud';
 
 export async function getClientsList(): Promise<Client[]> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    return []
+    return [];
   }
 
   return await fetchList<Client>(
@@ -14,7 +14,6 @@ export async function getClientsList(): Promise<Client[]> {
     'clients',
     '*',
     { organization_id: organization.id },
-    { column: 'name', ascending: true }
-  )
+    { column: 'name', ascending: true },
+  );
 }
-  

@@ -1,39 +1,40 @@
-import type React from "react"
-import { DashboardSidebar } from "@/components/layout/DashboardSidebar"
-import { createClient } from "@/shared/lib/supabase/server"
-import { redirect } from "next/navigation"
-import { TopNav } from "@/features/dashboard/view/ui/TopNav"
-import { Footer } from "@/components/layout/Footer"
-import { countClients } from "@/features/client/shared/model/countClients"
-import { countProjects } from "@/features/project/shared/model/countProjects"
-import { countInvoices } from "@/features/invoice/shared/model/countInvoices"
-import { countProducts } from "@/features/product/shared/model/countProducts"
-import { countPayments } from "@/features/payment/shared/model/countPayments"
+import type React from 'react';
+import { DashboardSidebar } from '@/components/layout/DashboardSidebar';
+import { createClient } from '@/shared/lib/supabase/server';
+import { redirect } from 'next/navigation';
+import { TopNav } from '@/features/dashboard/view/ui/TopNav';
+import { Footer } from '@/components/layout/Footer';
+import { countClients } from '@/features/client/shared/model/countClients';
+import { countProjects } from '@/features/project/shared/model/countProjects';
+import { countInvoices } from '@/features/invoice/shared/model/countInvoices';
+import { countProducts } from '@/features/product/shared/model/countProducts';
+import { countPayments } from '@/features/payment/shared/model/countPayments';
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const supabase = await createClient()
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createClient();
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect("/login")
+    redirect('/login');
   }
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', session.user.id)
+    .single();
 
   // Fetch entity counts
-  const [clientsCount, projectsCount, invoicesCount, productsCount, paymentsCount] = await Promise.all([
-    countClients(),
-    countProjects(),
-    countInvoices(),
-    countProducts(),
-    countPayments(),
-  ])
+  const [clientsCount, projectsCount, invoicesCount, productsCount, paymentsCount] =
+    await Promise.all([
+      countClients(),
+      countProjects(),
+      countInvoices(),
+      countProducts(),
+      countPayments(),
+    ]);
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -54,5 +55,5 @@ export default async function DashboardLayout({
         <Footer />
       </div>
     </div>
-  )
+  );
 }

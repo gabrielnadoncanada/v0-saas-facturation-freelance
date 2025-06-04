@@ -1,29 +1,55 @@
-import React from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { Plus } from "lucide-react"
-import { DndContext, closestCenter } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Plus } from 'lucide-react';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 interface InvoiceLineFieldsProps {
-  fields: any[]
-  control: any
-  append: (item: any) => void
-  remove: (index: number) => void
-  move: (from: number, to: number) => void
-  sensors: any
-  handleDragEnd: (event: any) => void
-  tax_rate: number
-  currency: string
+  fields: any[];
+  control: any;
+  append: (item: any) => void;
+  remove: (index: number) => void;
+  move: (from: number, to: number) => void;
+  sensors: any;
+  handleDragEnd: (event: any) => void;
+  tax_rate: number;
+  currency: string;
 }
 
-export function InvoiceLineFields({ fields, control, append, remove, move, sensors, handleDragEnd, tax_rate, currency }: InvoiceLineFieldsProps) {
+export function InvoiceLineFields({
+  fields,
+  control,
+  append,
+  remove,
+  move,
+  sensors,
+  handleDragEnd,
+  tax_rate,
+  currency,
+}: InvoiceLineFieldsProps) {
   return (
     <div className="overflow-hidden">
       <div className="flex flex-row items-center justify-between bg-muted/30 p-4">
         <div className="font-semibold">Lignes de facture</div>
-        <Button type="button" variant="outline" size="sm" onClick={() => append({ id: "new-item-" + Date.now(), description: "", quantity: 1, unit_price: 0, tax_rate, amount: 0, isNew: true })} className="bg-card hover:bg-background">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            append({
+              id: 'new-item-' + Date.now(),
+              description: '',
+              quantity: 1,
+              unit_price: 0,
+              tax_rate,
+              amount: 0,
+              isNew: true,
+            })
+          }
+          className="bg-card hover:bg-background"
+        >
           <Plus className="mr-2 h-4 w-4" />
           Ajouter une ligne
         </Button>
@@ -37,7 +63,10 @@ export function InvoiceLineFields({ fields, control, append, remove, move, senso
           <div className="col-span-1"></div>
         </div>
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={fields.map((item) => item.id)} strategy={verticalListSortingStrategy}>
+          <SortableContext
+            items={fields.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
             <div>
               {fields.map((item, index) => (
                 <div key={item.id} className="mb-2">
@@ -46,7 +75,7 @@ export function InvoiceLineFields({ fields, control, append, remove, move, senso
                       <FormField
                         control={control}
                         name={`items.${index}.description`}
-                        rules={{ required: "Description requise" }}
+                        rules={{ required: 'Description requise' }}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Description</FormLabel>
@@ -62,7 +91,10 @@ export function InvoiceLineFields({ fields, control, append, remove, move, senso
                       <FormField
                         control={control}
                         name={`items.${index}.quantity`}
-                        rules={{ required: "Quantité requise", min: { value: 1, message: "Min 1" } }}
+                        rules={{
+                          required: 'Quantité requise',
+                          min: { value: 1, message: 'Min 1' },
+                        }}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Quantité</FormLabel>
@@ -78,7 +110,10 @@ export function InvoiceLineFields({ fields, control, append, remove, move, senso
                       <FormField
                         control={control}
                         name={`items.${index}.unit_price`}
-                        rules={{ required: "Prix unitaire requis", min: { value: 0, message: "Min 0" } }}
+                        rules={{
+                          required: 'Prix unitaire requis',
+                          min: { value: 0, message: 'Min 0' },
+                        }}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Prix unitaire</FormLabel>
@@ -91,7 +126,12 @@ export function InvoiceLineFields({ fields, control, append, remove, move, senso
                       />
                     </div>
                     <div className="col-span-1 flex items-center">
-                      <Button type="button" variant="ghost" onClick={() => remove(index)} disabled={fields.length === 1}>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => remove(index)}
+                        disabled={fields.length === 1}
+                      >
                         Supprimer
                       </Button>
                     </div>
@@ -102,12 +142,27 @@ export function InvoiceLineFields({ fields, control, append, remove, move, senso
           </SortableContext>
         </DndContext>
         <div className="md:hidden mt-4 mb-4">
-          <Button type="button" variant="outline" className="w-full bg-card hover:bg-background" onClick={() => append({ id: "new-item-" + Date.now(), description: "", quantity: 1, unit_price: 0, tax_rate, amount: 0, isNew: true })}>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full bg-card hover:bg-background"
+            onClick={() =>
+              append({
+                id: 'new-item-' + Date.now(),
+                description: '',
+                quantity: 1,
+                unit_price: 0,
+                tax_rate,
+                amount: 0,
+                isNew: true,
+              })
+            }
+          >
             <Plus className="mr-2 h-4 w-4" />
             Ajouter une ligne
           </Button>
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

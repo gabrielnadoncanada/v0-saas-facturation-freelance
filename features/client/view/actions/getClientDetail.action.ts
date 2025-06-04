@@ -8,4 +8,4 @@ export async function getClientDetailAction(clientId: string): Promise<ClientDet
   const invoices = await getClientInvoices(clientId);
   const stats = calculateClientStats(invoices);
   return { client, invoices, stats };
-} 
+}

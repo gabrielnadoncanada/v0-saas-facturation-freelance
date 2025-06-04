@@ -4,10 +4,10 @@ import { Client } from '@/features/client/shared/types/client.types';
 import { updateRecord } from '@/shared/services/supabase/crud';
 
 export async function updateClient(clientId: string, data: ClientFormData): Promise<Client> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    throw new Error("Aucune organisation active")
+    throw new Error('Aucune organisation active');
   }
 
   const finalData = { ...data } as any;
@@ -26,12 +26,7 @@ export async function updateClient(clientId: string, data: ClientFormData): Prom
     finalData.hourly_rate = parseFloat(finalData.hourly_rate) || null;
   }
 
-  return await updateRecord<Client>(
-    supabase,
-    'clients',
-    clientId,
-    finalData,
-    '*',
-    { organization_id: organization.id }
-  )
-} 
+  return await updateRecord<Client>(supabase, 'clients', clientId, finalData, '*', {
+    organization_id: organization.id,
+  });
+}

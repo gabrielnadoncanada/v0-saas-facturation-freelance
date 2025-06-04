@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Project } from '@/features/project/shared/types/project.types'
-import { ProjectDetails } from '@/features/project/view/ui/ProjectDetails'
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Project } from '@/features/project/shared/types/project.types';
+import { ProjectDetails } from '@/features/project/view/ui/ProjectDetails';
 
 interface ProjectViewProps {
-  project: Project
+  project: Project;
 }
 
 export function ProjectView({ project }: ProjectViewProps) {
-  const router = useRouter()
-  
+  const router = useRouter();
+
   useEffect(() => {
     // This ensures the page refreshes when navigating back to it
-    router.refresh()
-  }, [router])
+    router.refresh();
+  }, [router]);
 
-  return <ProjectDetails project={project} />
-} 
+  return <ProjectDetails project={project} />;
+}

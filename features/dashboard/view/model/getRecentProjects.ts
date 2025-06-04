@@ -1,12 +1,12 @@
-import { Project } from '@/features/project/shared/types/project.types'
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { fetchList } from '@/shared/services/supabase/crud'
+import { Project } from '@/features/project/shared/types/project.types';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { fetchList } from '@/shared/services/supabase/crud';
 
 export async function getRecentProjects(): Promise<Project[]> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    return []
+    return [];
   }
 
   return await fetchList<Project>(
@@ -15,6 +15,6 @@ export async function getRecentProjects(): Promise<Project[]> {
     '*, clients(name), tasks(status)',
     { organization_id: organization.id },
     { column: 'created_at', ascending: false },
-    5 // limit to 5 projects
-  )
+    5, // limit to 5 projects
+  );
 }

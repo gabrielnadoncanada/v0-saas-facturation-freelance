@@ -1,28 +1,28 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatCurrency } from "@/shared/lib/utils"
-import { CreditCard, Users, Clock, Briefcase } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
-import { Progress } from "@/components/ui/progress"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatCurrency } from '@/shared/lib/utils';
+import { CreditCard, Users, Clock, Briefcase } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { Progress } from '@/components/ui/progress';
 
 interface DashboardCardsProps {
   stats: {
-    total_invoiced: number
-    total_paid: number
-    total_outstanding: number
-    total_overdue: number
-    client_count: number
-    invoice_count: number
-    time_tracked_hours: number
-    project_count?: number
-    completed_tasks_count?: number
-  } | null
+    total_invoiced: number;
+    total_paid: number;
+    total_outstanding: number;
+    total_overdue: number;
+    client_count: number;
+    invoice_count: number;
+    time_tracked_hours: number;
+    project_count?: number;
+    completed_tasks_count?: number;
+  } | null;
 }
 
 export function DashboardCards({ stats }: DashboardCardsProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   // Default values if stats are not available
   const defaultStats = {
@@ -35,20 +35,22 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
     time_tracked_hours: 0,
     project_count: 0,
     completed_tasks_count: 0,
-  }
+  };
 
-  const data = stats || defaultStats
+  const data = stats || defaultStats;
 
   // Calculate payment rate
-  const paymentRate = data.total_invoiced > 0 ? (data.total_paid / data.total_invoiced) * 100 : 0
+  const paymentRate = data.total_invoiced > 0 ? (data.total_paid / data.total_invoiced) * 100 : 0;
   // Calculate active clients rate (currently 80% of client_count)
-  const activeClientsRate = data.client_count > 0 ? (data.client_count * 0.8) / data.client_count * 100 : 0
+  const activeClientsRate =
+    data.client_count > 0 ? ((data.client_count * 0.8) / data.client_count) * 100 : 0;
   // Calculate project completion rate
-  const projectCompletionRate = data.project_count && data.project_count > 0 && data.completed_tasks_count !== undefined
-    ? (data.completed_tasks_count / data.project_count) * 100
-    : 0
+  const projectCompletionRate =
+    data.project_count && data.project_count > 0 && data.completed_tasks_count !== undefined
+      ? (data.completed_tasks_count / data.project_count) * 100
+      : 0;
   // Calculate billable hours rate (currently 70% of time_tracked_hours)
-  const billableHoursRate = 70 // If you have a dynamic value, replace this
+  const billableHoursRate = 70; // If you have a dynamic value, replace this
 
   return (
     <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -67,7 +69,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Taux de paiement</span>
-                <span className={paymentRate >= 75 ? "text-green-500" : "text-amber-500"}>
+                <span className={paymentRate >= 75 ? 'text-green-500' : 'text-amber-500'}>
                   {paymentRate.toFixed(0)}%
                 </span>
               </div>
@@ -80,7 +82,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
                   variant="ghost"
                   size="sm"
                   className="h-7 px-2 text-xs"
-                  onClick={() => router.push("/dashboard/invoices")}
+                  onClick={() => router.push('/dashboard/invoices')}
                 >
                   Détails
                 </Button>
@@ -110,13 +112,13 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
               <Progress value={activeClientsRate} className="h-1.5" />
               <div className="flex items-center justify-between mt-1">
                 <span className="text-xs text-muted-foreground">
-                  {data.invoice_count} facture{data.invoice_count !== 1 ? "s" : ""}
+                  {data.invoice_count} facture{data.invoice_count !== 1 ? 's' : ''}
                 </span>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="h-7 px-2 text-xs"
-                  onClick={() => router.push("/dashboard/clients")}
+                  onClick={() => router.push('/dashboard/clients')}
                 >
                   Détails
                 </Button>
@@ -141,7 +143,9 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Progression</span>
-                <span className="text-blue-500">{data.completed_tasks_count || 0} tâches terminées</span>
+                <span className="text-blue-500">
+                  {data.completed_tasks_count || 0} tâches terminées
+                </span>
               </div>
               <Progress value={projectCompletionRate} className="h-1.5" />
               <div className="flex items-center justify-between mt-1">
@@ -152,7 +156,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
                   variant="ghost"
                   size="sm"
                   className="h-7 px-2 text-xs"
-                  onClick={() => router.push("/dashboard/projects")}
+                  onClick={() => router.push('/dashboard/projects')}
                 >
                   Détails
                 </Button>
@@ -177,7 +181,9 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Ce mois</span>
-                <span className="text-green-500">{formatCurrency(data.time_tracked_hours * 50)}</span>
+                <span className="text-green-500">
+                  {formatCurrency(data.time_tracked_hours * 50)}
+                </span>
               </div>
               <Progress value={billableHoursRate} className="h-1.5" />
               <div className="flex items-center justify-between mt-1">
@@ -188,7 +194,7 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
                   variant="ghost"
                   size="sm"
                   className="h-7 px-2 text-xs"
-                  onClick={() => router.push("/dashboard/time-tracking")}
+                  onClick={() => router.push('/dashboard/time-tracking')}
                 >
                   Détails
                 </Button>
@@ -198,5 +204,5 @@ export function DashboardCards({ stats }: DashboardCardsProps) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

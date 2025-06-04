@@ -1,20 +1,15 @@
-"use client"
+'use client';
 
-import { useCategoryTableActions } from "@/features/category/list/hooks/useCategoryTableActions"
-import { CategoriesTableView } from "@/features/category/list/ui/CategoriesTableView"
-import { CategoryDeleteDialog } from "@/features/category/list/ui/CategoryDeleteDialog"
+import { useCategoryTableActions } from '@/features/category/list/hooks/useCategoryTableActions';
+import { CategoriesTableView } from '@/features/category/list/ui/CategoriesTableView';
+import { CategoryDeleteDialog } from '@/features/category/list/ui/CategoryDeleteDialog';
 
 interface CategoriesTableProps {
-  categories: any[]
+  categories: any[];
 }
 
 export function CategoriesTable({ categories }: CategoriesTableProps) {
-  const {
-    deleteId,
-    setDeleteId,
-    isDeleting,
-    handleDelete,
-  } = useCategoryTableActions()
+  const { deleteId, setDeleteId, isDeleting, handleDelete } = useCategoryTableActions();
 
   return (
     <>
@@ -26,5 +21,5 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
         isDeleting={isDeleting}
       />
     </>
-  )
+  );
 }

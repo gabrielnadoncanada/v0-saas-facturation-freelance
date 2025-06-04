@@ -1,12 +1,12 @@
-"use client"
+'use client';
 
-import type React from "react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import type React from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormField,
@@ -14,26 +14,26 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form"
-import { Category } from "@/features/category/shared/types/category.types"
+} from '@/components/ui/form';
+import { Category } from '@/features/category/shared/types/category.types';
 
 const PREDEFINED_COLORS = [
-  "#f87171", // red
-  "#fb923c", // orange
-  "#facc15", // yellow
-  "#4ade80", // green
-  "#60a5fa", // blue
-  "#a78bfa", // purple
-  "#f472b6", // pink
-  "#94a3b8", // slate
-]
+  '#f87171', // red
+  '#fb923c', // orange
+  '#facc15', // yellow
+  '#4ade80', // green
+  '#60a5fa', // blue
+  '#a78bfa', // purple
+  '#f472b6', // pink
+  '#94a3b8', // slate
+];
 
 interface CategoryFormViewProps {
-  form: any // react-hook-form return type
-  isLoading: boolean
-  error: string | null
-  success: string | null
-  category?: Category
+  form: any; // react-hook-form return type
+  isLoading: boolean;
+  error: string | null;
+  success: string | null;
+  category?: Category;
 }
 
 export function CategoryFormView({
@@ -100,7 +100,9 @@ export function CategoryFormView({
                       key={color}
                       type="button"
                       className={`h-8 w-8 rounded-full border-2 ${
-                        field.value === color ? "border-black dark:border-white" : "border-transparent"
+                        field.value === color
+                          ? 'border-black dark:border-white'
+                          : 'border-transparent'
                       }`}
                       style={{ backgroundColor: color }}
                       onClick={() => field.onChange(color)}
@@ -116,9 +118,9 @@ export function CategoryFormView({
 
         <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {category ? "Mettre à jour" : "Ajouter"}
+          {category ? 'Mettre à jour' : 'Ajouter'}
         </Button>
       </form>
     </Form>
-  )
+  );
 }

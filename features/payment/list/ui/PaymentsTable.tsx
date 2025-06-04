@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import { usePaymentsTable } from "@/features/payment/list/hooks/usePaymentsTable"
-import { Payment } from "@/features/payment/shared/types/payment.types"
-import { DataTable } from "@/components/ui/data-table"
-import { Eye, Edit, Trash, Package } from "lucide-react"
-import Link from "next/link"
-import { formatCurrency, formatDate } from "@/shared/lib/utils"
+import { usePaymentsTable } from '@/features/payment/list/hooks/usePaymentsTable';
+import { Payment } from '@/features/payment/shared/types/payment.types';
+import { DataTable } from '@/components/ui/data-table';
+import { Eye, Edit, Trash, Package } from 'lucide-react';
+import Link from 'next/link';
+import { formatCurrency, formatDate } from '@/shared/lib/utils';
 
 export function PaymentsTable({ payments }: { payments: Payment[] }) {
   const {
@@ -20,57 +20,57 @@ export function PaymentsTable({ payments }: { payments: Payment[] }) {
     handleDelete,
     getPaymentMethodLabel,
     router,
-  } = usePaymentsTable(payments)
+  } = usePaymentsTable(payments);
 
   const columns = [
     {
-      header: "Facture",
-      accessorKey: "invoice" as keyof Payment,
+      header: 'Facture',
+      accessorKey: 'invoice' as keyof Payment,
       cell: (payment: Payment) => payment.invoice.invoice_number,
-      className: "font-medium"
+      className: 'font-medium',
     },
     {
-      header: "Client",
-      accessorKey: "client_name" as keyof Payment
+      header: 'Client',
+      accessorKey: 'client_name' as keyof Payment,
     },
     {
-      header: "Date",
-      accessorKey: "payment_date" as keyof Payment,
-      cell: (payment: Payment) => formatDate(payment.payment_date as string)
+      header: 'Date',
+      accessorKey: 'payment_date' as keyof Payment,
+      cell: (payment: Payment) => formatDate(payment.payment_date as string),
     },
     {
-      header: "Montant",
-      accessorKey: "amount" as keyof Payment,
-      cell: (payment: Payment) => formatCurrency(payment.amount, payment.invoice.currency)
+      header: 'Montant',
+      accessorKey: 'amount' as keyof Payment,
+      cell: (payment: Payment) => formatCurrency(payment.amount, payment.invoice.currency),
     },
     {
-      header: "Méthode",
-      accessorKey: "payment_method" as keyof Payment,
-      cell: (payment: Payment) => getPaymentMethodLabel(payment.payment_method)
-    }
-  ]
+      header: 'Méthode',
+      accessorKey: 'payment_method' as keyof Payment,
+      cell: (payment: Payment) => getPaymentMethodLabel(payment.payment_method),
+    },
+  ];
 
   const actions = [
     {
-      label: "Voir les détails",
+      label: 'Voir les détails',
       icon: <Eye className="h-4 w-4" />,
-      onClick: (payment: Payment) => router.push(`/dashboard/payments/${payment.id}`)
+      onClick: (payment: Payment) => router.push(`/dashboard/payments/${payment.id}`),
     },
     {
-      label: "Modifier",
+      label: 'Modifier',
       icon: <Edit className="h-4 w-4" />,
-      onClick: (payment: Payment) => router.push(`/dashboard/payments/${payment.id}/edit`)
+      onClick: (payment: Payment) => router.push(`/dashboard/payments/${payment.id}/edit`),
     },
     {
-      label: "Supprimer",
+      label: 'Supprimer',
       icon: <Trash className="h-4 w-4" />,
-      className: "text-red-600",
+      className: 'text-red-600',
       onClick: (payment: Payment) => {
-        setPaymentToDelete(payment.id)
-        setDeleteDialogOpen(true)
-      }
-    }
-  ]
+        setPaymentToDelete(payment.id);
+        setDeleteDialogOpen(true);
+      },
+    },
+  ];
 
   const emptyState = (
     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
@@ -87,9 +87,7 @@ export function PaymentsTable({ payments }: { payments: Payment[] }) {
         </button>
       </Link>
     </div>
-  )
-
-  
+  );
 
   return (
     <DataTable
@@ -97,15 +95,16 @@ export function PaymentsTable({ payments }: { payments: Payment[] }) {
       columns={columns}
       actions={actions}
       searchPlaceholder="Rechercher des paiements..."
-      searchFields={["invoice.invoice_number", "invoice.client.name", "payment_method"]}
+      searchFields={['invoice.invoice_number', 'invoice.client.name', 'payment_method']}
       emptyState={emptyState}
       onRowClick={(payment) => router.push(`/dashboard/payments/${payment.id}`)}
       deleteAction={{
-        title: "Êtes-vous sûr?",
-        description: "Cette action ne peut pas être annulée. Cela supprimera définitivement ce paiement.",
+        title: 'Êtes-vous sûr?',
+        description:
+          'Cette action ne peut pas être annulée. Cela supprimera définitivement ce paiement.',
         onDelete: handleDelete,
-        isDeleting: isDeleting
+        isDeleting: isDeleting,
       }}
     />
-  )
+  );
 }

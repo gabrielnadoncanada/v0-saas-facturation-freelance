@@ -1,8 +1,14 @@
-import React from "react"
-import { formatCurrency } from "@/shared/lib/utils"
-import type { InvoiceItem } from "@/features/invoice/shared/types/invoice.types"
+import React from 'react';
+import { formatCurrency } from '@/shared/lib/utils';
+import type { InvoiceItem } from '@/features/invoice/shared/types/invoice.types';
 
-export function InvoiceLinesTable({ invoiceItems, currency }: { invoiceItems: InvoiceItem[]; currency: string }) {
+export function InvoiceLinesTable({
+  invoiceItems,
+  currency,
+}: {
+  invoiceItems: InvoiceItem[];
+  currency: string;
+}) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -28,5 +34,5 @@ export function InvoiceLinesTable({ invoiceItems, currency }: { invoiceItems: In
         </tbody>
       </table>
     </div>
-  )
-} 
+  );
+}

@@ -1,15 +1,15 @@
-import { TimeEntriesTable } from '@/features/time-tracking/list/ui/TimeEntriesTable'
-import { Button } from '@/components/ui/button'
-import { getTimeEntriesAction } from '@/features/time-tracking/list/actions/getTimeEntries.action'
-import { Plus } from 'lucide-react'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { TimeEntriesTable } from '@/features/time-tracking/list/ui/TimeEntriesTable';
+import { Button } from '@/components/ui/button';
+import { getTimeEntriesAction } from '@/features/time-tracking/list/actions/getTimeEntries.action';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function TimeTrackingPage() {
-  const result = await getTimeEntriesAction()
+  const result = await getTimeEntriesAction();
 
   if (!result.success) {
-    redirect('/login')
+    redirect('/login');
   }
 
   return (
@@ -29,5 +29,5 @@ export default async function TimeTrackingPage() {
 
       <TimeEntriesTable entries={result.data} />
     </div>
-  )
+  );
 }

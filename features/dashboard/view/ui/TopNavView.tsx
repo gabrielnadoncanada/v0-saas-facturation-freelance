@@ -1,6 +1,17 @@
-import React from "react"
-import { Bell, Search, Plus, FileText, Users, Briefcase, X, Calendar, Clock, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import React from 'react';
+import {
+  Bell,
+  Search,
+  Plus,
+  FileText,
+  Users,
+  Briefcase,
+  X,
+  Calendar,
+  Clock,
+  ChevronRight,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,39 +20,48 @@ import {
   DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "@/components/ui/breadcrumb"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { MobileNav } from "@/components/dashboard/mobile-nav"
-import { UserNav } from "@/components/dashboard/user-nav"
-import { APP_NAME } from "@/shared/lib/constants"
-import { cn } from "@/shared/lib/utils"
-import type { TopNavProps, Notification, QuickAction } from "@/features/dashboard/view/types/top-nav.types"
+} from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from '@/components/ui/breadcrumb';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { MobileNav } from '@/components/dashboard/mobile-nav';
+import { UserNav } from '@/components/dashboard/user-nav';
+import { APP_NAME } from '@/shared/lib/constants';
+import { cn } from '@/shared/lib/utils';
+import type {
+  TopNavProps,
+  Notification,
+  QuickAction,
+} from '@/features/dashboard/view/types/top-nav.types';
 
 interface TopNavViewProps {
-  user: TopNavProps["user"]
-  profile: TopNavProps["profile"]
-  breadcrumbs: { label: string; href: string }[]
-  isScrolled: boolean
-  unreadCount: number
-  notifications: Notification[]
-  markAllAsRead: () => void
-  markAsRead: (id: string) => void
-  quickActions: QuickAction[]
-  onQuickAction: (href: string) => void
-  searchOpen: boolean
-  setSearchOpen: (open: boolean) => void
-  searchQuery: string
-  setSearchQuery: (q: string) => void
-  searchResults: any[]
-  onSearchResultClick: (href: string) => void
-  mobileSearchOpen: boolean
-  setMobileSearchOpen: (open: boolean) => void
-  onSeeAllNotifications: () => void
+  user: TopNavProps['user'];
+  profile: TopNavProps['profile'];
+  breadcrumbs: { label: string; href: string }[];
+  isScrolled: boolean;
+  unreadCount: number;
+  notifications: Notification[];
+  markAllAsRead: () => void;
+  markAsRead: (id: string) => void;
+  quickActions: QuickAction[];
+  onQuickAction: (href: string) => void;
+  searchOpen: boolean;
+  setSearchOpen: (open: boolean) => void;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  searchResults: any[];
+  onSearchResultClick: (href: string) => void;
+  mobileSearchOpen: boolean;
+  setMobileSearchOpen: (open: boolean) => void;
+  onSeeAllNotifications: () => void;
 }
 
 export function TopNavView({
@@ -69,8 +89,10 @@ export function TopNavView({
     <>
       <header
         className={cn(
-          "sticky top-0 z-40 w-full transition-all duration-200",
-          isScrolled ? "bg-white/90 backdrop-blur-md dark:bg-slate-900/90 shadow-sm" : "bg-white dark:bg-slate-900",
+          'sticky top-0 z-40 w-full transition-all duration-200',
+          isScrolled
+            ? 'bg-white/90 backdrop-blur-md dark:bg-slate-900/90 shadow-sm'
+            : 'bg-white dark:bg-slate-900',
         )}
       >
         <div className="flex h-16 items-center justify-between px-4 md:px-6">
@@ -80,7 +102,7 @@ export function TopNavView({
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, index) => {
-                    const isLast = index === breadcrumbs.length - 1
+                    const isLast = index === breadcrumbs.length - 1;
                     return (
                       <React.Fragment key={crumb.href}>
                         <BreadcrumbItem>
@@ -96,7 +118,7 @@ export function TopNavView({
                           </span>
                         )}
                       </React.Fragment>
-                    )
+                    );
                   })}
                 </BreadcrumbList>
               </Breadcrumb>
@@ -108,7 +130,12 @@ export function TopNavView({
 
           <div className="flex items-center gap-2 md:gap-3">
             {/* Mobile Search Button */}
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileSearchOpen(true)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setMobileSearchOpen(true)}
+            >
               <Search className="h-5 w-5" />
               <span className="sr-only">Rechercher</span>
             </Button>
@@ -145,7 +172,12 @@ export function TopNavView({
                       onClick={() => onQuickAction(action.href)}
                       className="flex cursor-pointer items-center gap-2 py-2"
                     >
-                      <div className={cn("flex h-8 w-8 items-center justify-center rounded-full", action.color)}>
+                      <div
+                        className={cn(
+                          'flex h-8 w-8 items-center justify-center rounded-full',
+                          action.color,
+                        )}
+                      >
                         <action.icon className="h-4 w-4 text-white" />
                       </div>
                       <div className="flex flex-col">
@@ -174,7 +206,12 @@ export function TopNavView({
                 <div className="flex items-center justify-between p-4">
                   <DropdownMenuLabel className="text-base">Notifications</DropdownMenuLabel>
                   {unreadCount > 0 && (
-                    <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-auto px-2 py-1 text-xs">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={markAllAsRead}
+                      className="h-auto px-2 py-1 text-xs"
+                    >
                       Tout marquer comme lu
                     </Button>
                   )}
@@ -187,23 +224,23 @@ export function TopNavView({
                         <div
                           key={notification.id}
                           className={cn(
-                            "flex cursor-pointer gap-4 p-4 hover:bg-muted/50",
-                            !notification.read && "bg-muted/30",
+                            'flex cursor-pointer gap-4 p-4 hover:bg-muted/50',
+                            !notification.read && 'bg-muted/30',
                           )}
                           onClick={() => markAsRead(notification.id)}
                         >
                           <div className="flex-shrink-0">
                             <div
                               className={cn(
-                                "flex h-9 w-9 items-center justify-center rounded-full",
-                                notification.type === "success" &&
-                                  "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
-                                notification.type === "warning" &&
-                                  "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
-                                notification.type === "error" &&
-                                  "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
-                                notification.type === "info" &&
-                                  "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
+                                'flex h-9 w-9 items-center justify-center rounded-full',
+                                notification.type === 'success' &&
+                                  'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+                                notification.type === 'warning' &&
+                                  'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
+                                notification.type === 'error' &&
+                                  'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
+                                notification.type === 'info' &&
+                                  'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
                               )}
                             >
                               <Bell className="h-4 w-4" />
@@ -221,8 +258,12 @@ export function TopNavView({
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground">{notification.description}</p>
-                            <p className="mt-1 text-xs text-muted-foreground">{notification.time}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {notification.description}
+                            </p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {notification.time}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -231,7 +272,9 @@ export function TopNavView({
                     <div className="flex flex-col items-center justify-center p-8 text-center">
                       <Bell className="mb-2 h-10 w-10 text-muted-foreground" />
                       <p className="text-lg font-medium">Aucune notification</p>
-                      <p className="text-sm text-muted-foreground">Vous n'avez pas de notifications pour le moment.</p>
+                      <p className="text-sm text-muted-foreground">
+                        Vous n'avez pas de notifications pour le moment.
+                      </p>
                     </div>
                   )}
                 </ScrollArea>
@@ -274,7 +317,7 @@ export function TopNavView({
                 variant="ghost"
                 size="icon"
                 className="absolute right-1 top-1 h-7 w-7 rounded-full"
-                onClick={() => setSearchQuery("")}
+                onClick={() => setSearchQuery('')}
               >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Effacer</span>
@@ -292,9 +335,9 @@ export function TopNavView({
                     onClick={() => onSearchResultClick(result.href)}
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      {result.type === "client" && <Users className="h-5 w-5 text-primary" />}
-                      {result.type === "facture" && <FileText className="h-5 w-5 text-primary" />}
-                      {result.type === "projet" && <Briefcase className="h-5 w-5 text-primary" />}
+                      {result.type === 'client' && <Users className="h-5 w-5 text-primary" />}
+                      {result.type === 'facture' && <FileText className="h-5 w-5 text-primary" />}
+                      {result.type === 'projet' && <Briefcase className="h-5 w-5 text-primary" />}
                     </div>
                     <div>
                       <p className="font-medium">{result.title}</p>
@@ -307,13 +350,15 @@ export function TopNavView({
               <div className="flex flex-col items-center justify-center p-8 text-center">
                 <Search className="mb-2 h-10 w-10 text-muted-foreground" />
                 <p className="text-lg font-medium">Aucun résultat trouvé</p>
-                <p className="text-sm text-muted-foreground">Aucun résultat trouvé pour "{searchQuery}"</p>
+                <p className="text-sm text-muted-foreground">
+                  Aucun résultat trouvé pour "{searchQuery}"
+                </p>
               </div>
             ) : (
               <div className="p-4">
                 <p className="mb-4 text-sm text-muted-foreground">Recherches récentes</p>
                 <div className="space-y-2">
-                  {["Acme Inc.", "Facture #INV-2023-001", "Projet Site Web"].map((term, i) => (
+                  {['Acme Inc.', 'Facture #INV-2023-001', 'Projet Site Web'].map((term, i) => (
                     <div
                       key={i}
                       className="flex cursor-pointer items-center justify-between rounded-md p-2 hover:bg-muted"
@@ -365,7 +410,7 @@ export function TopNavView({
                 variant="ghost"
                 size="icon"
                 className="absolute right-1 top-1 h-7 w-7 rounded-full"
-                onClick={() => setSearchQuery("")}
+                onClick={() => setSearchQuery('')}
               >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Effacer</span>
@@ -383,9 +428,9 @@ export function TopNavView({
                     onClick={() => onSearchResultClick(result.href)}
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      {result.type === "client" && <Users className="h-5 w-5 text-primary" />}
-                      {result.type === "facture" && <FileText className="h-5 w-5 text-primary" />}
-                      {result.type === "projet" && <Briefcase className="h-5 w-5 text-primary" />}
+                      {result.type === 'client' && <Users className="h-5 w-5 text-primary" />}
+                      {result.type === 'facture' && <FileText className="h-5 w-5 text-primary" />}
+                      {result.type === 'projet' && <Briefcase className="h-5 w-5 text-primary" />}
                     </div>
                     <div>
                       <p className="font-medium">{result.title}</p>
@@ -398,13 +443,15 @@ export function TopNavView({
               <div className="flex flex-col items-center justify-center p-8 text-center">
                 <Search className="mb-2 h-10 w-10 text-muted-foreground" />
                 <p className="text-lg font-medium">Aucun résultat trouvé</p>
-                <p className="text-sm text-muted-foreground">Aucun résultat trouvé pour "{searchQuery}"</p>
+                <p className="text-sm text-muted-foreground">
+                  Aucun résultat trouvé pour "{searchQuery}"
+                </p>
               </div>
             ) : (
               <div className="p-2 pt-4">
                 <p className="mb-2 text-sm text-muted-foreground">Recherches récentes</p>
                 <div className="space-y-2">
-                  {["Acme Inc.", "Facture #INV-2023-001", "Projet Site Web"].map((term, i) => (
+                  {['Acme Inc.', 'Facture #INV-2023-001', 'Projet Site Web'].map((term, i) => (
                     <div
                       key={i}
                       className="flex cursor-pointer items-center justify-between rounded-md p-2 hover:bg-muted"
@@ -427,5 +474,5 @@ export function TopNavView({
         </DialogContent>
       </Dialog>
     </>
-  )
-} 
+  );
+}

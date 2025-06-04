@@ -1,28 +1,42 @@
-"use client"
+'use client';
 
-import type { ProfileFormValues } from "@/features/setting/hooks/useProfileForm"
-import type { UseFormReturn } from "react-hook-form"
-import type React from "react"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Check, Loader2, Trash, Upload } from "lucide-react"
+import type { ProfileFormValues } from '@/features/setting/hooks/useProfileForm';
+import type { UseFormReturn } from 'react-hook-form';
+import type React from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Check, Loader2, Trash, Upload } from 'lucide-react';
 
 interface ProfileFormViewProps {
-  form: UseFormReturn<ProfileFormValues>
-  isLoading: boolean
-  isUploading: boolean
-  logoUrl: string
-  fileInputRef: React.RefObject<HTMLInputElement | null>
-  onSubmit: (data: ProfileFormValues) => Promise<void>
-  handleLogoUpload: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
-  handleLogoDelete: () => Promise<void>
-  profile: any
+  form: UseFormReturn<ProfileFormValues>;
+  isLoading: boolean;
+  isUploading: boolean;
+  logoUrl: string;
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
+  onSubmit: (data: ProfileFormValues) => Promise<void>;
+  handleLogoUpload: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleLogoDelete: () => Promise<void>;
+  profile: any;
 }
 
 export function ProfileFormView({
@@ -56,8 +70,8 @@ export function ProfileFormView({
                 <div className="space-y-6">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-20 w-20">
-                      <AvatarImage src={logoUrl || "/placeholder.svg"} alt="Logo" />
-                      <AvatarFallback>{profile?.name?.charAt(0) || "U"}</AvatarFallback>
+                      <AvatarImage src={logoUrl || '/placeholder.svg'} alt="Logo" />
+                      <AvatarFallback>{profile?.name?.charAt(0) || 'U'}</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-2">
                       <div className="flex gap-2">
@@ -69,7 +83,11 @@ export function ProfileFormView({
                           onClick={() => fileInputRef.current?.click()}
                           disabled={isUploading}
                         >
-                          {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                          {isUploading ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Upload className="h-4 w-4" />
+                          )}
                           Changer le logo
                         </Button>
                         {logoUrl && (
@@ -81,7 +99,11 @@ export function ProfileFormView({
                             onClick={handleLogoDelete}
                             disabled={isUploading}
                           >
-                            {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}
+                            {isUploading ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash className="h-4 w-4" />
+                            )}
                             Supprimer
                           </Button>
                         )}
@@ -163,7 +185,8 @@ export function ProfileFormView({
           <CardHeader>
             <CardTitle>Informations professionnelles</CardTitle>
             <CardDescription>
-              Gérez les informations de votre entreprise. Ces informations apparaîtront sur vos factures.
+              Gérez les informations de votre entreprise. Ces informations apparaîtront sur vos
+              factures.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -263,7 +286,9 @@ export function ProfileFormView({
                           <FormControl>
                             <Input type="number" step="0.01" min="0" max="100" {...field} />
                           </FormControl>
-                          <FormDescription>Taux de TVA appliqué par défaut sur vos factures.</FormDescription>
+                          <FormDescription>
+                            Taux de TVA appliqué par défaut sur vos factures.
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -290,5 +315,5 @@ export function ProfileFormView({
         </Card>
       </TabsContent>
     </Tabs>
-  )
-} 
+  );
+}

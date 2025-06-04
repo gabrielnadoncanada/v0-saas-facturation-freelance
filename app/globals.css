@@ -113,7 +113,7 @@ body {
 /* Mobile touch targets for accessibility */
 @media (max-width: 640px) {
   button,
-  a{
+  a {
     min-height: 44px;
     min-width: 44px;
   }
@@ -130,7 +130,7 @@ body {
   }
 
   /* Fix modal positioning */
-  [role="dialog"] {
+  [role='dialog'] {
     max-height: 90vh;
     @apply overflow-y-auto;
   }

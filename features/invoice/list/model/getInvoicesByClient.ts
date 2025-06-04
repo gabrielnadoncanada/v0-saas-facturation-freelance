@@ -1,12 +1,12 @@
-import { Invoice } from '@/features/invoice/shared/types/invoice.types'
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { fetchList } from '@/shared/services/supabase/crud'
+import { Invoice } from '@/features/invoice/shared/types/invoice.types';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { fetchList } from '@/shared/services/supabase/crud';
 
 export async function getInvoicesByClient(clientId: string): Promise<Invoice[]> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    return []
+    return [];
   }
 
   return await fetchList<Invoice>(
@@ -15,8 +15,8 @@ export async function getInvoicesByClient(clientId: string): Promise<Invoice[]> 
     '*, client:client_id(name)',
     {
       organization_id: organization.id,
-      client_id: clientId
+      client_id: clientId,
     },
-    { column: 'created_at', ascending: false }
-  )
+    { column: 'created_at', ascending: false },
+  );
 }

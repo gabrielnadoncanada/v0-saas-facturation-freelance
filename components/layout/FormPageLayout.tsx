@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import type { ReactNode } from "react"
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 export interface FormPageLayoutProps {
-  title: string
-  subtitle?: string
-  backHref: string
-  children: ReactNode
+  title: string;
+  subtitle?: string;
+  backHref: string;
+  children: ReactNode;
 }
 
 export function FormPageLayout({ title, subtitle, backHref, children }: FormPageLayoutProps) {
@@ -26,7 +26,7 @@ export function FormPageLayout({ title, subtitle, backHref, children }: FormPage
       </div>
       <div className="grid gap-6">{children}</div>
     </div>
-  )
+  );
 }
 
-export default FormPageLayout 
+export default FormPageLayout;

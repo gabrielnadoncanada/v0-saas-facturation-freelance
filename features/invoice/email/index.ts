@@ -1,1 +1,1 @@
-export { sendInvoiceEmailAction } from './actions/sendInvoiceEmail.action'
+export { sendInvoiceEmailAction } from './actions/sendInvoiceEmail.action';

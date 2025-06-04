@@ -1,5 +1,5 @@
-import { ProductForm } from "@/features/product/shared/ui/ProductForm"
-import FormPageLayout from "@/components/layout/FormPageLayout"
+import { ProductForm } from '@/features/product/shared/ui/ProductForm';
+import FormPageLayout from '@/components/layout/FormPageLayout';
 
 export default async function NewProductPage() {
   return (
@@ -10,5 +10,5 @@ export default async function NewProductPage() {
     >
       <ProductForm product={null} />
     </FormPageLayout>
-  )
+  );
 }

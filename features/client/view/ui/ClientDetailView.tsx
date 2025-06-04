@@ -38,9 +38,7 @@ export function ClientDetailView({ data, isLoading, error }: ClientDetailViewPro
       <Alert className="mb-6">
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Client non trouvé</AlertTitle>
-        <AlertDescription>
-          Impossible de trouver les détails du client demandé.
-        </AlertDescription>
+        <AlertDescription>Impossible de trouver les détails du client demandé.</AlertDescription>
       </Alert>
     );
   }
@@ -55,4 +53,4 @@ export function ClientDetailView({ data, isLoading, error }: ClientDetailViewPro
       <ClientInvoicesView invoices={data.invoices} currency={defaultCurrency} />
     </div>
   );
-} 
+}

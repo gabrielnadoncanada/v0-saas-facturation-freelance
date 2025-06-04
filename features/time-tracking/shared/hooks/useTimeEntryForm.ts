@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import { createTimeEntryAction } from '@/features/time-tracking/create/actions/createTimeEntry.action'
-import { updateTimeEntryAction } from '@/features/time-tracking/edit/actions/updateTimeEntry.action'
-import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
+import { useState } from 'react';
+import { createTimeEntryAction } from '@/features/time-tracking/create/actions/createTimeEntry.action';
+import { updateTimeEntryAction } from '@/features/time-tracking/edit/actions/updateTimeEntry.action';
+import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types';
 
 interface UseTimeEntryFormProps {
-  entry: TimeEntry | null
-  onSuccess?: () => void
+  entry: TimeEntry | null;
+  onSuccess?: () => void;
 }
 
 export function useTimeEntryForm({ entry, onSuccess }: UseTimeEntryFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     project_id: entry?.project_id || '',
@@ -18,43 +18,43 @@ export function useTimeEntryForm({ entry, onSuccess }: UseTimeEntryFormProps) {
     date: entry ? new Date(entry.date as string) : new Date(),
     hours: entry?.hours || 0,
     description: entry?.description || '',
-  })
+  });
 
   const handleChange = (name: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     const dataToSubmit = {
       ...formData,
       date: formData.date,
       hours: Number(formData.hours),
-    }
+    };
 
     try {
-      let result
+      let result;
       if (entry) {
-        result = await updateTimeEntryAction(entry.id, dataToSubmit)
+        result = await updateTimeEntryAction(entry.id, dataToSubmit);
       } else {
-        result = await createTimeEntryAction(dataToSubmit)
+        result = await createTimeEntryAction(dataToSubmit);
       }
 
       if (!result || !result.success) {
-        setError(result?.error || 'Erreur inconnue')
-        return
+        setError(result?.error || 'Erreur inconnue');
+        return;
       }
 
-      onSuccess && onSuccess()
+      onSuccess && onSuccess();
     } catch (err) {
-      setError('Une erreur est survenue')
+      setError('Une erreur est survenue');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return {
     formData,
@@ -62,5 +62,5 @@ export function useTimeEntryForm({ entry, onSuccess }: UseTimeEntryFormProps) {
     handleSubmit,
     isLoading,
     error,
-  }
+  };
 }

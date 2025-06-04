@@ -1,14 +1,14 @@
-import { ClientsTable } from "@/features/client/list/ui/ClientsTable"
-import { Button } from "@/components/ui/button"
-import { getClientsAction } from "@/features/client/list/actions/getClients.action"
-import { Plus } from "lucide-react"
-import Link from "next/link"
+import { ClientsTable } from '@/features/client/list/ui/ClientsTable';
+import { Button } from '@/components/ui/button';
+import { getClientsAction } from '@/features/client/list/actions/getClients.action';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 export default async function ClientsPage() {
-  const result = await getClientsAction()
+  const result = await getClientsAction();
 
   if (!result.success) {
-    return <div>Error: {result.error}</div>
+    return <div>Error: {result.error}</div>;
   }
 
   return (
@@ -28,5 +28,5 @@ export default async function ClientsPage() {
 
       <ClientsTable clients={result.data} />
     </div>
-  )
+  );
 }

@@ -1,12 +1,24 @@
-import Link from "next/link"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { FolderIcon, MoreHorizontal, Pencil, Trash2 } from "lucide-react"
+import Link from 'next/link';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { FolderIcon, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
 interface CategoriesTableViewProps {
-  categories: any[]
-  setDeleteId: (id: string) => void
+  categories: any[];
+  setDeleteId: (id: string) => void;
 }
 
 export function CategoriesTableView({ categories, setDeleteId }: CategoriesTableViewProps) {
@@ -24,7 +36,7 @@ export function CategoriesTableView({ categories, setDeleteId }: CategoriesTable
           <Button>Ajouter une catégorie</Button>
         </Link>
       </div>
-    )
+    );
   }
 
   return (
@@ -43,12 +55,15 @@ export function CategoriesTableView({ categories, setDeleteId }: CategoriesTable
             <TableRow key={category.id}>
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full" style={{ backgroundColor: category.color || "#94a3b8" }} />
+                  <div
+                    className="h-4 w-4 rounded-full"
+                    style={{ backgroundColor: category.color || '#94a3b8' }}
+                  />
                   <span className="font-medium">{category.name}</span>
                 </div>
               </TableCell>
               <TableCell className="hidden md:table-cell max-w-[300px] truncate">
-                {category.description || "-"}
+                {category.description || '-'}
               </TableCell>
               <TableCell className="text-right">{category.products?.count || 0}</TableCell>
               <TableCell>
@@ -81,5 +96,5 @@ export function CategoriesTableView({ categories, setDeleteId }: CategoriesTable
         </TableBody>
       </Table>
     </div>
-  )
-} 
+  );
+}

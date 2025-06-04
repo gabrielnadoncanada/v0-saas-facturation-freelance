@@ -1,8 +1,19 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import { Calculator, CreditCard, Search, Settings, Users, FileText, Clock, Briefcase, Plus, UserCircle } from "lucide-react"
+import * as React from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  Calculator,
+  CreditCard,
+  Search,
+  Settings,
+  Users,
+  FileText,
+  Clock,
+  Briefcase,
+  Plus,
+  UserCircle,
+} from 'lucide-react';
 
 import {
   CommandDialog,
@@ -12,29 +23,29 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command"
-import { Button } from "@/components/ui/button"
+} from '@/components/ui/command';
+import { Button } from '@/components/ui/button';
 
 export function CommandMenu() {
-  const [open, setOpen] = React.useState(false)
-  const router = useRouter()
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((open) => !open)
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
       }
-    }
+    };
 
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [])
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
+  }, []);
 
   const runCommand = React.useCallback((command: () => void) => {
-    setOpen(false)
-    command()
-  }, [])
+    setOpen(false);
+    command();
+  }, []);
 
   return (
     <>
@@ -55,54 +66,54 @@ export function CommandMenu() {
         <CommandList>
           <CommandEmpty>Aucun résultat trouvé.</CommandEmpty>
           <CommandGroup heading="Navigation">
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard'))}>
               <Calculator className="mr-2 h-4 w-4" />
               <span>Tableau de bord</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/clients"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/clients'))}>
               <Users className="mr-2 h-4 w-4" />
               <span>Clients</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/projects"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/projects'))}>
               <Briefcase className="mr-2 h-4 w-4" />
               <span>Projets</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/invoices"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/invoices'))}>
               <FileText className="mr-2 h-4 w-4" />
               <span>Factures</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/time-tracking"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/time-tracking'))}>
               <Clock className="mr-2 h-4 w-4" />
               <span>Suivi du temps</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/payments"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/payments'))}>
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Paiements</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/profile"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/profile'))}>
               <UserCircle className="mr-2 h-4 w-4" />
               <span>Profil</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/settings"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/settings'))}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Paramètres</span>
             </CommandItem>
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Actions rapides">
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/clients/new"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/clients/new'))}>
               <Plus className="mr-2 h-4 w-4" />
               <span>Nouveau client</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/projects/new"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/projects/new'))}>
               <Plus className="mr-2 h-4 w-4" />
               <span>Nouveau projet</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/invoices/new"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/invoices/new'))}>
               <Plus className="mr-2 h-4 w-4" />
               <span>Nouvelle facture</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard/time-tracking"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/time-tracking'))}>
               <Clock className="mr-2 h-4 w-4" />
               <span>Démarrer le chronomètre</span>
             </CommandItem>
@@ -110,5 +121,5 @@ export function CommandMenu() {
         </CommandList>
       </CommandDialog>
     </>
-  )
+  );
 }

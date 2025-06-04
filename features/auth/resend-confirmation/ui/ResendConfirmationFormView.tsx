@@ -1,24 +1,37 @@
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Alert } from '@/components/ui/alert'
-import { UseFormReturn } from 'react-hook-form'
-import { ResendConfirmationSchema } from '@/features/auth/shared/schema/auth.schema'
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Alert } from '@/components/ui/alert';
+import { UseFormReturn } from 'react-hook-form';
+import { ResendConfirmationSchema } from '@/features/auth/shared/schema/auth.schema';
 
 interface ResendConfirmationFormViewProps {
-  form: UseFormReturn<ResendConfirmationSchema>
-  onSubmit: (data: ResendConfirmationSchema) => void
-  serverError: string | null
-  sent: boolean
+  form: UseFormReturn<ResendConfirmationSchema>;
+  onSubmit: (data: ResendConfirmationSchema) => void;
+  serverError: string | null;
+  sent: boolean;
 }
 
-export function ResendConfirmationFormView({ form, onSubmit, serverError, sent }: ResendConfirmationFormViewProps) {
+export function ResendConfirmationFormView({
+  form,
+  onSubmit,
+  serverError,
+  sent,
+}: ResendConfirmationFormViewProps) {
   if (sent) {
     return (
       <Alert variant="default">
-        📩 Si un compte existe avec cet email et n'est pas vérifié, un nouveau lien de confirmation a été envoyé.
+        📩 Si un compte existe avec cet email et n'est pas vérifié, un nouveau lien de confirmation
+        a été envoyé.
       </Alert>
-    )
+    );
   }
 
   return (
@@ -45,5 +58,5 @@ export function ResendConfirmationFormView({ form, onSubmit, serverError, sent }
         </Button>
       </form>
     </Form>
-  )
+  );
 }

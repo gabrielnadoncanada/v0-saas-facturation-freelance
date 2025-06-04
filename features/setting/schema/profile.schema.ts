@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 export const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -13,7 +13,11 @@ export const profileFormSchema = z.object({
   default_currency: z.string(),
   tax_rate: z.coerce.number().min(0).max(100).optional(),
   tax_id: z.string().optional(),
-  website: z.string().url({ message: 'Veuillez entrer une URL valide' }).optional().or(z.literal('')),
-})
+  website: z
+    .string()
+    .url({ message: 'Veuillez entrer une URL valide' })
+    .optional()
+    .or(z.literal('')),
+});
 
-export type ProfileFormSchema = z.infer<typeof profileFormSchema>
+export type ProfileFormSchema = z.infer<typeof profileFormSchema>;

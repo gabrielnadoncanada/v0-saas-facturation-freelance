@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import { Payment } from "@/features/payment/shared/types/payment.types"
-import { PaymentDetailsView } from "@/features/payment/view/ui/PaymentDetailsView"
-import { usePaymentDetails } from "@/features/payment/view/hooks/usePaymentDetails"
+import { Payment } from '@/features/payment/shared/types/payment.types';
+import { PaymentDetailsView } from '@/features/payment/view/ui/PaymentDetailsView';
+import { usePaymentDetails } from '@/features/payment/view/hooks/usePaymentDetails';
 
 export function PaymentDetails({ payment }: { payment: Payment }) {
-  const { isDeleting, handleDelete, getPaymentMethodLabel } = usePaymentDetails(payment)
+  const { isDeleting, handleDelete, getPaymentMethodLabel } = usePaymentDetails(payment);
 
   return (
     <PaymentDetailsView
@@ -14,7 +14,7 @@ export function PaymentDetails({ payment }: { payment: Payment }) {
       onDelete={handleDelete}
       getPaymentMethodLabel={getPaymentMethodLabel}
     />
-  )
+  );
 }
 
 export default PaymentDetails;

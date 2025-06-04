@@ -1,18 +1,18 @@
-"use client"
+'use client';
 
-import { useState } from 'react'
-import { createClient } from '@/shared/lib/supabase/client'
-import { Task } from '@/features/task/shared/types/task.types'
-import { SubtaskForm } from '@/features/subtask/shared/ui/SubtaskForm'
+import { useState } from 'react';
+import { createClient } from '@/shared/lib/supabase/client';
+import { Task } from '@/features/task/shared/types/task.types';
+import { SubtaskForm } from '@/features/subtask/shared/ui/SubtaskForm';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Edit, Trash2 } from 'lucide-react'
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Edit, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogClose,
@@ -20,56 +20,56 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '@/components/ui/dialog';
 
 export function SubtaskList({
   subtasks,
   taskId,
   onSubtaskUpdate,
 }: {
-  subtasks: Task[]
-  taskId: string
-  onSubtaskUpdate?: () => void
+  subtasks: Task[];
+  taskId: string;
+  onSubtaskUpdate?: () => void;
 }) {
-  const supabase = createClient()
-  const [editSubtask, setEditSubtask] = useState<Task | null>(null)
-  const [deleteSubtask, setDeleteSubtask] = useState<Task | null>(null)
-  const [isDeleting, setIsDeleting] = useState(false)
+  const supabase = createClient();
+  const [editSubtask, setEditSubtask] = useState<Task | null>(null);
+  const [deleteSubtask, setDeleteSubtask] = useState<Task | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  if (!subtasks || subtasks.length === 0) return null
+  if (!subtasks || subtasks.length === 0) return null;
 
   const markSubtaskAsCompleted = async (subtaskId: string, completed: boolean) => {
     const { error } = await supabase
       .from('tasks')
       .update({ status: completed ? 'completed' : 'pending' })
-      .eq('id', subtaskId)
+      .eq('id', subtaskId);
 
     if (error) {
-      console.error('Erreur lors de la mise \u00e0 jour de la sous-t\u00e2che:', error)
-      return
+      console.error('Erreur lors de la mise \u00e0 jour de la sous-t\u00e2che:', error);
+      return;
     }
 
-    onSubtaskUpdate && onSubtaskUpdate()
-  }
+    onSubtaskUpdate && onSubtaskUpdate();
+  };
 
   const handleDeleteSubtask = async () => {
-    if (!deleteSubtask) return
-    setIsDeleting(true)
+    if (!deleteSubtask) return;
+    setIsDeleting(true);
 
     try {
-      const { error } = await supabase.from('tasks').delete().eq('id', deleteSubtask.id)
+      const { error } = await supabase.from('tasks').delete().eq('id', deleteSubtask.id);
       if (error) {
-        console.error('Erreur lors de la suppression de la sous-t\u00e2che:', error)
-        return
+        console.error('Erreur lors de la suppression de la sous-t\u00e2che:', error);
+        return;
       }
-      setDeleteSubtask(null)
-      onSubtaskUpdate && onSubtaskUpdate()
+      setDeleteSubtask(null);
+      onSubtaskUpdate && onSubtaskUpdate();
     } catch (err) {
-      console.error('Erreur inattendue lors de la suppression:', err)
+      console.error('Erreur inattendue lors de la suppression:', err);
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
     }
-  }
+  };
 
   return (
     <div className="ml-6 mt-2">
@@ -79,14 +79,10 @@ export function SubtaskList({
             <div className="flex items-start gap-2 py-1">
               <Checkbox
                 checked={st.status === 'completed'}
-                onCheckedChange={(checked) =>
-                  markSubtaskAsCompleted(st.id, checked as boolean)
-                }
+                onCheckedChange={(checked) => markSubtaskAsCompleted(st.id, checked as boolean)}
                 className="mt-1"
               />
-              <AccordionTrigger className="flex-1 text-left">
-                {st.name}
-              </AccordionTrigger>
+              <AccordionTrigger className="flex-1 text-left">{st.name}</AccordionTrigger>
               <div className="flex items-center space-x-1">
                 <Button size="icon" variant="ghost" onClick={() => setEditSubtask(st)}>
                   <Edit className="h-4 w-4" />
@@ -102,7 +98,9 @@ export function SubtaskList({
               </div>
             </div>
             <AccordionContent className="ml-6">
-              {st.description && <p className="text-sm text-muted-foreground mb-2">{st.description}</p>}
+              {st.description && (
+                <p className="text-sm text-muted-foreground mb-2">{st.description}</p>
+              )}
             </AccordionContent>
           </AccordionItem>
         ))}
@@ -118,8 +116,8 @@ export function SubtaskList({
               taskId={taskId}
               subtask={editSubtask}
               onSuccess={() => {
-                setEditSubtask(null)
-                onSubtaskUpdate && onSubtaskUpdate()
+                setEditSubtask(null);
+                onSubtaskUpdate && onSubtaskUpdate();
               }}
             />
           )}
@@ -146,5 +144,5 @@ export function SubtaskList({
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }

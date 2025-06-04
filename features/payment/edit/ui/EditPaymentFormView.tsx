@@ -1,25 +1,38 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { AlertCircle, Loader2 } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { formatCurrency } from "@/shared/lib/utils"
-import { DatePicker } from "@/components/ui/date-picker"
-import { Invoice } from "@/features/invoice/shared/types/invoice.types"
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { PaymentFormSchema } from "@/features/payment/edit/hooks/useEditPaymentForm"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { formatCurrency } from '@/shared/lib/utils';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Invoice } from '@/features/invoice/shared/types/invoice.types';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { PaymentFormSchema } from '@/features/payment/edit/hooks/useEditPaymentForm';
 
 interface EditPaymentFormViewProps {
-  form: any
-  isLoading: boolean
-  error: string | null
-  selectedInvoice: Invoice | null
-  invoices: Invoice[]
-  onCancel: () => void
-  onSubmit: (values: PaymentFormSchema) => void
+  form: any;
+  isLoading: boolean;
+  error: string | null;
+  selectedInvoice: Invoice | null;
+  invoices: Invoice[];
+  onCancel: () => void;
+  onSubmit: (values: PaymentFormSchema) => void;
 }
 
 export function EditPaymentFormView({
@@ -50,7 +63,9 @@ export function EditPaymentFormView({
               name="invoice_id"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Facture <span className="text-red-500">*</span></FormLabel>
+                  <FormLabel>
+                    Facture <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger id="invoice_id">
@@ -58,8 +73,9 @@ export function EditPaymentFormView({
                       </SelectTrigger>
                       <SelectContent>
                         {invoices.map((invoice) => (
-                          <SelectItem key={invoice.id} value={invoice.id || ""}>
-                            {invoice.invoice_number} - {invoice.client.name} ({formatCurrency(invoice.total, invoice.currency)})
+                          <SelectItem key={invoice.id} value={invoice.id || ''}>
+                            {invoice.invoice_number} - {invoice.client.name} (
+                            {formatCurrency(invoice.total, invoice.currency)})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -74,7 +90,9 @@ export function EditPaymentFormView({
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Montant <span className="text-red-500">*</span></FormLabel>
+                  <FormLabel>
+                    Montant <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       id="amount"
@@ -83,13 +101,14 @@ export function EditPaymentFormView({
                       step="0.01"
                       {...field}
                       value={field.value}
-                      onChange={e => field.onChange(Number.parseFloat(e.target.value))}
+                      onChange={(e) => field.onChange(Number.parseFloat(e.target.value))}
                       required
                     />
                   </FormControl>
                   {selectedInvoice && (
                     <p className="text-sm text-muted-foreground">
-                      Montant total de la facture: {formatCurrency(selectedInvoice.total, selectedInvoice.currency)}
+                      Montant total de la facture:{' '}
+                      {formatCurrency(selectedInvoice.total, selectedInvoice.currency)}
                     </p>
                   )}
                   <FormMessage />
@@ -101,7 +120,9 @@ export function EditPaymentFormView({
               name="payment_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date de paiement <span className="text-red-500">*</span></FormLabel>
+                  <FormLabel>
+                    Date de paiement <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <DatePicker date={field.value} setDate={field.onChange} />
                   </FormControl>
@@ -114,7 +135,9 @@ export function EditPaymentFormView({
               name="payment_method"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Méthode de paiement <span className="text-red-500">*</span></FormLabel>
+                  <FormLabel>
+                    Méthode de paiement <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger id="payment_method">
@@ -143,7 +166,7 @@ export function EditPaymentFormView({
                       id="notes"
                       {...field}
                       value={field.value}
-                      onChange={e => field.onChange(e.target.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                       placeholder="Informations supplémentaires..."
                       rows={3}
                     />
@@ -157,7 +180,7 @@ export function EditPaymentFormView({
             <Button variant="outline" onClick={onCancel} disabled={isLoading} type="button">
               Annuler
             </Button>
-            <Button type="submit" disabled={isLoading || !form.watch("invoice_id")}> 
+            <Button type="submit" disabled={isLoading || !form.watch('invoice_id')}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Mettre à jour le paiement
             </Button>
@@ -165,5 +188,5 @@ export function EditPaymentFormView({
         </Card>
       </form>
     </Form>
-  )
-} 
+  );
+}

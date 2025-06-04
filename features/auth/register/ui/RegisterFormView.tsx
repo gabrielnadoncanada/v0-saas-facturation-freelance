@@ -1,9 +1,16 @@
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { UseFormReturn } from "react-hook-form";
-import { RegisterSchema } from "@/features/auth/shared/schema/auth.schema";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { UseFormReturn } from 'react-hook-form';
+import { RegisterSchema } from '@/features/auth/shared/schema/auth.schema';
 
 interface RegisterFormViewProps {
   form: UseFormReturn<RegisterSchema>;
@@ -62,11 +69,11 @@ export function RegisterFormView({ form, onSubmit, serverError }: RegisterFormVi
         />
 
         <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Inscription..." : "S'inscrire"}
+          {form.formState.isSubmitting ? 'Inscription...' : "S'inscrire"}
         </Button>
 
         <div className="text-center text-sm">
-          Déjà un compte ?{" "}
+          Déjà un compte ?{' '}
           <Link href="/login" className="text-primary hover:underline">
             Se connecter
           </Link>
@@ -74,4 +81,4 @@ export function RegisterFormView({ form, onSubmit, serverError }: RegisterFormVi
       </form>
     </Form>
   );
-} 
+}

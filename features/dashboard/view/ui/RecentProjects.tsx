@@ -1,41 +1,41 @@
-"use client"
+'use client';
 
-import { formatDate } from "@/shared/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Briefcase } from "lucide-react"
-import Link from "next/link"
-import { PROJECT_STATUSES } from "@/shared/lib/constants"
-import { Progress } from "@/components/ui/progress"
+import { formatDate } from '@/shared/lib/utils';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Briefcase } from 'lucide-react';
+import Link from 'next/link';
+import { PROJECT_STATUSES } from '@/shared/lib/constants';
+import { Progress } from '@/components/ui/progress';
 
 interface Project {
-  id: string
-  name: string
-  description: string | null
-  status: string
-  start_date: string | null
-  end_date: string | null
+  id: string;
+  name: string;
+  description: string | null;
+  status: string;
+  start_date: string | null;
+  end_date: string | null;
   clients: {
-    name: string
-  }
-  tasks?: { status: string }[]
+    name: string;
+  };
+  tasks?: { status: string }[];
 }
 
 interface RecentProjectsProps {
-  projects: Project[]
+  projects: Project[];
 }
 
 export function RecentProjects({ projects }: RecentProjectsProps) {
   const getStatusBadge = (status: string) => {
-    const statusConfig = PROJECT_STATUSES.find((s) => s.value === status) || PROJECT_STATUSES[0]
-    return <Badge className={statusConfig.color}>{statusConfig.label}</Badge>
-  }
+    const statusConfig = PROJECT_STATUSES.find((s) => s.value === status) || PROJECT_STATUSES[0];
+    return <Badge className={statusConfig.color}>{statusConfig.label}</Badge>;
+  };
 
   const getProgress = (tasks?: { status: string }[]) => {
-    if (!tasks || tasks.length === 0) return 0
-    const completed = tasks.filter((t) => t.status === "completed").length
-    return Math.round((completed / tasks.length) * 100)
-  }
+    if (!tasks || tasks.length === 0) return 0;
+    const completed = tasks.filter((t) => t.status === 'completed').length;
+    return Math.round((completed / tasks.length) * 100);
+  };
 
   if (projects.length === 0) {
     return (
@@ -47,7 +47,7 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
           <Link href="/dashboard/projects/new">Créer un projet</Link>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -55,13 +55,16 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
       {projects.map((project) => (
         <div key={project.id} className="p-4 hover:bg-muted/50 transition-colors">
           <div className="flex items-center justify-between">
-            <Link href={`/dashboard/projects/${project.id}`} className="font-medium text-primary hover:underline">
+            <Link
+              href={`/dashboard/projects/${project.id}`}
+              className="font-medium text-primary hover:underline"
+            >
               {project.name}
             </Link>
             {getStatusBadge(project.status)}
           </div>
           <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
-            {project.description || "Aucune description"}
+            {project.description || 'Aucune description'}
           </p>
           <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
@@ -69,21 +72,19 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
               <span className="font-medium text-foreground">{project.clients.name}</span>
             </div>
             <div>
-              {project.start_date ? formatDate(project.start_date) : "Non démarré"}
-              {project.end_date ? ` - ${formatDate(project.end_date)}` : ""}
+              {project.start_date ? formatDate(project.start_date) : 'Non démarré'}
+              {project.end_date ? ` - ${formatDate(project.end_date)}` : ''}
             </div>
           </div>
           <div className="mt-3 space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">Progression</span>
-              <span className="font-medium">
-                {getProgress(project.tasks)}%
-              </span>
+              <span className="font-medium">{getProgress(project.tasks)}%</span>
             </div>
             <Progress value={getProgress(project.tasks)} className="h-1.5" />
           </div>
         </div>
       ))}
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { Task } from "@/features/task/shared/types/task.types";
-import { Client } from "@/features/client/shared/types/client.types";
+import { Task } from '@/features/task/shared/types/task.types';
+import { Client } from '@/features/client/shared/types/client.types';
 
 export interface Project {
   id: string;

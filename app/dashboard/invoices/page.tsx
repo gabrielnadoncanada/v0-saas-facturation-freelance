@@ -1,15 +1,15 @@
-import { InvoicesTable } from "@/features/invoice/list/ui/InvoicesTable"
-import { Button } from "@/components/ui/button"
-import { getInvoicesAction } from "@/features/invoice/list/actions/getInvoices.action"
-import { Plus } from "lucide-react"
-import Link from "next/link"
-import { redirect } from "next/navigation"
+import { InvoicesTable } from '@/features/invoice/list/ui/InvoicesTable';
+import { Button } from '@/components/ui/button';
+import { getInvoicesAction } from '@/features/invoice/list/actions/getInvoices.action';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function InvoicesPage() {
-  const result = await getInvoicesAction()
+  const result = await getInvoicesAction();
 
   if (!result.success) {
-    redirect("/login")
+    redirect('/login');
   }
 
   return (
@@ -29,5 +29,5 @@ export default async function InvoicesPage() {
 
       <InvoicesTable invoices={result.data} />
     </div>
-  )
+  );
 }

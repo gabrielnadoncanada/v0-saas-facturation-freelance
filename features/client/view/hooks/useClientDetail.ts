@@ -54,6 +54,6 @@ export function useClientDetail(clientId: string) {
     stats,
     isLoading,
     error,
-    refetch: fetchClientData
+    refetch: fetchClientData,
   };
-} 
+}

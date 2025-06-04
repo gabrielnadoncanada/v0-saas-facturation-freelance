@@ -1,4 +1,4 @@
-import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
+import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types';
 
 export interface Task {
   id: string;

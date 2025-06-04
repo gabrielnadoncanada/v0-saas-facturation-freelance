@@ -1,13 +1,13 @@
-"use client"
+'use client';
 
-import React from "react"
+import React from 'react';
 
-import { Invoice } from "@/features/invoice/shared/types/invoice.types"
-import { useNewPaymentForm } from "@/features/payment/create/hooks/useNewPaymentForm"
-import { NewPaymentFormView } from "@/features/payment/create/ui/NewPaymentFormView"
+import { Invoice } from '@/features/invoice/shared/types/invoice.types';
+import { useNewPaymentForm } from '@/features/payment/create/hooks/useNewPaymentForm';
+import { NewPaymentFormView } from '@/features/payment/create/ui/NewPaymentFormView';
 
 export function NewPaymentForm({ invoices }: { invoices: Invoice[] }) {
-  const { isLoading, error, selectedInvoice, form, onSubmit, router } = useNewPaymentForm(invoices)
+  const { isLoading, error, selectedInvoice, form, onSubmit, router } = useNewPaymentForm(invoices);
 
   return (
     <NewPaymentFormView
@@ -19,5 +19,5 @@ export function NewPaymentForm({ invoices }: { invoices: Invoice[] }) {
       onCancel={() => router.back()}
       onSubmit={onSubmit}
     />
-  )
+  );
 }

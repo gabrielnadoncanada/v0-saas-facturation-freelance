@@ -1,14 +1,14 @@
-import { ProjectsTable } from "@/features/project/list/ui/ProjectsTable"
-import { Button } from "@/components/ui/button"
-import { getProjectsAction } from "@/features/project/list/actions/getProjects.action"
-import { Plus } from "lucide-react"
-import Link from "next/link"
+import { ProjectsTable } from '@/features/project/list/ui/ProjectsTable';
+import { Button } from '@/components/ui/button';
+import { getProjectsAction } from '@/features/project/list/actions/getProjects.action';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 export default async function ProjectsPage() {
-  const result = await getProjectsAction()
+  const result = await getProjectsAction();
 
   if (!result.success) {
-    return <div>Error: {result.error}</div>
+    return <div>Error: {result.error}</div>;
   }
 
   return (
@@ -28,5 +28,5 @@ export default async function ProjectsPage() {
 
       <ProjectsTable projects={result.data} />
     </div>
-  )
+  );
 }

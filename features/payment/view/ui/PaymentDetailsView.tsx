@@ -1,7 +1,7 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatCurrency, formatDate } from "@/shared/lib/utils"
-import { Edit, Trash } from "lucide-react"
-import Link from "next/link"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatCurrency, formatDate } from '@/shared/lib/utils';
+import { Edit, Trash } from 'lucide-react';
+import Link from 'next/link';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,16 +12,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Payment } from "@/features/payment/shared/types/payment.types"
-import { Button } from "@/components/ui/button"
-import type React from "react"
+} from '@/components/ui/alert-dialog';
+import { Payment } from '@/features/payment/shared/types/payment.types';
+import { Button } from '@/components/ui/button';
+import type React from 'react';
 
 interface PaymentDetailsViewProps {
-  payment: Payment
-  isDeleting: boolean
-  onDelete: () => void
-  getPaymentMethodLabel: (method: string) => string
+  payment: Payment;
+  isDeleting: boolean;
+  onDelete: () => void;
+  getPaymentMethodLabel: (method: string) => string;
 }
 
 export function PaymentDetailsView({
@@ -30,7 +30,6 @@ export function PaymentDetailsView({
   onDelete,
   getPaymentMethodLabel,
 }: PaymentDetailsViewProps) {
-
   return (
     <Card>
       <CardHeader>
@@ -52,7 +51,9 @@ export function PaymentDetailsView({
           </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Montant</h3>
-            <p className="text-lg font-medium">{formatCurrency(payment.amount, payment.invoice.currency)}</p>
+            <p className="text-lg font-medium">
+              {formatCurrency(payment.amount, payment.invoice.currency)}
+            </p>
           </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Date de paiement</h3>
@@ -63,8 +64,12 @@ export function PaymentDetailsView({
             <p className="text-lg font-medium">{getPaymentMethodLabel(payment.payment_method)}</p>
           </div>
           <div>
-            <h3 className="text-sm font-medium text-muted-foreground">Montant total de la facture</h3>
-            <p className="text-lg font-medium">{formatCurrency(payment.invoice.total, payment.invoice.currency)}</p>
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Montant total de la facture
+            </h3>
+            <p className="text-lg font-medium">
+              {formatCurrency(payment.invoice.total, payment.invoice.currency)}
+            </p>
           </div>
         </div>
 
@@ -87,14 +92,18 @@ export function PaymentDetailsView({
             <AlertDialogHeader>
               <AlertDialogTitle>Êtes-vous sûr?</AlertDialogTitle>
               <AlertDialogDescription>
-                Cette action ne peut pas être annulée. Cela supprimera définitivement ce paiement et pourrait affecter
-                le statut de la facture associée.
+                Cette action ne peut pas être annulée. Cela supprimera définitivement ce paiement et
+                pourrait affecter le statut de la facture associée.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Annuler</AlertDialogCancel>
-              <AlertDialogAction onClick={onDelete} className="bg-red-600 hover:bg-red-700" disabled={isDeleting}>
-                {isDeleting ? "Suppression..." : "Supprimer"}
+              <AlertDialogAction
+                onClick={onDelete}
+                className="bg-red-600 hover:bg-red-700"
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Suppression...' : 'Supprimer'}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -108,5 +117,5 @@ export function PaymentDetailsView({
         </Link>
       </CardFooter>
     </Card>
-  )
-} 
+  );
+}

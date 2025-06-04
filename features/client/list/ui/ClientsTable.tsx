@@ -1,56 +1,52 @@
-"use client"
+'use client';
 
-import { useClientsTable } from "@/features/client/list/hooks/useClientsTable"
-import { Client } from "@/features/client/shared/types/client.types"
-import { DataTable } from "@/components/ui/data-table"
-import { Edit, Package, Trash, FileText, Eye } from "lucide-react"
-import Link from "next/link"
+import { useClientsTable } from '@/features/client/list/hooks/useClientsTable';
+import { Client } from '@/features/client/shared/types/client.types';
+import { DataTable } from '@/components/ui/data-table';
+import { Edit, Package, Trash, FileText, Eye } from 'lucide-react';
+import Link from 'next/link';
 
 export function ClientsTable({ clients }: { clients: Client[] }) {
-  const {
-    handleDelete,
-    router,
-    isDeleting,
-  } = useClientsTable()
+  const { handleDelete, router, isDeleting } = useClientsTable();
 
   const columns = [
     {
-      header: "Nom",
-      accessorKey: "name" as keyof Client,
-      className: "font-medium"
+      header: 'Nom',
+      accessorKey: 'name' as keyof Client,
+      className: 'font-medium',
     },
     {
-      header: "Email",
-      accessorKey: "email" as keyof Client,
+      header: 'Email',
+      accessorKey: 'email' as keyof Client,
     },
     {
-      header: "Téléphone",
-      accessorKey: "phone" as keyof Client,
-    }
-  ]
+      header: 'Téléphone',
+      accessorKey: 'phone' as keyof Client,
+    },
+  ];
 
   const actions = [
     {
-      label: "Voir",
+      label: 'Voir',
       icon: <Eye className="h-4 w-4" />,
-      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`)
+      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`),
     },
     {
-      label: "Modifier",
+      label: 'Modifier',
       icon: <Edit className="h-4 w-4" />,
-      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`)
+      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`),
     },
     {
-      label: "Factures",
+      label: 'Factures',
       icon: <FileText className="h-4 w-4" />,
-      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`)
+      onClick: (client: Client) => router.push(`/dashboard/clients/${client.id}`),
     },
     {
-      label: "Supprimer",
+      label: 'Supprimer',
       icon: <Trash className="h-4 w-4" />,
-      className: "text-red-600"
-    }
-  ]
+      className: 'text-red-600',
+    },
+  ];
 
   const emptyState = (
     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
@@ -67,7 +63,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
         </button>
       </Link>
     </div>
-  )
+  );
 
   return (
     <DataTable
@@ -75,15 +71,16 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
       columns={columns}
       actions={actions}
       searchPlaceholder="Rechercher des clients..."
-      searchFields={["name", "email", "phone"]}
+      searchFields={['name', 'email', 'phone']}
       onRowClick={(client: Client) => router.push(`/dashboard/clients/${client.id}`)}
       emptyState={emptyState}
       deleteAction={{
-        title: "Êtes-vous sûr?",
-        description: "Cette action ne peut pas être annulée. Cela supprimera définitivement le client et toutes les données associées.",
+        title: 'Êtes-vous sûr?',
+        description:
+          'Cette action ne peut pas être annulée. Cela supprimera définitivement le client et toutes les données associées.',
         onDelete: handleDelete,
         isDeleting: isDeleting,
       }}
     />
-  )
+  );
 }

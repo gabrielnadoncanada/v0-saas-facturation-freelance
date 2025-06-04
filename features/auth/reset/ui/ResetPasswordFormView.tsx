@@ -1,13 +1,20 @@
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { UseFormReturn } from 'react-hook-form'
-import { ResetPasswordSchema } from '@/features/auth/shared/schema/auth.schema'
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { UseFormReturn } from 'react-hook-form';
+import { ResetPasswordSchema } from '@/features/auth/shared/schema/auth.schema';
 
 interface ResetPasswordFormViewProps {
-  form: UseFormReturn<ResetPasswordSchema>
-  onSubmit: (data: ResetPasswordSchema) => void
-  serverError: string | null
+  form: UseFormReturn<ResetPasswordSchema>;
+  onSubmit: (data: ResetPasswordSchema) => void;
+  serverError: string | null;
 }
 
 export function ResetPasswordFormView({ form, onSubmit, serverError }: ResetPasswordFormViewProps) {
@@ -35,5 +42,5 @@ export function ResetPasswordFormView({ form, onSubmit, serverError }: ResetPass
         </Button>
       </form>
     </Form>
-  )
+  );
 }

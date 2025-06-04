@@ -1,6 +1,13 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +15,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,21 +25,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Search, Edit, Trash, MoreHorizontal } from 'lucide-react'
-import { formatDate } from '@/shared/lib/utils'
-import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types'
+} from '@/components/ui/alert-dialog';
+import { Search, Edit, Trash, MoreHorizontal } from 'lucide-react';
+import { formatDate } from '@/shared/lib/utils';
+import { TimeEntry } from '@/features/time-tracking/shared/types/timeEntry.types';
 
 interface TimeEntriesTableViewProps {
-  filteredEntries: TimeEntry[]
-  searchTerm: string
-  setSearchTerm: (term: string) => void
-  deleteDialogOpen: boolean
-  setDeleteDialogOpen: (open: boolean) => void
-  setEntryToDelete: (id: string | null) => void
-  isDeleting: boolean
-  handleDelete: () => void
-  router: any
+  filteredEntries: TimeEntry[];
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  deleteDialogOpen: boolean;
+  setDeleteDialogOpen: (open: boolean) => void;
+  setEntryToDelete: (id: string | null) => void;
+  isDeleting: boolean;
+  handleDelete: () => void;
+  router: any;
 }
 
 export function TimeEntriesTableView({
@@ -97,12 +104,20 @@ export function TimeEntriesTableView({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => router.push(`/dashboard/time-tracking/${entry.id}/edit`)}>
+                        <DropdownMenuItem
+                          onClick={() => router.push(`/dashboard/time-tracking/${entry.id}/edit`)}
+                        >
                           <Edit className="mr-2 h-4 w-4" />
                           Modifier
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600" onClick={() => { setEntryToDelete(entry.id); setDeleteDialogOpen(true) }}>
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          onClick={() => {
+                            setEntryToDelete(entry.id);
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
                           <Trash className="mr-2 h-4 w-4" />
                           Supprimer
                         </DropdownMenuItem>
@@ -132,5 +147,5 @@ export function TimeEntriesTableView({
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
+  );
 }

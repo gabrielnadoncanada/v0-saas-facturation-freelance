@@ -1,29 +1,35 @@
-'use client'
+'use client';
 
-import React from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { formatCurrency, formatDate, getInvoiceStatusColor } from "@/shared/lib/utils"
-import { AlertCircle, ArrowLeft, Download, Edit, Send, Mail, Loader2 } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { NewPaymentFormView } from "@/features/payment/create/ui/NewPaymentFormView"
-import { useInvoiceDetails } from "@/features/invoice/shared/hooks/useInvoiceDetails"
-import { InvoiceLinesTable } from "@/features/invoice/shared/ui/InvoiceLinesTable"
-import { InvoicePaymentsTable } from "@/features/invoice/shared/ui/InvoicePaymentsTable"
-import { Invoice, InvoiceDetailsProps } from "@/features/invoice/shared/types/invoice.types"
-import { useRouter } from "next/navigation"
-import PaymentForm from "@/features/payment/shared/ui/PaymentForm"
-import { sendInvoiceEmailAction } from "@/features/invoice/email"
-import { useTransition } from "react"
-import { useToast } from "@/shared/hooks/use-toast"
+import React from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { formatCurrency, formatDate, getInvoiceStatusColor } from '@/shared/lib/utils';
+import { AlertCircle, ArrowLeft, Download, Edit, Send, Mail, Loader2 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { NewPaymentFormView } from '@/features/payment/create/ui/NewPaymentFormView';
+import { useInvoiceDetails } from '@/features/invoice/shared/hooks/useInvoiceDetails';
+import { InvoiceLinesTable } from '@/features/invoice/shared/ui/InvoiceLinesTable';
+import { InvoicePaymentsTable } from '@/features/invoice/shared/ui/InvoicePaymentsTable';
+import { Invoice, InvoiceDetailsProps } from '@/features/invoice/shared/types/invoice.types';
+import { useRouter } from 'next/navigation';
+import PaymentForm from '@/features/payment/shared/ui/PaymentForm';
+import { sendInvoiceEmailAction } from '@/features/invoice/email';
+import { useTransition } from 'react';
+import { useToast } from '@/shared/hooks/use-toast';
 
 export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
   const {
     isLoading,
     error,
@@ -32,27 +38,27 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
     setPaymentDialogOpen,
     updateInvoiceStatus,
     getStatusLabel,
-  } = useInvoiceDetails(invoice.id)
-  const [isSending, startSending] = useTransition()
+  } = useInvoiceDetails(invoice.id);
+  const [isSending, startSending] = useTransition();
   const sendEmail = () => {
-    if (!invoice.client.email) return
-    setError(null)
+    if (!invoice.client.email) return;
+    setError(null);
     startSending(async () => {
-      const res = await sendInvoiceEmailAction(invoice.id, invoice.client.email as string)
+      const res = await sendInvoiceEmailAction(invoice.id, invoice.client.email as string);
       if (!res.success) {
-        setError(res.error || 'Une erreur est survenue')
+        setError(res.error || 'Une erreur est survenue');
       } else {
         toast({
           title: 'Email envoyé',
           description: 'La facture a été envoyée avec succès.',
-        })
+        });
       }
-    })
-  }
+    });
+  };
 
   // Calculer le total payé
-  const totalPaid = invoice.payments.reduce((sum, payment) => sum + payment.amount, 0)
-  const balanceDue = invoice.total ? invoice.total - totalPaid : 0
+  const totalPaid = invoice.payments.reduce((sum, payment) => sum + payment.amount, 0);
+  const balanceDue = invoice.total ? invoice.total - totalPaid : 0;
 
   return (
     <div className="space-y-6">
@@ -76,7 +82,9 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <Badge className={getInvoiceStatusColor(invoice.status)}>{getStatusLabel(invoice.status)}</Badge>
+          <Badge className={getInvoiceStatusColor(invoice.status)}>
+            {getStatusLabel(invoice.status)}
+          </Badge>
         </div>
       </div>
 
@@ -101,7 +109,7 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Langue</p>
-                <p>{invoice.language === "fr" ? "Français" : invoice.language}</p>
+                <p>{invoice.language === 'fr' ? 'Français' : invoice.language}</p>
               </div>
             </div>
             {invoice.notes && (
@@ -145,7 +153,9 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
           <CardFooter className="flex justify-between">
             <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
               <DialogTrigger asChild>
-                <Button disabled={invoice.status === "paid" || balanceDue <= 0}>Enregistrer un paiement</Button>
+                <Button disabled={invoice.status === 'paid' || balanceDue <= 0}>
+                  Enregistrer un paiement
+                </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -156,8 +166,8 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
                   balanceDue={balanceDue}
                   currency={invoice.currency}
                   onSuccess={() => {
-                    setPaymentDialogOpen(false)
-                    router.refresh()
+                    setPaymentDialogOpen(false);
+                    router.refresh();
                   }}
                 />
               </DialogContent>
@@ -197,7 +207,11 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
               Télécharger PDF
             </a>
           </Button>
-          <Button variant="outline" onClick={sendEmail} disabled={isSending || !invoice.client.email}>
+          <Button
+            variant="outline"
+            onClick={sendEmail}
+            disabled={isSending || !invoice.client.email}
+          >
             {isSending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -207,19 +221,19 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
           </Button>
         </div>
         <div className="flex space-x-2">
-          {invoice.status === "draft" && (
-            <Button onClick={() => updateInvoiceStatus("sent")} disabled={isLoading}>
+          {invoice.status === 'draft' && (
+            <Button onClick={() => updateInvoiceStatus('sent')} disabled={isLoading}>
               <Send className="mr-2 h-4 w-4" />
               Marquer comme envoyée
             </Button>
           )}
-          {invoice.status === "sent" && balanceDue <= 0 && (
-            <Button onClick={() => updateInvoiceStatus("paid")} disabled={isLoading}>
+          {invoice.status === 'sent' && balanceDue <= 0 && (
+            <Button onClick={() => updateInvoiceStatus('paid')} disabled={isLoading}>
               Marquer comme payée
             </Button>
           )}
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

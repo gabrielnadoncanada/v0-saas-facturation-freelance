@@ -1,26 +1,39 @@
-import React from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, Loader2 } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { DatePicker } from "@/components/ui/date-picker"
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { Project } from "@/features/project/shared/types/project.types"
-import { Client } from "@/features/client/shared/types/client.types"
-import { UseFormReturn } from "react-hook-form"
-import { ProjectFormSchema } from "@/features/project/shared/schema/project.schema"
-import { parseLocalDate, formatYMD } from "@/shared/utils/date"
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Project } from '@/features/project/shared/types/project.types';
+import { Client } from '@/features/client/shared/types/client.types';
+import { UseFormReturn } from 'react-hook-form';
+import { ProjectFormSchema } from '@/features/project/shared/schema/project.schema';
+import { parseLocalDate, formatYMD } from '@/shared/utils/date';
 
 interface ProjectFormViewProps {
-  form: UseFormReturn<ProjectFormSchema>
-  onSubmit: (values: ProjectFormSchema) => Promise<void>
-  isLoading: boolean
-  error: string | null
-  clients: Client[]
-  project: Project | null
+  form: UseFormReturn<ProjectFormSchema>;
+  onSubmit: (values: ProjectFormSchema) => Promise<void>;
+  isLoading: boolean;
+  error: string | null;
+  clients: Client[];
+  project: Project | null;
 }
 
 export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
@@ -130,7 +143,7 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
                   <FormControl>
                     <DatePicker
                       date={parseLocalDate(field.value)}
-                      setDate={date => field.onChange(formatYMD(date))}
+                      setDate={(date) => field.onChange(formatYMD(date))}
                       className="w-full"
                     />
                   </FormControl>
@@ -147,7 +160,7 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
                   <FormControl>
                     <DatePicker
                       date={parseLocalDate(field.value)}
-                      setDate={date => field.onChange(formatYMD(date))}
+                      setDate={(date) => field.onChange(formatYMD(date))}
                       className="w-full"
                     />
                   </FormControl>
@@ -159,12 +172,14 @@ export const ProjectFormView: React.FC<ProjectFormViewProps> = ({
         </CardContent>
       </Card>
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" disabled={isLoading} onClick={() => form.reset()}>Annuler</Button>
+        <Button type="button" variant="outline" disabled={isLoading} onClick={() => form.reset()}>
+          Annuler
+        </Button>
         <Button type="submit" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {project ? "Mettre à jour" : "Créer le projet"}
+          {project ? 'Mettre à jour' : 'Créer le projet'}
         </Button>
       </div>
     </form>
   </Form>
-) 
+);

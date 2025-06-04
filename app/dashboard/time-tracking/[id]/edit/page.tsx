@@ -1,14 +1,14 @@
-import { TimeEntryForm } from '@/features/time-tracking/shared/ui/TimeEntryForm'
-import { getTimeEntryAction } from '@/features/time-tracking/shared/actions/getTimeEntry.action'
-import { getProjectsAction } from '@/features/project/list/actions/getProjects.action'
-import { redirect } from 'next/navigation'
+import { TimeEntryForm } from '@/features/time-tracking/shared/ui/TimeEntryForm';
+import { getTimeEntryAction } from '@/features/time-tracking/shared/actions/getTimeEntry.action';
+import { getProjectsAction } from '@/features/project/list/actions/getProjects.action';
+import { redirect } from 'next/navigation';
 
 export default async function EditTimeEntryPage({ params }: { params: { id: string } }) {
-  const entry = await getTimeEntryAction(params.id)
-  const projects = await getProjectsAction()
+  const entry = await getTimeEntryAction(params.id);
+  const projects = await getProjectsAction();
 
   if (!entry.success || !projects.success) {
-    redirect('/login')
+    redirect('/login');
   }
 
   return (
@@ -19,5 +19,5 @@ export default async function EditTimeEntryPage({ params }: { params: { id: stri
 
       <TimeEntryForm projects={projects.data} entry={entry.data} />
     </div>
-  )
+  );
 }

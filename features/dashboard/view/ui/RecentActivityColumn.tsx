@@ -1,9 +1,9 @@
-import { RecentInvoices } from '@/features/dashboard/view/ui/RecentInvoices'
-import { RecentProjects } from '@/features/dashboard/view/ui/RecentProjects'
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import { RecentInvoices } from '@/features/dashboard/view/ui/RecentInvoices';
+import { RecentProjects } from '@/features/dashboard/view/ui/RecentProjects';
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 
 export function RecentActivityColumn({ invoices, projects, tasks }: any) {
   return (
@@ -21,10 +21,20 @@ export function RecentActivityColumn({ invoices, projects, tasks }: any) {
         children={<RecentProjects projects={projects || []} />}
       />
     </div>
-  )
+  );
 }
 
-function DashboardSection({ title, description, link, children }: { title: string; description: string; link: string; children: React.ReactNode }) {
+function DashboardSection({
+  title,
+  description,
+  link,
+  children,
+}: {
+  title: string;
+  description: string;
+  link: string;
+  children: React.ReactNode;
+}) {
   return (
     <Card className="rounded-xl overflow-hidden transition-all duration-200">
       <CardHeader className="p-5 border-b">
@@ -43,5 +53,5 @@ function DashboardSection({ title, description, link, children }: { title: strin
       </CardHeader>
       <CardContent className="p-0">{children}</CardContent>
     </Card>
-  )
+  );
 }

@@ -12,5 +12,5 @@ export default async function ClientPage({ params }: { params: { id: string } })
     >
       <ClientDetailView data={data} isLoading={false} error={null} />
     </FormPageLayout>
-  )
+  );
 }

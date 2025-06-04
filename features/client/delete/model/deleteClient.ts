@@ -3,17 +3,13 @@ import { Client } from '@/features/client/shared/types/client.types';
 import { deleteRecord } from '@/shared/services/supabase/crud';
 
 export async function deleteClient(clientId: string): Promise<Client> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    throw new Error("Aucune organisation active")
+    throw new Error('Aucune organisation active');
   }
 
-  return await deleteRecord<Client>(
-    supabase,
-    'clients',
-    clientId,
-    '*',
-    { organization_id: organization.id }
-  )
-} 
+  return await deleteRecord<Client>(supabase, 'clients', clientId, '*', {
+    organization_id: organization.id,
+  });
+}

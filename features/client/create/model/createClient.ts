@@ -1,13 +1,13 @@
 import { ClientFormSchema } from '@/features/client/shared/schema/client.schema';
 import { Client } from '@/features/client/shared/types/client.types';
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { insertRecord } from '@/shared/services/supabase/crud'
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { insertRecord } from '@/shared/services/supabase/crud';
 
 export async function createClient(formData: ClientFormSchema): Promise<Client> {
-  const { supabase, organization } = await getSessionUser() 
+  const { supabase, organization } = await getSessionUser();
 
   if (!organization) {
-    throw new Error("Aucune organisation active")
+    throw new Error('Aucune organisation active');
   }
 
   const finalData = { ...formData } as any;
@@ -23,5 +23,5 @@ export async function createClient(formData: ClientFormSchema): Promise<Client> 
 
   finalData.organization_id = organization.id;
 
-  return await insertRecord<Client>(supabase, 'clients', finalData)
+  return await insertRecord<Client>(supabase, 'clients', finalData);
 }

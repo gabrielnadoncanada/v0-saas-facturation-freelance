@@ -1,8 +1,8 @@
-import { ForgotPasswordForm } from "@/features/auth/forgot/ui/ForgotPasswordForm"
-import { redirectIfAuthenticated } from "@/shared/utils/redirectIfAuthenticated"
+import { ForgotPasswordForm } from '@/features/auth/forgot/ui/ForgotPasswordForm';
+import { redirectIfAuthenticated } from '@/shared/utils/redirectIfAuthenticated';
 
 export default async function ForgotPasswordPage() {
-  await redirectIfAuthenticated()
+  await redirectIfAuthenticated();
 
   return (
     <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -16,5 +16,5 @@ export default async function ForgotPasswordPage() {
         <ForgotPasswordForm />
       </div>
     </div>
-  )
+  );
 }

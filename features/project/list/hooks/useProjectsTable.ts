@@ -1,36 +1,35 @@
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { deleteProjectAction } from "@/features/project/delete/actions/deleteProject.action"
-import { Project as BaseProject } from "@/features/project/shared/types/project.types"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { deleteProjectAction } from '@/features/project/delete/actions/deleteProject.action';
+import { Project as BaseProject } from '@/features/project/shared/types/project.types';
 
 export interface ProjectWithClient extends BaseProject {
-  clients?: { name?: string }
+  clients?: { name?: string };
 }
 
 export function useProjectsTable() {
-  const router = useRouter()
-  const [isDeleting, setIsDeleting] = useState(false)
-
+  const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async (id: string) => {
-    setIsDeleting(true)
+    setIsDeleting(true);
     try {
-      const result = await deleteProjectAction(id)
+      const result = await deleteProjectAction(id);
       if (!result.success) {
-        console.error("Error deleting project:", result.error)
+        console.error('Error deleting project:', result.error);
       } else {
-        router.refresh()
+        router.refresh();
       }
     } catch (err) {
-      console.error("Unexpected error:", err)
+      console.error('Unexpected error:', err);
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
     }
-  }
+  };
 
   return {
     isDeleting,
     handleDelete,
     router,
-  }
-} 
+  };
+}

@@ -1,79 +1,80 @@
-"use client"
+'use client';
 
-import { useProjectsTable, ProjectWithClient } from "@/features/project/list/hooks/useProjectsTable"
-import { DataTable } from "@/components/ui/data-table"
-import { Badge } from "@/components/ui/badge"
-import { Edit, Eye, Package, Trash } from "lucide-react"
-import { formatDate } from "@/shared/lib/utils"
-import Link from "next/link"
+import {
+  useProjectsTable,
+  ProjectWithClient,
+} from '@/features/project/list/hooks/useProjectsTable';
+import { DataTable } from '@/components/ui/data-table';
+import { Badge } from '@/components/ui/badge';
+import { Edit, Eye, Package, Trash } from 'lucide-react';
+import { formatDate } from '@/shared/lib/utils';
+import Link from 'next/link';
 
 export function ProjectsTable({ projects = [] }: { projects: ProjectWithClient[] }) {
-  const {
-    isDeleting,
-    handleDelete,
-    router,
-  } = useProjectsTable()
+  const { isDeleting, handleDelete, router } = useProjectsTable();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "active":
-        return <Badge className="bg-green-100 text-green-800">Actif</Badge>
-      case "completed":
-        return <Badge className="bg-blue-100 text-blue-800">Terminé</Badge>
-      case "on_hold":
-        return <Badge className="bg-yellow-100 text-yellow-800">En pause</Badge>
-      case "cancelled":
-        return <Badge className="bg-red-100 text-red-800">Annulé</Badge>
+      case 'active':
+        return <Badge className="bg-green-100 text-green-800">Actif</Badge>;
+      case 'completed':
+        return <Badge className="bg-blue-100 text-blue-800">Terminé</Badge>;
+      case 'on_hold':
+        return <Badge className="bg-yellow-100 text-yellow-800">En pause</Badge>;
+      case 'cancelled':
+        return <Badge className="bg-red-100 text-red-800">Annulé</Badge>;
       default:
-        return <Badge className="bg-gray-100 text-gray-800">{status}</Badge>
+        return <Badge className="bg-gray-100 text-gray-800">{status}</Badge>;
     }
-  }
+  };
 
   const columns = [
     {
-      header: "Nom",
-      accessorKey: "name" as keyof ProjectWithClient,
-      className: "font-medium"
+      header: 'Nom',
+      accessorKey: 'name' as keyof ProjectWithClient,
+      className: 'font-medium',
     },
     {
-      header: "Client",
-      accessorKey: "clients" as keyof ProjectWithClient,
-      cell: (project: ProjectWithClient) => project.clients?.name || "-"
+      header: 'Client',
+      accessorKey: 'clients' as keyof ProjectWithClient,
+      cell: (project: ProjectWithClient) => project.clients?.name || '-',
     },
     {
-      header: "Statut",
-      accessorKey: "status" as keyof ProjectWithClient,
-      cell: (project: ProjectWithClient) => getStatusBadge(project.status)
+      header: 'Statut',
+      accessorKey: 'status' as keyof ProjectWithClient,
+      cell: (project: ProjectWithClient) => getStatusBadge(project.status),
     },
     {
-      header: "Date de début",
-      accessorKey: "start_date" as keyof ProjectWithClient,
-      cell: (project: ProjectWithClient) => project.start_date ? formatDate(project.start_date) : "-"
+      header: 'Date de début',
+      accessorKey: 'start_date' as keyof ProjectWithClient,
+      cell: (project: ProjectWithClient) =>
+        project.start_date ? formatDate(project.start_date) : '-',
     },
     {
-      header: "Date de fin",
-      accessorKey: "end_date" as keyof ProjectWithClient,
-      cell: (project: ProjectWithClient) => project.end_date ? formatDate(project.end_date) : "-"
-    }
-  ]
+      header: 'Date de fin',
+      accessorKey: 'end_date' as keyof ProjectWithClient,
+      cell: (project: ProjectWithClient) => (project.end_date ? formatDate(project.end_date) : '-'),
+    },
+  ];
 
   const actions = [
     {
-      label: "Voir",
+      label: 'Voir',
       icon: <Eye className="h-4 w-4" />,
-      onClick: (project: ProjectWithClient) => router.push(`/dashboard/projects/${project.id}`)
+      onClick: (project: ProjectWithClient) => router.push(`/dashboard/projects/${project.id}`),
     },
     {
-      label: "Modifier",
+      label: 'Modifier',
       icon: <Edit className="h-4 w-4" />,
-      onClick: (project: ProjectWithClient) => router.push(`/dashboard/projects/${project.id}/edit`)
+      onClick: (project: ProjectWithClient) =>
+        router.push(`/dashboard/projects/${project.id}/edit`),
     },
     {
-      label: "Supprimer",
+      label: 'Supprimer',
       icon: <Trash className="h-4 w-4" />,
-      className: "text-red-600",
-    }
-  ]
+      className: 'text-red-600',
+    },
+  ];
 
   const emptyState = (
     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
@@ -90,7 +91,7 @@ export function ProjectsTable({ projects = [] }: { projects: ProjectWithClient[]
         </button>
       </Link>
     </div>
-  )
+  );
 
   return (
     <DataTable
@@ -99,14 +100,15 @@ export function ProjectsTable({ projects = [] }: { projects: ProjectWithClient[]
       actions={actions}
       onRowClick={(project: ProjectWithClient) => router.push(`/dashboard/projects/${project.id}`)}
       searchPlaceholder="Rechercher des projets..."
-      searchFields={["name"]}
+      searchFields={['name']}
       emptyState={emptyState}
       deleteAction={{
-        title: "Êtes-vous sûr?",
-        description: "Cette action ne peut pas être annulée. Cela supprimera définitivement le projet et toutes les tâches associées.",
+        title: 'Êtes-vous sûr?',
+        description:
+          'Cette action ne peut pas être annulée. Cela supprimera définitivement le projet et toutes les tâches associées.',
         onDelete: handleDelete,
         isDeleting: isDeleting,
       }}
     />
-  )
+  );
 }

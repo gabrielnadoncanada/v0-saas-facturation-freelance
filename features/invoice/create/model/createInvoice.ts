@@ -1,16 +1,18 @@
-import { Invoice } from '@/features/invoice/shared/types/invoice.types'
-import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { insertRecord } from '@/shared/services/supabase/crud'
+import { Invoice } from '@/features/invoice/shared/types/invoice.types';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { insertRecord } from '@/shared/services/supabase/crud';
 
 export async function createInvoice(formData: Invoice): Promise<string> {
-  const { supabase, organization } = await getSessionUser()
-  
+  const { supabase, organization } = await getSessionUser();
+
   if (!organization) {
-    throw new Error("Aucune organisation active")
+    throw new Error('Aucune organisation active');
   }
 
-  const issueDate = typeof formData.issue_date === 'string' ? new Date(formData.issue_date) : formData.issue_date
-  const dueDate = typeof formData.due_date === 'string' ? new Date(formData.due_date) : formData.due_date
+  const issueDate =
+    typeof formData.issue_date === 'string' ? new Date(formData.issue_date) : formData.issue_date;
+  const dueDate =
+    typeof formData.due_date === 'string' ? new Date(formData.due_date) : formData.due_date;
 
   const invoiceData = {
     organization_id: organization.id,
@@ -25,13 +27,9 @@ export async function createInvoice(formData: Invoice): Promise<string> {
     subtotal: 0,
     tax_total: 0,
     total: 0,
-  }
+  };
 
-  const result = await insertRecord<Invoice>(
-    supabase,
-    'invoices',
-    invoiceData
-  )
+  const result = await insertRecord<Invoice>(supabase, 'invoices', invoiceData);
 
-  return result.id
+  return result.id;
 }

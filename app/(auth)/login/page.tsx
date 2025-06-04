@@ -1,8 +1,8 @@
-import { LoginForm } from "@/features/auth/login/ui/LoginForm"
-import { redirectIfAuthenticated } from "@/shared/utils/redirectIfAuthenticated"
+import { LoginForm } from '@/features/auth/login/ui/LoginForm';
+import { redirectIfAuthenticated } from '@/shared/utils/redirectIfAuthenticated';
 
 export default async function LoginPage() {
-  await redirectIfAuthenticated()
+  await redirectIfAuthenticated();
 
   return (
     <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -16,5 +16,5 @@ export default async function LoginPage() {
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }
