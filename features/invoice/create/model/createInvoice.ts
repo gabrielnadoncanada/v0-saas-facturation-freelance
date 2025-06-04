@@ -3,13 +3,17 @@ import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createInvoice(formData: Invoice): Promise<string> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const issueDate = typeof formData.issue_date === 'string' ? new Date(formData.issue_date) : formData.issue_date
   const dueDate = typeof formData.due_date === 'string' ? new Date(formData.due_date) : formData.due_date
 
   const invoiceData = {
-    user_id: user.id,
+    organization_id: organization.id,
     client_id: formData.client.id,
     issue_date: issueDate.toISOString().split('T')[0],
     due_date: dueDate.toISOString().split('T')[0],

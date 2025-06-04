@@ -1,22 +1,22 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Check, ChevronsUpDown, Loader2, PlusCircle } from "lucide-react"
+import { PopoverContent, PopoverTrigger, Popover } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { ChevronDown, Plus } from "lucide-react"
 import { createClient } from "@/shared/lib/supabase/client"
 import { cn } from "@/shared/lib/utils"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Check } from "lucide-react"
 import { ProductForm } from "@/features/product/shared/ui/ProductForm"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface ProductSelectorProps {
-  userId: string
   onSelect: (product: any) => void
   buttonClassName?: string
 }
 
-export function ProductSelector({ userId, onSelect, buttonClassName }: ProductSelectorProps) {
+export function ProductSelector({ onSelect, buttonClassName }: ProductSelectorProps) {
   const [open, setOpen] = useState(false)
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -33,10 +33,22 @@ export function ProductSelector({ userId, onSelect, buttonClassName }: ProductSe
   const fetchProducts = async () => {
     setLoading(true)
     try {
+      // Get active organization from cookie
+      const cookieStr = document.cookie
+      const cookies = cookieStr.split('; ')
+      const orgCookie = cookies.find(c => c.startsWith('active_organization_id='))
+      const orgId = orgCookie ? orgCookie.split('=')[1] : null
+
+      if (!orgId) {
+        console.error('No active organization')
+        setLoading(false)
+        return
+      }
+
       const { data } = await supabase
         .from("products")
         .select("*")
-        .eq("user_id", userId)
+        .eq("organization_id", orgId)
         .order("name", { ascending: true })
 
       setProducts(data || [])
@@ -53,70 +65,75 @@ export function ProductSelector({ userId, onSelect, buttonClassName }: ProductSe
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className={cn("justify-between", buttonClassName)}
+            className={cn("justify-between w-[250px]", buttonClassName)}
           >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <>
-                Sélectionner un produit
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </>
-            )}
+            Sélectionnez un produit
+            <ChevronDown className="h-4 w-4 ml-2" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="p-0 w-[300px]">
-          <Command>
-            <CommandInput placeholder="Rechercher un produit..." />
-            <CommandList>
-              <CommandEmpty>Aucun produit trouvé.</CommandEmpty>
-              <CommandGroup>
-                {products.map((product) => (
-                  <CommandItem
+        <PopoverContent className="p-0 w-[250px]" align="start">
+          <ScrollArea className="h-80">
+            <div className="py-2">
+              {loading ? (
+                <div className="px-3 py-2 text-sm">Chargement...</div>
+              ) : products.length > 0 ? (
+                products.map((product) => (
+                  <div
                     key={product.id}
-                    value={product.id}
-                    onSelect={() => {
+                    className="px-3 py-2 text-sm cursor-pointer hover:bg-accent flex items-center justify-between"
+                    onClick={() => {
                       onSelect(product)
                       setOpen(false)
                     }}
                   >
-                    <div className="flex flex-col">
-                      <span>{product.name}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {product.price.toFixed(2)} € {product.is_service ? "(Service)" : "(Produit)"}
-                      </span>
+                    <div>
+                      <div className="font-medium">{product.name}</div>
+                      <div className="text-muted-foreground text-xs">
+                        {product.price.toFixed(2)} €
+                      </div>
                     </div>
-                    <Check className="ml-auto h-4 w-4 opacity-0" />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-            <div className="p-1 border-t">
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" className="w-full justify-start text-sm">
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Nouveau produit
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Ajouter un produit</DialogTitle>
-                  </DialogHeader>
-                  <ProductForm product={null} />
-                </DialogContent>
-              </Dialog>
+                    <div>
+                      <Check className="h-4 w-4 opacity-0" />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="px-3 py-2 text-sm text-muted-foreground">
+                  Aucun produit trouvé
+                </div>
+              )}
             </div>
-          </Command>
+            <div className="border-t p-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start"
+                onClick={() => {
+                  setDialogOpen(true)
+                  setOpen(false)
+                }}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Créer un produit
+              </Button>
+            </div>
+          </ScrollArea>
         </PopoverContent>
       </Popover>
-    </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Créer un nouveau produit</DialogTitle>
+          </DialogHeader>
+          <ProductForm product={null} />
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

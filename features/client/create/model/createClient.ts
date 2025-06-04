@@ -4,7 +4,11 @@ import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createClient(formData: ClientFormSchema): Promise<Client> {
-  const { supabase, user } = await getSessionUser() 
+  const { supabase, organization } = await getSessionUser() 
+
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const finalData = { ...formData } as any;
 
@@ -17,7 +21,7 @@ export async function createClient(formData: ClientFormSchema): Promise<Client> 
     finalData.shipping_country = formData.billing_country;
   }
 
-  finalData.user_id = user.id;
+  finalData.organization_id = organization.id;
 
   return await insertRecord<Client>(supabase, 'clients', finalData)
 }

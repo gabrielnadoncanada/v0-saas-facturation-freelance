@@ -146,6 +146,9 @@ importers:
       pdfkit:
         specifier: latest
         version: 0.17.1
+      prettierr:
+        specifier: 1.15.3-dev
+        version: 1.15.3-dev
       react:
         specifier: ^19
         version: 19.0.0
@@ -4152,6 +4155,11 @@ packages:
   prettier@3.5.3:
     resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
     engines: {node: '>=14'}
+    hasBin: true
+
+  prettierr@1.15.3-dev:
+    resolution: {integrity: sha512-ezeRDKwuf/biKFdQSOZ+mIKd9WzPGm+GhwO0KdUh5U+IzA4mxesU89OJRTHkCBMpFycYkL0QMPHbSdI1IwAgUw==}
+    engines: {node: '>=4'}
     hasBin: true
 
   pretty-format@27.5.1:
@@ -9338,6 +9346,8 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prettier@3.5.3: {}
+
+  prettierr@1.15.3-dev: {}
 
   pretty-format@27.5.1:
     dependencies:

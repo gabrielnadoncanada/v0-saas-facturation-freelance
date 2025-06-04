@@ -4,7 +4,11 @@ import { Client } from '@/features/client/shared/types/client.types';
 import { updateRecord } from '@/shared/services/supabase/crud';
 
 export async function updateClient(clientId: string, data: ClientFormData): Promise<Client> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const finalData = { ...data } as any;
 
@@ -28,6 +32,6 @@ export async function updateClient(clientId: string, data: ClientFormData): Prom
     clientId,
     finalData,
     '*',
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 } 

@@ -3,7 +3,7 @@ import { Client } from "@/features/client/shared/types/client.types";
 
 export interface Project {
   id: string;
-  user_id?: string;
+  organization_id?: string;
   name: string;
   description?: string;
   client: Client;

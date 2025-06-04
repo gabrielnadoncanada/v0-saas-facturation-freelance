@@ -3,7 +3,7 @@
 import { getRecentInvoices } from '@/features/dashboard/view/model/getRecentInvoices'
 import { getRecentProjects } from '@/features/dashboard/view/model/getRecentProjects'
 import { getUpcomingTasks } from '@/features/dashboard/view/model/getUpcomingTasks'
-import { getUserStats } from '@/features/dashboard/view/model/getUserStats'
+import { getOrganizationStats } from '@/features/dashboard/view/model/getOrganizationStats'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
 
 export async function getDashboardData() {
@@ -12,7 +12,7 @@ export async function getDashboardData() {
       getRecentInvoices(),
       getRecentProjects(),
       getUpcomingTasks(),
-      getUserStats(),
+      getOrganizationStats(),
     ])
 
     return {

@@ -100,7 +100,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
   return (
     <DataTable
       data={products}
-      columns={columns}
+      columns={columns} 
       actions={actions}
       searchFields={["name"]}
       emptyState={emptyState}

@@ -1,9 +1,10 @@
 export interface Category {
   id: string;
-  user_id?: string;
+  organization_id?: string;
   name: string;
   description: string;
   color: string;
+  products_count?: number;
   created_at?: string;
   updated_at?: string;
 }

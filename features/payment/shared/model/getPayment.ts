@@ -1,14 +1,25 @@
-import { Payment } from '@/features/payment/shared/types/payment.types'
 import { getSessionUser } from '@/shared/utils/getSessionUser'
-import { fetchById } from '@/shared/services/supabase/crud'
+import { Payment } from '@/features/payment/shared/types/payment.types'
+import { fetchOne } from '@/shared/services/supabase/crud'
 
-export async function getPayment(paymentId: string): Promise<Payment> {
-  const { supabase } = await getSessionUser()
+export async function getPayment(id: string): Promise<Payment> {
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
-  return await fetchById<Payment>(
-    supabase,
-    'payments',
-    paymentId,
-    '*, invoice:invoices(id, invoice_number, client_id, total, user_id, client:clients(name), currency)'
+  const payment = await fetchOne<Payment>(
+    supabase, 
+    'payments', 
+    id, 
+    '*, invoice:invoices(id, invoice_number, client_id, client:clients(id, name))',
+    { organization_id: organization.id }
   )
+
+  if (!payment) {
+    throw new Error("Paiement non trouvé")
+  }
+
+  return payment
 }

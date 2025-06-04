@@ -6,7 +6,11 @@ export async function updateNotification(
   id: string,
   data: Partial<DbNotification>,
 ): Promise<DbNotification> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const updateData = { 
     ...data, 
@@ -19,6 +23,8 @@ export async function updateNotification(
     id,
     updateData,
     '*',
-    { user_id: user.id }
+    { 
+      organization_id: organization.id 
+    }
   )
 }

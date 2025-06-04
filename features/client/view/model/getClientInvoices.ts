@@ -3,14 +3,18 @@ import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { fetchList } from '@/shared/services/supabase/crud';
 
 export async function getClientInvoices(clientId: string): Promise<Invoice[]> {
-  const { supabase, user } = await getSessionUser();
+  const { supabase, organization } = await getSessionUser();
+  
+  if (!organization) {
+    return []
+  }
 
   return await fetchList<Invoice>(
     supabase,
     'invoices',
     '*, client:client_id(*), payments(*)',
     { 
-      user_id: user.id,
+      organization_id: organization.id,
       client_id: clientId 
     },
     { column: 'issue_date', ascending: false }

@@ -3,7 +3,11 @@ import { Invoice } from '@/features/invoice/shared/types/invoice.types'
 import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateInvoice(invoiceId: string, formData: Invoice): Promise<Invoice> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
   
   const issueDate = typeof formData.issue_date === 'string' ? new Date(formData.issue_date) : formData.issue_date
   const dueDate = typeof formData.due_date === 'string' ? new Date(formData.due_date) : formData.due_date
@@ -25,6 +29,6 @@ export async function updateInvoice(invoiceId: string, formData: Invoice): Promi
     invoiceId,
     updateData,
     '*',
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 }

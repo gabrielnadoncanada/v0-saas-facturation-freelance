@@ -3,7 +3,11 @@ import { TaskFormData } from '@/features/task/shared/types/task.types'
 import { fetchById, fetchList, updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateTask(taskId: string, formData: TaskFormData): Promise<{ projectId: string }> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   // Vérifier que la tâche existe
   const task = await fetchById<{ project_id: string }>(
@@ -13,12 +17,12 @@ export async function updateTask(taskId: string, formData: TaskFormData): Promis
     'project_id'
   )
 
-  // Vérifier que le projet appartient à l'utilisateur
+  // Vérifier que le projet appartient à l'organisation
   const projects = await fetchList(
     supabase,
     'projects',
     'id',
-    { id: task.project_id, user_id: user.id }
+    { id: task.project_id, organization_id: organization.id }
   )
 
   if (!projects.length) {
@@ -30,7 +34,9 @@ export async function updateTask(taskId: string, formData: TaskFormData): Promis
     supabase,
     'tasks',
     taskId,
-    formData
+    formData,
+    '*',
+    { project_id: task.project_id }
   )
 
   return { projectId: task.project_id }

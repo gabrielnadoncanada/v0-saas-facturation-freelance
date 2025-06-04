@@ -3,13 +3,17 @@ import { Invoice } from '@/features/invoice/shared/types/invoice.types'
 import { deleteRecord } from '@/shared/services/supabase/crud'
 
 export async function deleteInvoice(invoiceId: string): Promise<Invoice> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   return await deleteRecord<Invoice>(
     supabase,
     'invoices',
     invoiceId,
     '*',
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 }

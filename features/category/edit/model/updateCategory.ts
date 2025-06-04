@@ -3,7 +3,11 @@ import { Category, CategoryFormData } from '@/features/category/shared/types/cat
 import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateCategory(categoryId: string, data: CategoryFormData): Promise<Category> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const finalData = {
     ...data,
@@ -16,6 +20,6 @@ export async function updateCategory(categoryId: string, data: CategoryFormData)
     categoryId,
     finalData,
     '*',
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 }

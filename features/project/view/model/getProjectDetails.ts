@@ -3,7 +3,11 @@ import { Project } from '@/features/project/shared/types/project.types'
 import { fetchById } from '@/shared/services/supabase/crud'
 
 export async function getProjectDetails(projectId: string): Promise<Project> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const project = await fetchById<Project>(
     supabase,
@@ -14,7 +18,7 @@ export async function getProjectDetails(projectId: string): Promise<Project> {
       client:clients(name),
       tasks(*, time_entries(*))
     `,
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 
   // Transform tasks into a hierarchical structure

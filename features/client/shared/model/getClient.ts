@@ -1,15 +1,25 @@
 import { Client } from '@/features/client/shared/types/client.types';
 import { getSessionUser } from '@/shared/utils/getSessionUser';
-import { fetchById } from '@/shared/services/supabase/crud';
+import { fetchOne } from '@/shared/services/supabase/crud';
 
 export async function getClient(clientId: string): Promise<Client> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
-  return await fetchById<Client>(
+  const client = await fetchOne<Client>(
     supabase, 
     'clients', 
     clientId, 
     '*',
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
+
+  if (!client) {
+    throw new Error("Client non trouvé")
+  }
+
+  return client
 } 

@@ -3,7 +3,11 @@ import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { fetchById } from '@/shared/services/supabase/crud'
 
 export async function getInvoice(invoiceId: string): Promise<Invoice> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   return await fetchById<Invoice>(
     supabase,
@@ -14,6 +18,6 @@ export async function getInvoice(invoiceId: string): Promise<Invoice> {
       payments:payments(*),
       client:client_id(name,email)
     `,
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 }

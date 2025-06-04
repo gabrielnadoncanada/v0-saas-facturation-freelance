@@ -3,15 +3,19 @@ import { TimeEntryFormData } from '@/features/time-tracking/shared/types/timeEnt
 import { fetchById, updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateTimeEntry(entryId: string, formData: TimeEntryFormData): Promise<void> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
-  // Vérifier que l'entrée existe et appartient à l'utilisateur
+  // Vérifier que l'entrée existe et appartient à l'organisation
   const entry = await fetchById(
     supabase,
     'time_entries',
     entryId,
-    'user_id',
-    { user_id: user.id }
+    'organization_id',
+    { organization_id: organization.id }
   )
 
   const updateData = {
@@ -26,6 +30,8 @@ export async function updateTimeEntry(entryId: string, formData: TimeEntryFormDa
     supabase,
     'time_entries',
     entryId,
-    updateData
+    updateData,
+    '*',
+    { organization_id: organization.id }
   )
 }

@@ -3,7 +3,11 @@ import { Task, TaskFormData } from '@/features/task/shared/types/task.types'
 import { fetchById, fetchList, insertRecord } from '@/shared/services/supabase/crud'
 
 export async function createSubtask(taskId: string, formData: TaskFormData): Promise<{ subtask: Task; projectId: string }> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   // Vérifier que la tâche existe
   const task = await fetchById<{ project_id: string }>(
@@ -13,12 +17,12 @@ export async function createSubtask(taskId: string, formData: TaskFormData): Pro
     'project_id'
   )
 
-  // Vérifier que le projet appartient à l'utilisateur
+  // Vérifier que le projet appartient à l'organisation
   const projects = await fetchList(
     supabase,
     'projects',
     'id',
-    { id: task.project_id, user_id: user.id }
+    { id: task.project_id, organization_id: organization.id }
   )
 
   if (!projects.length) {

@@ -3,13 +3,17 @@ import { getSessionUser } from '@/shared/utils/getSessionUser'
 import { fetchList } from '@/shared/services/supabase/crud'
 
 export async function getRecentInvoices(): Promise<Invoice[]> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    return []
+  }
 
   return await fetchList<Invoice>(
     supabase,
     'invoices',
     '*, client:clients(name)',
-    { user_id: user.id },
+    { organization_id: organization.id },
     { column: 'created_at', ascending: false },
     5 // limit to 5 invoices
   )

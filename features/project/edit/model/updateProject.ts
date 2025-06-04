@@ -4,7 +4,11 @@ import { Project } from '@/features/project/shared/types/project.types'
 import { updateRecord } from '@/shared/services/supabase/crud'
 
 export async function updateProject(projectId: string, formData: ProjectFormData): Promise<Project> {
-  const { supabase, user } = await getSessionUser()
+  const { supabase, organization } = await getSessionUser()
+  
+  if (!organization) {
+    throw new Error("Aucune organisation active")
+  }
 
   const updateData = {
     name: formData.name,
@@ -22,6 +26,6 @@ export async function updateProject(projectId: string, formData: ProjectFormData
     projectId,
     updateData,
     '*',
-    { user_id: user.id }
+    { organization_id: organization.id }
   )
 }

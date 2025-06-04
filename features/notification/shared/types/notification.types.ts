@@ -1,6 +1,6 @@
 export interface DbNotification {
   id: string
-  user_id: string
+  organization_id: string
   title: string
   description: string
   type: 'info' | 'success' | 'warning' | 'error'

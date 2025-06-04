@@ -3,7 +3,7 @@ import { Payment } from "@/features/payment/shared/types/payment.types";
 
 export interface Invoice {
     id: string;
-    user_id?: string;
+    organization_id?: string;
     issue_date: Date | string;
     due_date: Date | string;
     status: string;
