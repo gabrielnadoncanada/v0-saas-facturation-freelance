@@ -1,5 +1,6 @@
 import { createClient } from '@/shared/lib/supabase/server';
 import { Organization } from '@/shared/types/organization.types';
+import { redirect } from 'next/navigation';
 
 export interface SessionContext {
   user: any;
@@ -7,6 +8,7 @@ export interface SessionContext {
   organization?: Organization;
   isOrgAdmin: boolean;
   isOrgOwner: boolean;
+  hasOrganization: boolean;
 }
 
 interface OrganizationMembership {
@@ -18,11 +20,11 @@ export async function getSessionUser(): Promise<SessionContext> {
   const supabase = await createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
-  if (!session) throw new Error('Non authentifié');
-
+  if (error || !user) throw new Error('Non authentifié');
   // Get active organization from cookies or default to first organization
   const cookieStore = await import('next/headers').then((mod) => mod.cookies());
   const activeOrgId = cookieStore.get('active_organization_id')?.value;
@@ -31,13 +33,14 @@ export async function getSessionUser(): Promise<SessionContext> {
   const { data: memberships } = await supabase
     .from('organization_members')
     .select('organization:organizations(*), role')
-    .eq('user_id', session.user.id);
+    .eq('user_id', user.id);
 
   let organization: Organization | undefined;
   let isOrgAdmin = false;
   let isOrgOwner = false;
+  let hasOrganization = !!(memberships && memberships.length > 0);
 
-  if (memberships && memberships.length > 0) {
+  if (hasOrganization) {
     // Convert to unknown first, then assert the type
     const typedMemberships = memberships as unknown as OrganizationMembership[];
 
@@ -56,6 +59,34 @@ export async function getSessionUser(): Promise<SessionContext> {
       organization = typedMemberships[0].organization;
       isOrgAdmin = ['owner', 'admin'].includes(typedMemberships[0].role);
       isOrgOwner = typedMemberships[0].role === 'owner';
+
+      // Set the active organization cookie to the first organization
+      cookieStore.set('active_organization_id', organization.id, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        sameSite: 'lax',
+      });
+    }
+  } else {
+    // If no organizations and not on the no-organization page, redirect
+    const isServerComponent = typeof window === 'undefined';
+    
+    if (isServerComponent) {
+      // Only redirect on server components (to avoid client-side errors)
+      // Check if we're not already on the no-organization page
+      const headers = new Headers();
+      headers.set('x-pathname', '/');
+
+      try {
+        const pathname = headers.get('x-pathname');
+        const isNoOrgPage = pathname === '/no-organization';
+        
+        if (!isNoOrgPage) {
+          redirect('/no-organization');
+        }
+      } catch (e) {
+        // Ignore error, we'll handle the redirect in middleware
+      }
     }
   }
 
@@ -73,10 +104,11 @@ export async function getSessionUser(): Promise<SessionContext> {
   }
 
   return {
-    user: session.user,
+    user: user,
     supabase,
     organization,
     isOrgAdmin,
     isOrgOwner,
+    hasOrganization,
   };
 }

@@ -1,8 +1,11 @@
-import { getUserProfileAction } from '@/features/setting/actions/getUserProfile.action';
+import { getOrganizationSettingsAction } from '@/features/organization/edit';
+import { OrganizationSettingsForm } from '@/features/organization/edit';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { redirect } from 'next/navigation';
 
 export default async function SettingsPage() {
-  const result = await getUserProfileAction();
+  const result = await getOrganizationSettingsAction();
+  const { organization } = await getSessionUser();
 
   if (!result.success) {
     redirect('/login');
@@ -11,13 +14,13 @@ export default async function SettingsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Paramètres</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Paramètres de l'organisation</h1>
         <p className="text-muted-foreground">
-          Gérez vos informations personnelles et professionnelles
+          Configurez les paramètres de votre organisation, facturation et informations d'entreprise
         </p>
       </div>
 
-      <p className="text-muted-foreground">D'autres options seront disponibles prochainement.</p>
+      <OrganizationSettingsForm settings={result.data} organization={organization} />
     </div>
   );
 }

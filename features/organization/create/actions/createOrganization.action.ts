@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/shared/lib/supabase/server';
+import { createAdminClient } from '@/shared/lib/supabase/admin';
 import { ActionResult } from '@/shared/types/api.types';
 import { Organization } from '@/shared/types/organization.types';
 import { revalidatePath } from 'next/cache';
@@ -16,15 +17,19 @@ export async function createOrganizationAction(
   try {
     const supabase = await createClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session) {
+    if (authError || !user) {
       return { success: false, error: 'Non authentifié' };
     }
 
+    // Using admin client to bypass RLS policies which might cause recursion
+    const adminClient = await createAdminClient();
+
     // Check if organization with slug already exists
-    const { data: existingOrg } = await supabase
+    const { data: existingOrg } = await adminClient
       .from('organizations')
       .select('id')
       .eq('slug', data.slug)
@@ -35,12 +40,12 @@ export async function createOrganizationAction(
     }
 
     // Create the organization
-    const { data: organization, error } = await supabase
+    const { data: organization, error } = await adminClient
       .from('organizations')
       .insert({
         name: data.name,
         slug: data.slug,
-        owner_id: session.user.id,
+        owner_id: user.id,
         plan: 'free',
       })
       .select('*')
@@ -51,10 +56,10 @@ export async function createOrganizationAction(
       return { success: false, error: "Erreur lors de la création de l'organisation" };
     }
 
-    // Add the creator as an owner
-    const { error: memberError } = await supabase.from('organization_members').insert({
+    // Add the creator as an owner (using admin client to bypass RLS)
+    const { error: memberError } = await adminClient.from('organization_members').insert({
       organization_id: organization.id,
-      user_id: session.user.id,
+      user_id: user.id,
       role: 'owner',
     });
 

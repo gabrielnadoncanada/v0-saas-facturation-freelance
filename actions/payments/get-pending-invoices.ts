@@ -2,17 +2,17 @@
 import { createClient } from '@/shared/lib/supabase/server';
 
 export async function getPendingInvoicesAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
     return { invoices: [], error: 'Non authentifié' };
   }
   const { data: invoices, error } = await supabase
     .from('invoices')
     .select('id, invoice_number, client_id, total, clients(name)')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .eq('status', 'sent')
     .order('due_date', { ascending: false });
   if (error) {

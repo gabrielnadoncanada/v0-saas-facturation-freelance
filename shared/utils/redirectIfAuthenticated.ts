@@ -4,10 +4,10 @@ import { redirect } from 'next/navigation';
 export async function redirectIfAuthenticated(path = '/dashboard') {
   const supabase = await createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (session) {
+  if (user) {
     redirect(path);
   }
 }

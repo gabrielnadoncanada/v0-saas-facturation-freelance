@@ -8,10 +8,11 @@ export async function switchOrganizationAction(organizationId: string): Promise<
   try {
     const supabase = await createClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!session) {
+    if (authError || !user) {
       return { success: false, error: 'Non authentifié' };
     }
 
@@ -20,7 +21,7 @@ export async function switchOrganizationAction(organizationId: string): Promise<
       .from('organization_members')
       .select('id')
       .eq('organization_id', organizationId)
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
       .single();
 
     if (error || !membership) {

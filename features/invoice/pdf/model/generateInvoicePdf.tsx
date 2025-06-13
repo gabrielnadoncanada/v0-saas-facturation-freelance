@@ -2,12 +2,14 @@ import { renderToStream } from '@react-pdf/renderer';
 import InvoicePdfView from '../ui/InvoicePdfView';
 import { getInvoice } from '@/features/invoice/view/model/getInvoice';
 import { getInvoiceItems } from '@/features/invoice/view/model/getInvoiceItems';
+import { getSessionUser } from '@/shared/utils/getSessionUser';
 
 export async function generateInvoicePdf(
   invoiceId: string,
 ): Promise<{ buffer: Buffer; invoiceNumber: string }> {
   const invoice = await getInvoice(invoiceId);
   const items = await getInvoiceItems(invoiceId);
+  const { organization } = await getSessionUser();
 
   // Ensure dates are strings
   const issue_date =
@@ -21,7 +23,11 @@ export async function generateInvoicePdf(
 
   // Use renderToStream for Node.js
   const stream = await renderToStream(
-    <InvoicePdfView invoice={{ ...invoice, issue_date, due_date }} items={items} />,
+    <InvoicePdfView 
+      invoice={{ ...invoice, issue_date, due_date }} 
+      items={items}
+      organization={organization}
+    />,
   );
   const buffer = await new Promise<Buffer>((resolve, reject) => {
     const chunks: Uint8Array[] = [];

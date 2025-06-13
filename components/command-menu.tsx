@@ -90,10 +90,7 @@ export function CommandMenu() {
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Paiements</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/profile'))}>
-              <UserCircle className="mr-2 h-4 w-4" />
-              <span>Profil</span>
-            </CommandItem>
+       
             <CommandItem onSelect={() => runCommand(() => router.push('/dashboard/settings'))}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Paramètres</span>
