@@ -14,6 +14,7 @@ import {
   Briefcase,
   Package,
   Building2,
+  Bot,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -57,6 +58,12 @@ export function DashboardSidebarClient() {
           title: 'Produits',
           href: '/dashboard/products',
           icon: Package,
+        },
+        {
+          title: 'Assistant IA',
+          href: '/dashboard/chatbot',
+          icon: Bot,
+          isNew: true,
         },
       ],
     },

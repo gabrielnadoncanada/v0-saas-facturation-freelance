@@ -7,12 +7,17 @@ export async function createInvoiceItems(
   items: InvoiceItem[],
   globalTaxRate: number,
 ): Promise<void> {
-  const { supabase } = await getSessionUser();
+  const { supabase, organization } = await getSessionUser();
+
+  if (!organization) {
+    throw new Error('Aucune organisation active');
+  }
 
   if (items.length === 0) return;
 
   const payloads = items.map((item, index) => ({
     invoice_id: invoiceId,
+    organization_id: organization.id, // Add required organization_id
     description: item.description,
     quantity: Number(item.quantity),
     unit_price: Number(item.unit_price),

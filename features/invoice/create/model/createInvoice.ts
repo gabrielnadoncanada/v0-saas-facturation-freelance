@@ -1,6 +1,7 @@
 import { Invoice } from '@/features/invoice/shared/types/invoice.types';
 import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { insertRecord } from '@/shared/services/supabase/crud';
+import { generateInvoiceNumber } from '@/shared/lib/utils';
 
 export async function createInvoice(formData: Invoice): Promise<string> {
   const { supabase, organization } = await getSessionUser();
@@ -27,6 +28,7 @@ export async function createInvoice(formData: Invoice): Promise<string> {
     subtotal: 0,
     tax_total: 0,
     total: 0,
+    invoice_number: generateInvoiceNumber(), // Generate proper invoice number
   };
 
   const result = await insertRecord<Invoice>(supabase, 'invoices', invoiceData);
