@@ -85,7 +85,6 @@ export function DashboardSidebarClient() {
     {
       title: 'Système',
       items: [
-     
         {
           title: 'Organisations',
           href: '/dashboard/organizations',
@@ -160,4 +159,4 @@ export function DashboardSidebarClient() {
       ))}
     </div>
   );
-} 
+}

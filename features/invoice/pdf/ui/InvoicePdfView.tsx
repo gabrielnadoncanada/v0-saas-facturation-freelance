@@ -16,7 +16,12 @@ interface InvoicePdfViewProps {
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 12 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 30 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 30,
+  },
   logo: { width: 80, height: 80, objectFit: 'contain' },
   organizationInfo: { textAlign: 'right', flex: 1 },
   title: { fontSize: 20, textAlign: 'center', marginBottom: 20 },
@@ -33,9 +38,7 @@ export default function InvoicePdfView({ invoice, items, organization }: Invoice
         {/* Header with logo and organization info */}
         <View style={styles.header}>
           <View>
-            {organization?.logo_url && (
-              <Image style={styles.logo} src={organization.logo_url} />
-            )}
+            {organization?.logo_url && <Image style={styles.logo} src={organization.logo_url} />}
           </View>
           <View style={styles.organizationInfo}>
             {organization && (
@@ -49,13 +52,13 @@ export default function InvoicePdfView({ invoice, items, organization }: Invoice
         </View>
 
         <Text style={styles.title}>Facture n° {invoice.invoice_number}</Text>
-        
+
         <View style={styles.section}>
           <Text>Client: {invoice.client.name}</Text>
           <Text>Date: {invoice.issue_date}</Text>
           <Text>Échéance: {invoice.due_date}</Text>
         </View>
-        
+
         <View style={styles.section}>
           <Text>Lignes:</Text>
           {items.map((item, idx) => (
@@ -67,11 +70,11 @@ export default function InvoicePdfView({ invoice, items, organization }: Invoice
             </View>
           ))}
         </View>
-        
+
         <Text style={styles.total}>
           Total: {invoice.total} {invoice.currency}
         </Text>
-        
+
         <Text style={styles.legal}>Mentions légales: ...</Text>
       </Page>
     </Document>

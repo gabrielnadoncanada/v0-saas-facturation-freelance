@@ -1,16 +1,21 @@
 'use server';
 
 import { updateOrganizationSettings } from '../model/updateOrganizationSettings';
-import { organizationSettingsSchema, OrganizationSettingsSchema } from '../schema/organization-settings.schema';
+import {
+  organizationSettingsSchema,
+  OrganizationSettingsSchema,
+} from '../schema/organization-settings.schema';
 import { revalidatePath } from 'next/cache';
 import { Result, fail } from '@/shared/utils/result';
 import { withAction } from '@/shared/utils/withAction';
 import { safeParseForm } from '@/shared/utils/safeParseForm';
 
-export async function updateOrganizationSettingsAction(data: OrganizationSettingsSchema): Promise<Result<null>> {
+export async function updateOrganizationSettingsAction(
+  data: OrganizationSettingsSchema,
+): Promise<Result<null>> {
   const parsed = organizationSettingsSchema.safeParse(data);
   if (!parsed.success) {
-    const errorMessage = parsed.error.errors.map(err => err.message).join(', ');
+    const errorMessage = parsed.error.errors.map((err) => err.message).join(', ');
     return fail(errorMessage);
   }
 
@@ -21,4 +26,4 @@ export async function updateOrganizationSettingsAction(data: OrganizationSetting
     },
     { revalidatePath: '/dashboard/settings' },
   );
-} 
+}

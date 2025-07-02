@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import { TopNav } from '@/features/dashboard/view/ui/TopNav';
 import { Footer } from '@/components/layout/Footer';
 
-
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const {
@@ -16,19 +15,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect('/login');
   }
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-
+  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
       <aside className="hidden border-r border-slate-200 dark:border-slate-800 md:block">
-        <DashboardSidebar
-      
-        />
+        <DashboardSidebar />
       </aside>
       <div className="flex w-full flex-1 flex-col">
         <TopNav user={user} profile={profile} />

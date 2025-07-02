@@ -23,8 +23,8 @@ export async function generateInvoicePdf(
 
   // Use renderToStream for Node.js
   const stream = await renderToStream(
-    <InvoicePdfView 
-      invoice={{ ...invoice, issue_date, due_date }} 
+    <InvoicePdfView
+      invoice={{ ...invoice, issue_date, due_date }}
       items={items}
       organization={organization}
     />,

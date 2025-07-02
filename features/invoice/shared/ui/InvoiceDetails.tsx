@@ -88,7 +88,7 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 ">
         <Card>
           <CardHeader>
             <CardTitle>Détails de la facture</CardTitle>
@@ -120,60 +120,7 @@ export function InvoiceDetails({ invoice, invoiceItems }: InvoiceDetailsProps) {
             )}
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Récapitulatif</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span>Sous-total</span>
-                <span>{formatCurrency(invoice.subtotal, invoice.currency)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>TVA</span>
-                <span>{formatCurrency(invoice.tax_total, invoice.currency)}</span>
-              </div>
-              <Separator className="my-2" />
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>{formatCurrency(invoice.total, invoice.currency)}</span>
-              </div>
-              <Separator className="my-2" />
-              <div className="flex justify-between">
-                <span>Payé</span>
-                <span>{formatCurrency(totalPaid, invoice.currency)}</span>
-              </div>
-              <div className="flex justify-between font-bold">
-                <span>Solde dû</span>
-                <span>{formatCurrency(balanceDue, invoice.currency)}</span>
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
-              <DialogTrigger asChild>
-                <Button disabled={invoice.status === 'paid' || balanceDue <= 0}>
-                  Enregistrer un paiement
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Enregistrer un paiement</DialogTitle>
-                </DialogHeader>
-                <PaymentForm
-                  invoiceId={invoice.id}
-                  balanceDue={balanceDue}
-                  currency={invoice.currency}
-                  onSuccess={() => {
-                    setPaymentDialogOpen(false);
-                    router.refresh();
-                  }}
-                />
-              </DialogContent>
-            </Dialog>
-          </CardFooter>
-        </Card>
+      
       </div>
       <Card>
         <CardHeader>

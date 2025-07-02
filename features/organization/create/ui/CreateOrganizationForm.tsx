@@ -36,7 +36,11 @@ interface CreateOrganizationFormProps {
   onSuccess?: () => void;
 }
 
-export function CreateOrganizationForm({ onCancel, onError, onSuccess }: CreateOrganizationFormProps) {
+export function CreateOrganizationForm({
+  onCancel,
+  onError,
+  onSuccess,
+}: CreateOrganizationFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -86,9 +90,16 @@ export function CreateOrganizationForm({ onCancel, onError, onSuccess }: CreateO
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
     form.setValue('name', name);
-    
+
     // Only auto-generate slug if user hasn't manually edited it
-    if (!form.getValues('slug') || form.getValues('slug') === form.getValues('name').toLowerCase().replace(/[^a-z0-9-]/g, '-')) {
+    if (
+      !form.getValues('slug') ||
+      form.getValues('slug') ===
+        form
+          .getValues('name')
+          .toLowerCase()
+          .replace(/[^a-z0-9-]/g, '-')
+    ) {
       const slug = name.toLowerCase().replace(/[^a-z0-9-]/g, '-');
       form.setValue('slug', slug);
     }
@@ -126,11 +137,7 @@ export function CreateOrganizationForm({ onCancel, onError, onSuccess }: CreateO
             <FormItem>
               <FormLabel>Nom court</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="mon-entreprise"
-                  {...field}
-                  disabled={isLoading}
-                />
+                <Input placeholder="mon-entreprise" {...field} disabled={isLoading} />
               </FormControl>
               <FormDescription>
                 Utilisé dans les URLs et identifiants (lettres, chiffres et tirets uniquement)
@@ -147,10 +154,10 @@ export function CreateOrganizationForm({ onCancel, onError, onSuccess }: CreateO
             </Button>
           )}
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Création...' : 'Créer l\'organisation'}
+            {isLoading ? 'Création...' : "Créer l'organisation"}
           </Button>
         </div>
       </form>
     </Form>
   );
-} 
+}

@@ -36,4 +36,4 @@ export interface OrganizationSettingsFormData {
   company_email: string;
   company_website: string;
   company_tax_number: string;
-} 
+}

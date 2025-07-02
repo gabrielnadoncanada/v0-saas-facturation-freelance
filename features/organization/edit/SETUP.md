@@ -24,34 +24,37 @@ Allowed MIME types: image/png, image/jpeg, image/jpg, image/svg+xml
 Create the following RLS policies for the `organization-logos` bucket:
 
 #### Policy 1: Allow authenticated users to upload to their organization folder
+
 ```sql
 CREATE POLICY "Users can upload to their organization folder" ON storage.objects
 FOR INSERT WITH CHECK (
   auth.role() = 'authenticated' AND
   bucket_id = 'organization-logos' AND
   (storage.foldername(name))[1] IN (
-    SELECT organization_id::text 
-    FROM organization_members 
+    SELECT organization_id::text
+    FROM organization_members
     WHERE user_id = auth.uid()
   )
 );
 ```
 
 #### Policy 2: Allow authenticated users to delete from their organization folder
+
 ```sql
 CREATE POLICY "Users can delete from their organization folder" ON storage.objects
 FOR DELETE USING (
   auth.role() = 'authenticated' AND
   bucket_id = 'organization-logos' AND
   (storage.foldername(name))[1] IN (
-    SELECT organization_id::text 
-    FROM organization_members 
+    SELECT organization_id::text
+    FROM organization_members
     WHERE user_id = auth.uid()
   )
 );
 ```
 
 #### Policy 3: Allow public read access for PDF generation
+
 ```sql
 CREATE POLICY "Public read access for logos" ON storage.objects
 FOR SELECT USING (bucket_id = 'organization-logos');
@@ -105,14 +108,17 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ### Common Issues
 
 1. **Upload fails with "bucket not found"**
+
    - Verify the bucket name is exactly `organization-logos`
    - Check bucket exists in Supabase dashboard
 
 2. **Upload fails with "permission denied"**
+
    - Verify RLS policies are correctly applied
    - Check user is authenticated and member of organization
 
 3. **Logo doesn't appear in PDF**
+
    - Verify bucket is public
    - Check logo URL is accessible
    - Ensure PDF generation has proper organization context
@@ -125,16 +131,19 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ### Debug Commands
 
 Check bucket configuration:
+
 ```sql
 SELECT * FROM storage.buckets WHERE id = 'organization-logos';
 ```
 
 Check RLS policies:
+
 ```sql
 SELECT * FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage';
 ```
 
 Check organization membership:
+
 ```sql
 SELECT * FROM organization_members WHERE user_id = auth.uid();
-``` 
+```

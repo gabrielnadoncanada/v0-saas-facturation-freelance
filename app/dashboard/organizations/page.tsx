@@ -13,9 +13,7 @@ export default async function OrganizationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Organisations</h1>
-          <p className="text-muted-foreground">
-            Gérez vos organisations et créez-en de nouvelles
-          </p>
+          <p className="text-muted-foreground">Gérez vos organisations et créez-en de nouvelles</p>
         </div>
         <CreateOrganizationModal />
       </div>
@@ -44,4 +42,4 @@ export default async function OrganizationsPage() {
       )}
     </div>
   );
-} 
+}

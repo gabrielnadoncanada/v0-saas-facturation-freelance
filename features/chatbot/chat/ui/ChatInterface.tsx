@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User } from "lucide-react";
-import { cn } from "@/shared/lib/utils";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Send, Bot, User } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
 
 interface Message {
   id: string;
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
 }
@@ -54,25 +54,23 @@ export function ChatInterface({
               <div
                 key={message.id}
                 className={cn(
-                  "flex gap-3 max-w-[80%]",
-                  message.role === "user" ? "ml-auto" : "mr-auto"
+                  'flex gap-3 max-w-[80%]',
+                  message.role === 'user' ? 'ml-auto' : 'mr-auto',
                 )}
               >
                 <div
                   className={cn(
-                    "flex items-start gap-3",
-                    message.role === "user" ? "flex-row-reverse" : "flex-row"
+                    'flex items-start gap-3',
+                    message.role === 'user' ? 'flex-row-reverse' : 'flex-row',
                   )}
                 >
                   <div
                     className={cn(
-                      "flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow",
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                      'flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow',
+                      message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
                     )}
                   >
-                    {message.role === "user" ? (
+                    {message.role === 'user' ? (
                       <User className="h-4 w-4" />
                     ) : (
                       <Bot className="h-4 w-4" />
@@ -80,10 +78,8 @@ export function ChatInterface({
                   </div>
                   <div
                     className={cn(
-                      "rounded-lg px-3 py-2 text-sm",
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                      'rounded-lg px-3 py-2 text-sm',
+                      message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
                     )}
                   >
                     <p className="whitespace-pre-wrap">{message.content}</p>
@@ -132,4 +128,4 @@ export function ChatInterface({
       </CardContent>
     </Card>
   );
-} 
+}

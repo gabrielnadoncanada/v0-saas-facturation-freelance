@@ -3,7 +3,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { UseFormReturn } from 'react-hook-form';
@@ -26,7 +32,12 @@ const currencies = [
   { value: 'CAD', label: 'Dollar canadien (CAD)' },
 ];
 
-export function GeneralSettingsTab({ form, currentLogoUrl, onLogoUpload, onLogoDelete }: GeneralSettingsTabProps) {
+export function GeneralSettingsTab({
+  form,
+  currentLogoUrl,
+  onLogoUpload,
+  onLogoDelete,
+}: GeneralSettingsTabProps) {
   const [logoPreview, setLogoPreview] = useState<string | null>(currentLogoUrl || null);
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +72,7 @@ export function GeneralSettingsTab({ form, currentLogoUrl, onLogoUpload, onLogoD
 
   const handleLogoDelete = async () => {
     if (!onLogoDelete) return;
-    
+
     try {
       await onLogoDelete();
       setLogoPreview(null);
@@ -115,12 +126,7 @@ export function GeneralSettingsTab({ form, currentLogoUrl, onLogoUpload, onLogoD
                   {isUploadingLogo ? 'Téléchargement...' : 'Télécharger'}
                 </Button>
                 {logoPreview && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleLogoDelete}
-                  >
+                  <Button type="button" variant="outline" size="sm" onClick={handleLogoDelete}>
                     <X className="w-4 h-4 mr-2" />
                     Supprimer
                   </Button>
@@ -145,9 +151,7 @@ export function GeneralSettingsTab({ form, currentLogoUrl, onLogoUpload, onLogoD
       <Card>
         <CardHeader>
           <CardTitle>Paramètres généraux</CardTitle>
-          <CardDescription>
-            Configurez les paramètres de base de votre organisation
-          </CardDescription>
+          <CardDescription>Configurez les paramètres de base de votre organisation</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -247,4 +251,4 @@ export function GeneralSettingsTab({ form, currentLogoUrl, onLogoUpload, onLogoD
       </Card>
     </div>
   );
-} 
+}

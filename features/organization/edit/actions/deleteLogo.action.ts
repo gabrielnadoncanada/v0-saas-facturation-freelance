@@ -33,15 +33,10 @@ export async function deleteLogoAction(): Promise<Result<null>> {
     }
 
     // Update organization to remove logo URL
-    await updateRecord(
-      supabase,
-      'organizations',
-      organization.id,
-      { logo_url: null },
-      '*',
-      { id: organization.id }
-    );
+    await updateRecord(supabase, 'organizations', organization.id, { logo_url: null }, '*', {
+      id: organization.id,
+    });
 
     return null;
   });
-} 
+}

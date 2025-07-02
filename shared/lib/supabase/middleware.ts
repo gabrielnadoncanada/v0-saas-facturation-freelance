@@ -74,10 +74,7 @@ export async function updateSession(request: NextRequest) {
     }
 
     // If on /no-organization and user HAS org → redirect to /dashboard (rattrapage UX)
-    if (
-      pathname.startsWith('/no-organization') &&
-      hasOrganization
-    ) {
+    if (pathname.startsWith('/no-organization') && hasOrganization) {
       const url = request.nextUrl.clone();
       url.pathname = '/dashboard';
       return NextResponse.redirect(url);

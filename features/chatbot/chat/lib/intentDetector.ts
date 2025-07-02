@@ -1,4 +1,4 @@
-import Groq from "groq-sdk";
+import Groq from 'groq-sdk';
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -13,10 +13,10 @@ export interface DetectedIntent {
 
 export async function detectIntent(userMessage: string): Promise<DetectedIntent> {
   const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: 'llama-3.3-70b-versatile',
     messages: [
       {
-        role: "system",
+        role: 'system',
         content: `You are an intent detection system for a freelance business assistant.
 
 AVAILABLE INTENTS:
@@ -63,12 +63,12 @@ Respond ONLY with a JSON object in this exact format:
     "send_email": true
   },
   "workflow": ["tool1", "tool2", "tool3"]
-}`
+}`,
       },
       {
-        role: "user",
-        content: userMessage
-      }
+        role: 'user',
+        content: userMessage,
+      },
     ],
     temperature: 0.1,
     max_tokens: 500,
@@ -76,7 +76,7 @@ Respond ONLY with a JSON object in this exact format:
 
   const response = completion.choices[0]?.message?.content;
   if (!response) {
-    throw new Error("No response from intent detector");
+    throw new Error('No response from intent detector');
   }
 
   try {
@@ -84,4 +84,4 @@ Respond ONLY with a JSON object in this exact format:
   } catch (error) {
     throw new Error(`Failed to parse intent response: ${response}`);
   }
-} 
+}

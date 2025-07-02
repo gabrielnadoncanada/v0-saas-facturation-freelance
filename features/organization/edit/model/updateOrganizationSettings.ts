@@ -1,7 +1,9 @@
 import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { OrganizationSettingsSchema } from '../schema/organization-settings.schema';
 
-export async function updateOrganizationSettings(formData: OrganizationSettingsSchema): Promise<void> {
+export async function updateOrganizationSettings(
+  formData: OrganizationSettingsSchema,
+): Promise<void> {
   try {
     const { supabase, organization } = await getSessionUser();
 
@@ -31,14 +33,12 @@ export async function updateOrganizationSettings(formData: OrganizationSettingsS
       }
     } else {
       // Create new settings
-      const { error } = await supabase
-        .from('organization_settings')
-        .insert({
-          ...formData,
-          organization_id: organization.id,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
+      const { error } = await supabase.from('organization_settings').insert({
+        ...formData,
+        organization_id: organization.id,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
 
       if (error) {
         throw new Error(error.message);
@@ -48,4 +48,4 @@ export async function updateOrganizationSettings(formData: OrganizationSettingsS
     console.error('Error in updateOrganizationSettings:', error);
     throw error;
   }
-} 
+}

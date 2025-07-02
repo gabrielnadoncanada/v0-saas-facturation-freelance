@@ -1,17 +1,10 @@
-"use client";
+'use client';
 
-import { ChatInterface } from "./ui/ChatInterface";
-import { useChat } from "./hooks/useChat";
+import { ChatInterface } from './ui/ChatInterface';
+import { useChat } from './hooks/useChat';
 
 export function Chat() {
-  const {
-    messages,
-    input,
-    isLoading,
-    error,
-    handleInputChange,
-    handleSubmit,
-  } = useChat();
+  const { messages, input, isLoading, error, handleInputChange, handleSubmit } = useChat();
 
   const onInputChange = (value: string) => {
     handleInputChange({ target: { value } } as React.ChangeEvent<HTMLInputElement>);
@@ -42,4 +35,4 @@ export function Chat() {
       onSubmit={onSubmit}
     />
   );
-} 
+}

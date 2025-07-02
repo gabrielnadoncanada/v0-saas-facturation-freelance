@@ -3,7 +3,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
 import { OrganizationSettingsFormValues } from '../../hooks/useOrganizationSettingsForm';
 
@@ -164,4 +170,4 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
       </CardContent>
     </Card>
   );
-} 
+}

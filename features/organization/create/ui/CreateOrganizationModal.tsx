@@ -19,10 +19,10 @@ interface CreateOrganizationModalProps {
   onError?: (message: string) => void;
 }
 
-export function CreateOrganizationModal({ 
-  trigger, 
-  onSuccess, 
-  onError 
+export function CreateOrganizationModal({
+  trigger,
+  onSuccess,
+  onError,
 }: CreateOrganizationModalProps) {
   const [open, setOpen] = useState(false);
 
@@ -48,9 +48,7 @@ export function CreateOrganizationModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger || defaultTrigger}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger || defaultTrigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Créer une nouvelle organisation</DialogTitle>
@@ -66,4 +64,4 @@ export function CreateOrganizationModal({
       </DialogContent>
     </Dialog>
   );
-} 
+}

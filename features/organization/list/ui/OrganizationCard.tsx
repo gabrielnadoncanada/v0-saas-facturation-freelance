@@ -57,7 +57,7 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
   const getInitials = (name: string) => {
     return name
       .split(' ')
-      .map(word => word.charAt(0))
+      .map((word) => word.charAt(0))
       .join('')
       .toUpperCase()
       .slice(0, 2);
@@ -82,11 +82,13 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
   };
 
   return (
-    <Card 
+    <Card
       className={cn(
         'transition-all duration-200 hover:shadow-md',
-        isCurrentOrganization ? 'ring-2 ring-primary' : 'cursor-pointer hover:ring-1 hover:ring-muted-foreground/20',
-        isLoading && 'opacity-50 cursor-not-allowed'
+        isCurrentOrganization
+          ? 'ring-2 ring-primary'
+          : 'cursor-pointer hover:ring-1 hover:ring-muted-foreground/20',
+        isLoading && 'opacity-50 cursor-not-allowed',
       )}
       onClick={handleSwitchOrganization}
     >
@@ -95,7 +97,11 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
           <Avatar className="h-10 w-10">
             <AvatarImage src={organization.logo_url} alt={organization.name} />
             <AvatarFallback>
-              {organization.logo_url ? getInitials(organization.name) : <Building2 className="h-5 w-5" />}
+              {organization.logo_url ? (
+                getInitials(organization.name)
+              ) : (
+                <Building2 className="h-5 w-5" />
+              )}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
@@ -121,7 +127,7 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
             {organization.plan}
           </Badge>
         </div>
-        
+
         <div className="mt-4 text-xs text-muted-foreground">
           Créée le {new Date(organization.created_at).toLocaleDateString('fr-FR')}
         </div>
@@ -141,4 +147,4 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
       </CardContent>
     </Card>
   );
-} 
+}

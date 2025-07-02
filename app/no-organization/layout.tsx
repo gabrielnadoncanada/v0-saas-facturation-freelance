@@ -6,11 +6,7 @@ export const metadata: Metadata = {
   description: 'Créez votre première organisation pour commencer',
 };
 
-export default async function NoOrganizationLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function NoOrganizationLayout({ children }: { children: React.ReactNode }) {
   // Get the session to make sure the user is authenticated
   const { user } = await getSessionUser();
 
@@ -24,4 +20,4 @@ export default async function NoOrganizationLayout({
       <main className="flex-1 container mx-auto py-6">{children}</main>
     </div>
   );
-} 
+}

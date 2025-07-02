@@ -24,8 +24,7 @@ export async function uploadLogoAction(formData: FormData): Promise<Result<strin
       .from('organization-logos')
       .upload(fileName, file, { cacheControl: '3600', upsert: false });
 
-
-      console.log(uploadData)
+    console.log(uploadData);
     // Get public URL (utilise fileName au lieu de uploadData.path)
     const { data: urlData, error: urlError } = supabase.storage
       .from('organization-logos')
@@ -41,7 +40,7 @@ export async function uploadLogoAction(formData: FormData): Promise<Result<strin
       organization.id,
       { logo_url: logoUrl },
       '*',
-      { id: organization.id }
+      { id: organization.id },
     );
     console.log('UpdateResult:', updateRes);
 

@@ -1,4 +1,4 @@
-import { Chat } from "@/features/chatbot/chat/Chat";
+import { Chat } from '@/features/chatbot/chat/Chat';
 
 export default function ChatbotPage() {
   return (
@@ -14,4 +14,4 @@ export default function ChatbotPage() {
       </div>
     </div>
   );
-} 
+}

@@ -1,6 +1,6 @@
 export interface ChatMessage {
   id: string;
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
 }
@@ -13,7 +13,7 @@ export interface ChatError {
 export interface InvoiceData {
   id: string;
   invoice_number: string;
-  status: "draft" | "sent" | "paid" | "overdue";
+  status: 'draft' | 'sent' | 'paid' | 'overdue';
   total_amount: number;
   due_date: string;
   created_at: string;
@@ -37,7 +37,7 @@ export interface ProjectData {
   id: string;
   name: string;
   description?: string;
-  status: "active" | "completed" | "on_hold";
+  status: 'active' | 'completed' | 'on_hold';
   start_date?: string;
   end_date?: string;
   created_at: string;
@@ -46,4 +46,4 @@ export interface ProjectData {
     name: string;
     email: string;
   };
-} 
+}

@@ -70,7 +70,7 @@ export async function getSessionUser(): Promise<SessionContext> {
   } else {
     // If no organizations and not on the no-organization page, redirect
     const isServerComponent = typeof window === 'undefined';
-    
+
     if (isServerComponent) {
       // Only redirect on server components (to avoid client-side errors)
       // Check if we're not already on the no-organization page
@@ -80,7 +80,7 @@ export async function getSessionUser(): Promise<SessionContext> {
       try {
         const pathname = headers.get('x-pathname');
         const isNoOrgPage = pathname === '/no-organization';
-        
+
         if (!isNoOrgPage) {
           redirect('/no-organization');
         }

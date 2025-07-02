@@ -35,20 +35,24 @@ features/chatbot/
 ## Tools Organization
 
 ### Invoice Tools (`invoice.tools.ts`)
+
 - `listInvoices` - List all invoices with status and basic information
 - `getInvoiceDetails` - Get detailed information about a specific invoice
 - `createInvoice` - Create a new invoice with items
 
 ### Client Tools (`client.tools.ts`)
+
 - `listClients` - List all clients with basic information
 - `createClient` - Create a new client with provided information
 
 ### Project Tools (`project.tools.ts`)
+
 - `listProjects` - List all projects with status and basic information
 
 ## How It Works
 
 ### 1. Intent Detection (`intentDetector.ts`)
+
 ```typescript
 const intent = await detectIntent("Créer une facture pour Yolibeth pour 500$");
 // Returns:
@@ -66,6 +70,7 @@ const intent = await detectIntent("Créer une facture pour Yolibeth pour 500$");
 ```
 
 ### 2. Workflow Execution (`workflowExecutor.ts`)
+
 ```typescript
 const executor = new WorkflowExecutor();
 const result = await executor.executeWorkflow(intent);
@@ -77,6 +82,7 @@ const result = await executor.executeWorkflow(intent);
 ```
 
 ### 3. Response Formatting (`responseFormatter.ts`)
+
 ```typescript
 const response = await formatResponse(userMessage, intent, workflowResult);
 // Returns natural language response in user's language
@@ -97,16 +103,19 @@ const response = await formatResponse(userMessage, intent, workflowResult);
 ## Adding New Intents
 
 1. **Add intent to `intentDetector.ts`**:
+
    ```typescript
    - UPDATE_INVOICE: Update existing invoice
    ```
 
 2. **Add workflow mapping**:
+
    ```typescript
    - UPDATE_INVOICE: ["getInvoiceDetails", "updateInvoice"]
    ```
 
 3. **Add parameter building in `workflowExecutor.ts`**:
+
    ```typescript
    case 'updateInvoice':
      return {
@@ -139,6 +148,7 @@ const response = await formatResponse(userMessage, intent, workflowResult);
 ### 1. Install Dependencies
 
 The required dependencies are already installed:
+
 - `ai` - Vercel AI SDK
 - `@ai-sdk/groq` - Groq provider for AI SDK
 
@@ -159,12 +169,15 @@ The chatbot is available at `/dashboard/chatbot` and provides the following capa
 #### Available Tools
 
 1. **listInvoices**: List all invoices from the organization
+
    - Parameters: None (uses existing invoice feature functions)
 
 2. **getInvoiceDetails**: Get detailed information about a specific invoice
+
    - Parameters: `invoiceId` (required)
 
 3. **listClients**: List all clients from the organization
+
    - Parameters: None (uses existing client feature functions)
 
 4. **listProjects**: List all projects from the organization
@@ -202,6 +215,7 @@ features/chatbot/
 ```
 
 **Note**: The chatbot reuses existing functions from other features:
+
 - Invoices: `@/features/invoice/list/model/getInvoices` and `@/features/invoice/view/model/getInvoice`
 - Clients: `@/features/client/list/model/getClients`
 - Projects: `@/features/project/list/model/getProjects`
@@ -230,6 +244,7 @@ pnpm test features/chatbot
 ```
 
 The feature includes comprehensive tests for:
+
 - Chat hook functionality
 - Database model functions
 - Error handling
@@ -249,6 +264,7 @@ To add new tools to the chatbot:
 ### Modifying the UI
 
 The chat interface can be customized by editing:
+
 - `features/chatbot/chat/ui/ChatInterface.tsx` - Main chat UI
 - `features/chatbot/chat/Chat.tsx` - Orchestrator component
 
@@ -261,5 +277,6 @@ model: groq("llama-3.3-70b-versatile"), // Change this line
 ```
 
 Available Groq models:
+
 - `llama-3.3-70b-versatile`
 - `

@@ -15,9 +15,7 @@ export function BankingSettingsTab({ form }: BankingSettingsTabProps) {
     <Card>
       <CardHeader>
         <CardTitle>Informations bancaires</CardTitle>
-        <CardDescription>
-          Configurez vos informations bancaires pour les factures
-        </CardDescription>
+        <CardDescription>Configurez vos informations bancaires pour les factures</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <FormField
@@ -81,11 +79,11 @@ export function BankingSettingsTab({ form }: BankingSettingsTabProps) {
         <div className="mt-4 p-4 bg-muted rounded-lg">
           <h4 className="text-sm font-medium mb-2">💡 Conseil</h4>
           <p className="text-sm text-muted-foreground">
-            Ces informations bancaires apparaîtront sur vos factures pour faciliter les paiements de vos clients.
-            Assurez-vous qu'elles sont correctes et à jour.
+            Ces informations bancaires apparaîtront sur vos factures pour faciliter les paiements de
+            vos clients. Assurez-vous qu'elles sont correctes et à jour.
           </p>
         </div>
       </CardContent>
     </Card>
   );
-} 
+}

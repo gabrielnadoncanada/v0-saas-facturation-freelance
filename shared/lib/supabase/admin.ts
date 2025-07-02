@@ -16,4 +16,4 @@ export async function createAdminClient() {
       persistSession: false,
     },
   });
-} 
+}

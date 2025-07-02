@@ -57,10 +57,14 @@ describe('Logo Upload Functionality', () => {
     it('should throw error for files larger than 2MB', async () => {
       const formData = new FormData();
       // Create a mock file larger than 2MB
-      const largeFile = new File(['x'.repeat(3 * 1024 * 1024)], 'large-logo.png', { type: 'image/png' });
+      const largeFile = new File(['x'.repeat(3 * 1024 * 1024)], 'large-logo.png', {
+        type: 'image/png',
+      });
       formData.append('logo', largeFile);
 
-      await expect(uploadLogoAction(formData)).rejects.toThrow('Le fichier ne doit pas dépasser 2MB');
+      await expect(uploadLogoAction(formData)).rejects.toThrow(
+        'Le fichier ne doit pas dépasser 2MB',
+      );
     });
   });
 
@@ -71,4 +75,4 @@ describe('Logo Upload Functionality', () => {
       expect(result).toBeNull();
     });
   });
-}); 
+});

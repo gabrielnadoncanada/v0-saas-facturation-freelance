@@ -16,12 +16,15 @@ export function useOrganizationSwitcher() {
   const fetchOrganizations = async () => {
     setLoading(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
 
       const { data, error } = await supabase
         .from('organization_members')
-        .select(`
+        .select(
+          `
           role,
           organization:organizations(
             id,
@@ -33,7 +36,8 @@ export function useOrganizationSwitcher() {
             created_at,
             updated_at
           )
-        `)
+        `,
+        )
         .eq('user_id', user.id)
         .order('created_at', { ascending: true });
 
@@ -42,10 +46,11 @@ export function useOrganizationSwitcher() {
         return;
       }
 
-      const transformedData = data?.map((item: any) => ({
-        ...item.organization,
-        role: item.role,
-      })) || [];
+      const transformedData =
+        data?.map((item: any) => ({
+          ...item.organization,
+          role: item.role,
+        })) || [];
 
       setOrganizations(transformedData);
     } catch (error) {
@@ -85,4 +90,4 @@ export function useOrganizationSwitcher() {
     fetchOrganizations,
     switchOrganization,
   };
-} 
+}

@@ -1,5 +1,5 @@
-import { chatbotTools } from "../tools";
-import { DetectedIntent } from "./intentDetector";
+import { chatbotTools } from '../tools';
+import { DetectedIntent } from './intentDetector';
 
 export interface WorkflowStep {
   tool: string;
@@ -41,7 +41,7 @@ export class WorkflowExecutor {
       }
 
       // Get the final result from the last successful step
-      const lastSuccessfulStep = steps.filter(s => !s.error).pop();
+      const lastSuccessfulStep = steps.filter((s) => !s.error).pop();
       finalResult = lastSuccessfulStep?.result || null;
 
       return {
@@ -59,9 +59,13 @@ export class WorkflowExecutor {
     }
   }
 
-  private async executeStep(toolName: string, intent: DetectedIntent, previousSteps: WorkflowStep[]): Promise<WorkflowStep> {
+  private async executeStep(
+    toolName: string,
+    intent: DetectedIntent,
+    previousSteps: WorkflowStep[],
+  ): Promise<WorkflowStep> {
     const tool = this.tools[toolName as keyof typeof this.tools];
-    
+
     if (!tool) {
       return {
         tool: toolName,
@@ -73,10 +77,10 @@ export class WorkflowExecutor {
     try {
       const parameters = this.buildParameters(toolName, intent, previousSteps);
       const result = await (tool.execute as any)(parameters);
-      
+
       // Store result in context for next steps
       this.context[toolName] = result;
-      
+
       return {
         tool: toolName,
         parameters,
@@ -91,9 +95,13 @@ export class WorkflowExecutor {
     }
   }
 
-  private buildParameters(toolName: string, intent: DetectedIntent, previousSteps: WorkflowStep[]): Record<string, any> {
+  private buildParameters(
+    toolName: string,
+    intent: DetectedIntent,
+    previousSteps: WorkflowStep[],
+  ): Record<string, any> {
     const entities = intent.entities;
-    
+
     switch (toolName) {
       case 'findClientByName':
         return {
@@ -108,9 +116,9 @@ export class WorkflowExecutor {
 
       case 'createSimpleInvoice':
         // Get client_id from previous findClientByName step
-        const findClientStep = previousSteps.find(s => s.tool === 'findClientByName');
-        const createClientStep = previousSteps.find(s => s.tool === 'createClient');
-        
+        const findClientStep = previousSteps.find((s) => s.tool === 'findClientByName');
+        const createClientStep = previousSteps.find((s) => s.tool === 'createClient');
+
         let clientId = null;
         if (findClientStep?.result?.success) {
           clientId = findClientStep.result.client.id;
@@ -121,14 +129,14 @@ export class WorkflowExecutor {
         return {
           client_id: clientId,
           total_amount: entities.total_amount,
-          description: entities.description || "Service provided",
-          currency: entities.currency || "USD",
+          description: entities.description || 'Service provided',
+          currency: entities.currency || 'USD',
           tax_rate: entities.tax_rate || 0,
         };
 
       case 'sendInvoiceEmail':
         // Get invoice_id from previous createSimpleInvoice step or use provided invoice_id
-        const createInvoiceStep = previousSteps.find(s => s.tool === 'createSimpleInvoice');
+        const createInvoiceStep = previousSteps.find((s) => s.tool === 'createSimpleInvoice');
         const invoiceId = createInvoiceStep?.result?.invoice_id || entities.invoice_id;
 
         return {
@@ -151,15 +159,19 @@ export class WorkflowExecutor {
     }
   }
 
-  private async shouldExecuteOptionalTool(toolName: string, intent: DetectedIntent, previousSteps: WorkflowStep[]): Promise<boolean> {
+  private async shouldExecuteOptionalTool(
+    toolName: string,
+    intent: DetectedIntent,
+    previousSteps: WorkflowStep[],
+  ): Promise<boolean> {
     switch (toolName) {
       case 'createClient':
         // Only create client if findClientByName failed
-        const findClientStep = previousSteps.find(s => s.tool === 'findClientByName');
+        const findClientStep = previousSteps.find((s) => s.tool === 'findClientByName');
         return findClientStep?.result?.success === false;
-      
+
       default:
         return true;
     }
   }
-} 
+}

@@ -13,9 +13,11 @@ This feature allows organizations to upload and manage their logos, which will a
 ## Components
 
 ### GeneralSettingsTab
+
 The main UI component for logo management, located in the General Settings tab of organization settings.
 
 **Features:**
+
 - Drag & drop file upload interface
 - Image preview with proper aspect ratio
 - Upload and delete buttons
@@ -24,9 +26,11 @@ The main UI component for logo management, located in the General Settings tab o
 ### Actions
 
 #### uploadLogoAction
+
 Server action that handles logo upload to Supabase Storage.
 
 **Process:**
+
 1. Validates file type (must be image)
 2. Validates file size (max 2MB)
 3. Uploads to `organization-logos` bucket
@@ -34,9 +38,11 @@ Server action that handles logo upload to Supabase Storage.
 5. Returns public URL
 
 #### deleteLogoAction
+
 Server action that removes logos from storage and database.
 
 **Process:**
+
 1. Extracts file path from current logo URL
 2. Removes file from Supabase Storage
 3. Updates organization record to remove logo URL
@@ -44,6 +50,7 @@ Server action that removes logos from storage and database.
 ## Storage Structure
 
 Logos are stored in Supabase Storage under the `organization-logos` bucket with the following structure:
+
 ```
 organization-logos/
 ├── {organization-id}/
@@ -63,11 +70,13 @@ The logo functionality is integrated with the invoice PDF generation system:
 ## Usage
 
 ### In Organization Settings
+
 1. Navigate to Dashboard → Settings
 2. Go to the "Général" tab
 3. Use the logo upload section to add/remove logos
 
 ### In Invoice PDFs
+
 Logos automatically appear in the header of generated invoice PDFs when present.
 
 ## File Requirements
@@ -80,6 +89,7 @@ Logos automatically appear in the header of generated invoice PDFs when present.
 ## Error Handling
 
 The system includes comprehensive error handling for:
+
 - Invalid file types
 - Files exceeding size limits
 - Storage upload failures
@@ -91,4 +101,4 @@ The system includes comprehensive error handling for:
 - File uploads are validated on both client and server side
 - Files are stored in organization-specific folders
 - Only authenticated organization members can upload/delete logos
-- Public URLs are generated for PDF inclusion but require proper organization context 
+- Public URLs are generated for PDF inclusion but require proper organization context

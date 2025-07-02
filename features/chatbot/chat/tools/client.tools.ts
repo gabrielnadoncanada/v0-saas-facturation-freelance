@@ -1,10 +1,10 @@
-import { z } from "zod";
-import { getClients } from "@/features/client/list/model/getClients";
-import { createClient } from "@/features/client/create/model/createClient";
+import { z } from 'zod';
+import { getClients } from '@/features/client/list/model/getClients';
+import { createClient } from '@/features/client/create/model/createClient';
 
 export const clientTools = {
   listClients: {
-    description: "List all clients with their basic information",
+    description: 'List all clients with their basic information',
     parameters: z.object({}),
     execute: async function () {
       const clients = await getClients();
@@ -12,10 +12,10 @@ export const clientTools = {
     },
   },
   createClient: {
-    description: "Create a new client with the provided information",
+    description: 'Create a new client with the provided information',
     parameters: z.object({
-      name: z.string().min(1, "Client name is required"),
-      email: z.string().email("Valid email is required").optional(),
+      name: z.string().min(1, 'Client name is required'),
+      email: z.string().email('Valid email is required').optional(),
       phone: z.string().optional(),
       billing_address: z.string().optional(),
       billing_city: z.string().optional(),
@@ -28,7 +28,21 @@ export const clientTools = {
       notes: z.string().optional(),
       sameAsShipping: z.boolean().optional(),
     }),
-    execute: async function ({ name, email, phone, billing_address, billing_city, billing_postal_code, billing_country, shipping_address, shipping_city, shipping_postal_code, shipping_country, notes, sameAsShipping }: {
+    execute: async function ({
+      name,
+      email,
+      phone,
+      billing_address,
+      billing_city,
+      billing_postal_code,
+      billing_country,
+      shipping_address,
+      shipping_city,
+      shipping_postal_code,
+      shipping_country,
+      notes,
+      sameAsShipping,
+    }: {
       name: string;
       email?: string;
       phone?: string;
@@ -45,20 +59,20 @@ export const clientTools = {
     }) {
       const clientData = {
         name,
-        email: email || "",
-        phone: phone || "",
-        billing_address: billing_address || "",
-        billing_city: billing_city || "",
-        billing_postal_code: billing_postal_code || "",
-        billing_country: billing_country || "",
-        shipping_address: shipping_address || "",
-        shipping_city: shipping_city || "",
-        shipping_postal_code: shipping_postal_code || "",
-        shipping_country: shipping_country || "",
-        notes: notes || "",
+        email: email || '',
+        phone: phone || '',
+        billing_address: billing_address || '',
+        billing_city: billing_city || '',
+        billing_postal_code: billing_postal_code || '',
+        billing_country: billing_country || '',
+        shipping_address: shipping_address || '',
+        shipping_city: shipping_city || '',
+        shipping_postal_code: shipping_postal_code || '',
+        shipping_country: shipping_country || '',
+        notes: notes || '',
         sameAsShipping: sameAsShipping || false,
       };
-      
+
       const client = await createClient(clientData);
       return {
         success: true,
@@ -68,24 +82,24 @@ export const clientTools = {
     },
   },
   findClientByName: {
-    description: "Find a client by name (case-insensitive search)",
+    description: 'Find a client by name (case-insensitive search)',
     parameters: z.object({
-      name: z.string().min(1, "Client name is required"),
+      name: z.string().min(1, 'Client name is required'),
     }),
     execute: async function ({ name }: { name: string }) {
       const clients = await getClients();
-      const foundClient = clients.find(client => 
-        client.name.toLowerCase().includes(name.toLowerCase())
+      const foundClient = clients.find((client) =>
+        client.name.toLowerCase().includes(name.toLowerCase()),
       );
-      
+
       if (!foundClient) {
         return {
           success: false,
-          message: `No client found with name containing "${name}". Available clients: ${clients.map(c => c.name).join(', ')}`,
-          available_clients: clients.map(c => ({ id: c.id, name: c.name, email: c.email })),
+          message: `No client found with name containing "${name}". Available clients: ${clients.map((c) => c.name).join(', ')}`,
+          available_clients: clients.map((c) => ({ id: c.id, name: c.name, email: c.email })),
         };
       }
-      
+
       return {
         success: true,
         client: foundClient,
@@ -93,4 +107,4 @@ export const clientTools = {
       };
     },
   },
-}; 
+};

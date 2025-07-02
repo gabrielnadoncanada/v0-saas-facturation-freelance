@@ -34,4 +34,4 @@ export function useOrganizationCheck() {
 
     checkOrganization();
   }, [router, supabase]);
-} 
+}

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Bot, MessageSquare, Database, Zap } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Bot, MessageSquare, Database, Zap } from 'lucide-react';
 
 export function ChatbotDemo() {
   return (
@@ -58,7 +58,8 @@ export function ChatbotDemo() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Connecté à votre base de données Supabase pour accéder aux factures, clients et projets en temps réel.
+              Connecté à votre base de données Supabase pour accéder aux factures, clients et
+              projets en temps réel.
             </p>
           </CardContent>
         </Card>
@@ -142,10 +143,10 @@ export function ChatbotDemo() {
 
       <div className="text-center">
         <p className="text-muted-foreground">
-          Pour utiliser le chatbot, ajoutez votre clé API Groq dans <code>.env.local</code> et naviguez vers{" "}
-          <code>/dashboard/chatbot</code>
+          Pour utiliser le chatbot, ajoutez votre clé API Groq dans <code>.env.local</code> et
+          naviguez vers <code>/dashboard/chatbot</code>
         </p>
       </div>
     </div>
   );
-} 
+}

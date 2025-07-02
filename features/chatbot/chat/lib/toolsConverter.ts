@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 type ChatbotTool = {
   description: string;
@@ -7,12 +7,12 @@ type ChatbotTool = {
 };
 
 type GroqTool = {
-  type: "function";
+  type: 'function';
   function: {
     name: string;
     description: string;
     parameters: {
-      type: "object";
+      type: 'object';
       properties: Record<string, any>;
       required?: string[];
     };
@@ -24,21 +24,26 @@ type GroqTool = {
  */
 export function convertToolsToGroqFormat(tools: Record<string, ChatbotTool>): GroqTool[] {
   return Object.entries(tools).map(([name, tool]) => ({
-    type: "function" as const,
+    type: 'function' as const,
     function: {
       name,
       description: tool.description,
-      parameters: tool.parameters.shape ? {
-        type: "object",
-        properties: Object.keys(tool.parameters.shape).reduce((acc, key) => {
-          acc[key] = { type: "string" };
-          return acc;
-        }, {} as Record<string, any>),
-        required: Object.keys(tool.parameters.shape || {}),
-      } : {
-        type: "object",
-        properties: {},
-      },
+      parameters: tool.parameters.shape
+        ? {
+            type: 'object',
+            properties: Object.keys(tool.parameters.shape).reduce(
+              (acc, key) => {
+                acc[key] = { type: 'string' };
+                return acc;
+              },
+              {} as Record<string, any>,
+            ),
+            required: Object.keys(tool.parameters.shape || {}),
+          }
+        : {
+            type: 'object',
+            properties: {},
+          },
     },
   }));
-} 
+}

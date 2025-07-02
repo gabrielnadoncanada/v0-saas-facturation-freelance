@@ -1,6 +1,6 @@
-import Groq from "groq-sdk";
-import { WorkflowResult } from "./workflowExecutor";
-import { DetectedIntent } from "./intentDetector";
+import Groq from 'groq-sdk';
+import { WorkflowResult } from './workflowExecutor';
+import { DetectedIntent } from './intentDetector';
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -9,13 +9,13 @@ const groq = new Groq({
 export async function formatResponse(
   userMessage: string,
   intent: DetectedIntent,
-  workflowResult: WorkflowResult
+  workflowResult: WorkflowResult,
 ): Promise<string> {
   const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: 'llama-3.3-70b-versatile',
     messages: [
       {
-        role: "system",
+        role: 'system',
         content: `You are a helpful freelance business assistant. 
 
 Your job is to create a natural, conversational response based on the workflow execution results.
@@ -34,23 +34,26 @@ WORKFLOW CONTEXT:
 - Workflow Success: ${workflowResult.success}
 
 EXECUTION STEPS:
-${workflowResult.steps.map(step => 
-  `- ${step.tool}: ${step.error ? `ERROR: ${step.error}` : 'SUCCESS'}`
-).join('\n')}
+${workflowResult.steps
+  .map((step) => `- ${step.tool}: ${step.error ? `ERROR: ${step.error}` : 'SUCCESS'}`)
+  .join('\n')}
 
 FINAL RESULT:
 ${JSON.stringify(workflowResult.finalResult, null, 2)}
 
-Create a natural response that explains what happened to the user.`
+Create a natural response that explains what happened to the user.`,
       },
       {
-        role: "user",
-        content: `Original request: "${userMessage}"`
-      }
+        role: 'user',
+        content: `Original request: "${userMessage}"`,
+      },
     ],
     temperature: 0.7,
     max_tokens: 500,
   });
 
-  return completion.choices[0]?.message?.content || "I apologize, but I couldn't process your request properly.";
-} 
+  return (
+    completion.choices[0]?.message?.content ||
+    "I apologize, but I couldn't process your request properly."
+  );
+}

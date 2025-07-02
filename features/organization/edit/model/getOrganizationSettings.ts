@@ -25,4 +25,4 @@ export async function getOrganizationSettings(): Promise<OrganizationSettings | 
     console.error('Error in getOrganizationSettings:', error);
     return null;
   }
-} 
+}

@@ -48,8 +48,8 @@ export function OrganizationSettingsFormView({
 
           {/* General Settings Tab */}
           <TabsContent value="general" className="space-y-6">
-            <GeneralSettingsTab 
-              form={form} 
+            <GeneralSettingsTab
+              form={form}
               currentLogoUrl={currentLogoUrl}
               onLogoUpload={onLogoUpload}
               onLogoDelete={onLogoDelete}
@@ -85,4 +85,4 @@ export function OrganizationSettingsFormView({
       </form>
     </Form>
   );
-} 
+}

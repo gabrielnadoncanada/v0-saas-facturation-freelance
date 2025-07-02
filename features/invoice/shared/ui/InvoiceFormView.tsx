@@ -44,7 +44,7 @@ export function InvoiceFormView(props: InvoiceFormViewProps) {
               <AlertDescription>{props.error}</AlertDescription>
             </Alert>
           )}
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-6 grid-cols-1 ">
             <Card>
               <CardHeader>
                 <CardTitle>Informations générales</CardTitle>
@@ -57,30 +57,7 @@ export function InvoiceFormView(props: InvoiceFormViewProps) {
                 />
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Récapitulatif</CardTitle>
-                {props.invoice && (
-                  <div className="text-lg font-semibold">{props.invoice.invoice_number}</div>
-                )}
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Sous-total HT</span>
-                    <span>{formatCurrency(props.subtotal, props.currency)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">TVA ({props.tax_rate}%)</span>
-                    <span>{formatCurrency(props.tax, props.currency)}</span>
-                  </div>
-                  <div className="flex justify-between font-semibold mt-4 text-lg">
-                    <span>Total TTC</span>
-                    <span>{formatCurrency(props.total, props.currency)}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+       
           </div>
           <Card className="overflow-hidden">
             <InvoiceLineFields
