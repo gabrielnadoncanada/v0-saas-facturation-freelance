@@ -103,7 +103,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField
                 control={form.control}
-                name="billing_address"
+                name="billingAddress"
                 render={({ field }) => (
                   <FormItem className="sm:col-span-2">
                     <FormLabel>Adresse</FormLabel>
@@ -116,7 +116,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
               />
               <FormField
                 control={form.control}
-                name="billing_city"
+                name="billingCity"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Ville</FormLabel>
@@ -129,7 +129,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
               />
               <FormField
                 control={form.control}
-                name="billing_postal_code"
+                name="billingPostalCode"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Code postal</FormLabel>
@@ -142,7 +142,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
               />
               <FormField
                 control={form.control}
-                name="billing_country"
+                name="billingCountry"
                 render={({ field }) => (
                   <FormItem className="sm:col-span-2">
                     <FormLabel>Pays</FormLabel>
@@ -180,7 +180,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="shipping_address"
+                  name="shippingAddress"
                   render={({ field }) => (
                     <FormItem className="sm:col-span-2">
                       <FormLabel>Adresse</FormLabel>
@@ -193,7 +193,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
                 />
                 <FormField
                   control={form.control}
-                  name="shipping_city"
+                  name="shippingCity"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Ville</FormLabel>
@@ -206,7 +206,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
                 />
                 <FormField
                   control={form.control}
-                  name="shipping_postal_code"
+                  name="shippingPostalCode"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Code postal</FormLabel>
@@ -219,7 +219,7 @@ export function ClientFormView({ form, error, isLoading, onSubmit, isEdit }: Cli
                 />
                 <FormField
                   control={form.control}
-                  name="shipping_country"
+                  name="shippingCountry"
                   render={({ field }) => (
                     <FormItem className="sm:col-span-2">
                       <FormLabel>Pays</FormLabel>

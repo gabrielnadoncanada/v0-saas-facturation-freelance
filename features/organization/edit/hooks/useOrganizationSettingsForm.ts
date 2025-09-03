@@ -3,10 +3,13 @@
 import { useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { organizationSettingsSchema, OrganizationSettingsSchema } from '../schema/organization-settings.schema';
-import { updateOrganizationSettingsAction } from '../actions/updateOrganizationSettings.action';
+import {
+  organizationSettingsSchema,
+  OrganizationSettingsSchema,
+} from '@/features/organization/edit/schema/organization-settings.schema';
+import { updateOrganizationSettingsAction } from '@/features/organization/edit/actions/updateOrganizationSettings.action';
 import { useToast } from '@/shared/hooks/use-toast';
-import type { OrganizationSettings } from '../types/organization-settings.types';
+import type { OrganizationSettings } from '@/shared/lib/drizzle/types';
 
 export type OrganizationSettingsFormValues = OrganizationSettingsSchema;
 
@@ -21,42 +24,50 @@ export function useOrganizationSettingsForm({ settings }: UseOrganizationSetting
 
   // Default values for new organization settings
   const defaultValues: OrganizationSettingsFormValues = {
-    default_currency: 'EUR',
-    default_tax_rate: 20,
-    invoice_prefix: 'INV',
-    invoice_number_format: '{prefix}-{year}-{number:4}',
-    next_invoice_number: 1,
-    default_payment_terms: 30,
-    late_fee_percentage: 0,
-    company_address: '',
-    company_city: '',
-    company_postal_code: '',
-    company_country: '',
-    company_phone: '',
-    company_email: '',
-    company_website: '',
-    company_tax_number: '',
+    defaultCurrency: 'EUR',
+    defaultTaxRate: 20,
+    invoicePrefix: 'INV',
+    invoiceNumberFormat: '{prefix}-{year}-{number:4}',
+    nextInvoiceNumber: 1,
+    defaultPaymentTerms: 30,
+    lateFeePercentage: 0,
+    companyAddress: '',
+    companyCity: '',
+    companyPostalCode: '',
+    companyCountry: '',
+    companyPhone: '',
+    companyEmail: '',
+    companyWebsite: '',
+    companyTaxNumber: '',
   };
 
   const form = useForm<OrganizationSettingsFormValues>({
     resolver: zodResolver(organizationSettingsSchema),
-    defaultValues: settings ? {
-      default_currency: settings.default_currency,
-      default_tax_rate: settings.default_tax_rate,
-      invoice_prefix: settings.invoice_prefix,
-      invoice_number_format: settings.invoice_number_format,
-      next_invoice_number: settings.next_invoice_number,
-      default_payment_terms: settings.default_payment_terms,
-      late_fee_percentage: settings.late_fee_percentage,
-      company_address: settings.company_address || '',
-      company_city: settings.company_city || '',
-      company_postal_code: settings.company_postal_code || '',
-      company_country: settings.company_country || '',
-      company_phone: settings.company_phone || '',
-      company_email: settings.company_email || '',
-      company_website: settings.company_website || '',
-      company_tax_number: settings.company_tax_number || '',
-    } : defaultValues,
+    defaultValues: settings
+      ? {
+          defaultCurrency: settings.defaultCurrency,
+          defaultTaxRate:
+            typeof settings.defaultTaxRate === 'string'
+              ? parseFloat(settings.defaultTaxRate)
+              : settings.defaultTaxRate,
+          invoicePrefix: settings.invoicePrefix,
+          invoiceNumberFormat: settings.invoiceNumberFormat,
+          nextInvoiceNumber: settings.nextInvoiceNumber,
+          defaultPaymentTerms: settings.defaultPaymentTerms,
+          lateFeePercentage:
+            typeof settings.lateFeePercentage === 'string'
+              ? parseFloat(settings.lateFeePercentage)
+              : settings.lateFeePercentage,
+          companyAddress: settings.companyAddress || '',
+          companyCity: settings.companyCity || '',
+          companyPostalCode: settings.companyPostalCode || '',
+          companyCountry: settings.companyCountry || '',
+          companyPhone: settings.companyPhone || '',
+          companyEmail: settings.companyEmail || '',
+          companyWebsite: settings.companyWebsite || '',
+          companyTaxNumber: settings.companyTaxNumber || '',
+        }
+      : defaultValues,
   });
 
   const handleSubmit = async (data: OrganizationSettingsFormValues) => {
@@ -69,7 +80,7 @@ export function useOrganizationSettingsForm({ settings }: UseOrganizationSetting
       if (result.success) {
         toast({
           title: 'Paramètres mis à jour',
-          description: 'Les paramètres de l\'organisation ont été mis à jour avec succès.',
+          description: "Les paramètres de l'organisation ont été mis à jour avec succès.",
         });
       } else {
         toast({
@@ -96,4 +107,4 @@ export function useOrganizationSettingsForm({ settings }: UseOrganizationSetting
     isSubmitting,
     handleSubmit: form.handleSubmit(handleSubmit),
   };
-} 
+}

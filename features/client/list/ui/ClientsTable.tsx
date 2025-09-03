@@ -1,7 +1,7 @@
 'use client';
 
 import { useClientsTable } from '@/features/client/list/hooks/useClientsTable';
-import { Client } from '@/features/client/shared/types/client.types';
+import { Client } from '@/shared/lib/drizzle/types';
 import { DataTable } from '@/components/ui/data-table';
 import { Edit, Package, Trash, FileText, Eye } from 'lucide-react';
 import Link from 'next/link';

@@ -1,13 +1,13 @@
 'use server';
 
-import { Client } from '@/features/client/shared/types/client.types';
-import { getClients } from '@/features/client/list/model/getClients';
+import { Client } from '@/shared/lib/drizzle/types';
+import { ClientQueries } from '@/shared/lib/drizzle/queries/ClientQueries';
 import { Result } from '@/shared/utils/result';
 import { withAction } from '@/shared/utils/withAction';
 
 export async function getClientsAction(): Promise<Result<Client[]>> {
   return withAction(async () => {
-    const clients = await getClients();
+    const clients = await ClientQueries.getAll();
     return clients;
   });
 }

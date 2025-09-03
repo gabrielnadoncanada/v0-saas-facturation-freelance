@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Building2, Crown, Shield, User, Loader2 } from 'lucide-react';
 import { switchOrganizationAction } from '../../switch/actions/switchOrganization.action';
-import { OrganizationWithRole } from '../model/getOrganizations';
+import { OrganizationWithRole } from '@/shared/lib/drizzle/queries/OrganizationQueries';
 import { cn } from '@/shared/lib/utils';
 
 interface OrganizationCardProps {
@@ -57,7 +57,7 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
   const getInitials = (name: string) => {
     return name
       .split(' ')
-      .map(word => word.charAt(0))
+      .map((word) => word.charAt(0))
       .join('')
       .toUpperCase()
       .slice(0, 2);
@@ -82,20 +82,26 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
   };
 
   return (
-    <Card 
+    <Card
       className={cn(
         'transition-all duration-200 hover:shadow-md',
-        isCurrentOrganization ? 'ring-2 ring-primary' : 'cursor-pointer hover:ring-1 hover:ring-muted-foreground/20',
-        isLoading && 'opacity-50 cursor-not-allowed'
+        isCurrentOrganization
+          ? 'ring-2 ring-primary'
+          : 'cursor-pointer hover:ring-1 hover:ring-muted-foreground/20',
+        isLoading && 'opacity-50 cursor-not-allowed',
       )}
       onClick={handleSwitchOrganization}
     >
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={organization.logo_url} alt={organization.name} />
+            <AvatarImage src={organization.logoUrl || undefined} alt={organization.name} />
             <AvatarFallback>
-              {organization.logo_url ? getInitials(organization.name) : <Building2 className="h-5 w-5" />}
+              {organization.logoUrl ? (
+                getInitials(organization.name)
+              ) : (
+                <Building2 className="h-5 w-5" />
+              )}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
@@ -121,9 +127,9 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
             {organization.plan}
           </Badge>
         </div>
-        
+
         <div className="mt-4 text-xs text-muted-foreground">
-          Créée le {new Date(organization.created_at).toLocaleDateString('fr-FR')}
+          Créée le {new Date(organization.createdAt).toLocaleDateString('fr-FR')}
         </div>
 
         {!isCurrentOrganization && !isLoading && (
@@ -141,4 +147,4 @@ export function OrganizationCard({ organization, isCurrentOrganization }: Organi
       </CardContent>
     </Card>
   );
-} 
+}

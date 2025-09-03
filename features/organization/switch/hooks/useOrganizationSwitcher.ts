@@ -2,52 +2,25 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/shared/lib/supabase/client';
-import { switchOrganizationAction } from '../actions/switchOrganization.action';
-import { OrganizationWithRole } from '../../list/model/getOrganizations';
+import { switchOrganizationAction } from '@/features/organization/switch/actions/switchOrganization.action';
+import { getOrganizationsAction } from '@/features/organization/list/actions/getOrganizations.action';
+import { OrganizationWithRole } from '@/shared/lib/drizzle/queries/OrganizationQueries';
 
 export function useOrganizationSwitcher() {
   const [organizations, setOrganizations] = useState<OrganizationWithRole[]>([]);
   const [loading, setLoading] = useState(false);
   const [switching, setSwitching] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const fetchOrganizations = async () => {
     setLoading(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data, error } = await supabase
-        .from('organization_members')
-        .select(`
-          role,
-          organization:organizations(
-            id,
-            name,
-            slug,
-            owner_id,
-            plan,
-            logo_url,
-            created_at,
-            updated_at
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: true });
-
-      if (error) {
-        console.error('Error fetching organizations:', error);
-        return;
+      const result = await getOrganizationsAction();
+      if (result.success) {
+        setOrganizations(result.data);
+      } else {
+        console.error('Error fetching organizations:', result.error);
       }
-
-      const transformedData = data?.map((item: any) => ({
-        ...item.organization,
-        role: item.role,
-      })) || [];
-
-      setOrganizations(transformedData);
     } catch (error) {
       console.error('Error in fetchOrganizations:', error);
     } finally {
@@ -85,4 +58,4 @@ export function useOrganizationSwitcher() {
     fetchOrganizations,
     switchOrganization,
   };
-} 
+}

@@ -1,10 +1,9 @@
-import { Client } from '@/features/client/shared/types/client.types';
-import { Invoice } from '@/features/invoice/shared/types/invoice.types';
+import { Client } from '@/shared/lib/drizzle/types';
 import { ClientStats } from '../model/getClientStats';
 
 export interface ClientDetailData {
   client: Client;
-  invoices: Invoice[];
+  invoices: any[];
   stats: ClientStats;
 }
 

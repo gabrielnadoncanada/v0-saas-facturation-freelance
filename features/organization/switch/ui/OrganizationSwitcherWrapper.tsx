@@ -1,5 +1,5 @@
-import { getSessionUser } from '@/shared/utils/getSessionUser';
-import { OrganizationSwitcher } from './OrganizationSwitcher';
+import { getSessionUserAndOrganization } from '@/shared/lib/drizzle/queries/OrganizationHelpers';
+import { OrganizationSwitcher } from '@/features/organization/switch/ui/OrganizationSwitcher';
 
 interface OrganizationSwitcherWrapperProps {
   className?: string;
@@ -7,17 +7,12 @@ interface OrganizationSwitcherWrapperProps {
 
 export async function OrganizationSwitcherWrapper({ className }: OrganizationSwitcherWrapperProps) {
   try {
-    const { organization } = await getSessionUser();
-    
-    return (
-      <OrganizationSwitcher 
-        currentOrganization={organization} 
-        className={className}
-      />
-    );
+    const { organization } = await getSessionUserAndOrganization();
+
+    return <OrganizationSwitcher currentOrganization={organization} className={className} />;
   } catch (error) {
     // If there's an error getting the session (e.g., user not authenticated),
     // return null or a fallback component
     return null;
   }
-} 
+}

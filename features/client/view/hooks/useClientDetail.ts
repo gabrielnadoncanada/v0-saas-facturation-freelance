@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getClientDetail } from '../model/getClientDetail';
-import { getClientInvoices } from '../model/getClientInvoices';
-import { ClientStats, calculateClientStats } from '../model/getClientStats';
-import { Client } from '@/features/client/shared/types/client.types';
-import { Invoice } from '@/features/invoice/shared/types/invoice.types';
+import { getClientDetailAction } from '../actions/getClientDetail.action';
+import { Client } from '@/shared/lib/drizzle/types';
 import { toast } from 'sonner';
 
 export function useClientDetail(clientId: string) {
   const [client, setClient] = useState<Client | null>(null);
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [invoices, setInvoices] = useState<any[]>([]);
   const [stats, setStats] = useState<ClientStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,17 +21,17 @@ export function useClientDetail(clientId: string) {
     setError(null);
 
     try {
-      // Récupérer les détails du client
-      const clientData = await getClientDetail(clientId);
-      setClient(clientData);
+      // Récupérer toutes les données du client via l'action
+      const result = await getClientDetailAction(clientId);
 
-      // Récupérer les factures du client
-      const invoicesData = await getClientInvoices(clientId);
-      setInvoices(invoicesData);
-
-      // Calculer les statistiques du client
-      const clientStats = calculateClientStats(invoicesData);
-      setStats(clientStats);
+      if (result.success) {
+        const { client, invoices, stats } = result.data;
+        setClient(client);
+        setInvoices(invoices);
+        setStats(stats);
+      } else {
+        throw new Error(result.error);
+      }
     } catch (err) {
       console.error('Erreur lors du chargement des données client:', err);
       setError('Impossible de charger les données client. Veuillez réessayer.');

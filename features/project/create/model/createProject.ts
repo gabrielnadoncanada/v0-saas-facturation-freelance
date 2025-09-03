@@ -1,20 +1,27 @@
 import { ProjectFormSchema } from '@/features/project/shared/schema/project.schema';
 import { Project } from '@/features/project/shared/types/project.types';
-import { getSessionUser } from '@/shared/utils/getSessionUser';
-import { insertRecord } from '@/shared/services/supabase/crud';
+import { getSessionUserDrizzle } from '@/shared/utils/getSessionUserDrizzle';
+import { ProjectQueries } from '@/shared/lib/drizzle/queries/ProjectQueries';
+import { NewProject } from '@/shared/lib/drizzle/types';
 
 export async function createProject(formData: ProjectFormSchema): Promise<Project> {
-  const { supabase, organization } = await getSessionUser();
+  const { organization } = await getSessionUserDrizzle();
 
   if (!organization) {
     throw new Error('Aucune organisation active');
   }
 
-  const finalData = {
-    ...formData,
-    organization_id: organization.id,
-    client_id: formData.client_id,
+  // Convert to camelCase for Drizzle schema
+  const projectData: NewProject = {
+    name: formData.name,
+    description: formData.description,
+    budget: formData.budget,
+    startDate: formData.startDate,
+    endDate: formData.endDate,
+    status: formData.status || 'active',
+    organizationId: organization.id,
+    clientId: formData.client_id,
   };
 
-  return await insertRecord<Project>(supabase, 'projects', finalData);
+  return await ProjectQueries.create(projectData);
 }

@@ -18,6 +18,7 @@ async function getUserOrganizations(supabase: any, userId: string) {
     .select('organization_id')
     .eq('user_id', userId)
     .limit(1);
+  console.log('data', data);
   return data || [];
 }
 
@@ -74,10 +75,7 @@ export async function updateSession(request: NextRequest) {
     }
 
     // If on /no-organization and user HAS org → redirect to /dashboard (rattrapage UX)
-    if (
-      pathname.startsWith('/no-organization') &&
-      hasOrganization
-    ) {
+    if (pathname.startsWith('/no-organization') && hasOrganization) {
       const url = request.nextUrl.clone();
       url.pathname = '/dashboard';
       return NextResponse.redirect(url);

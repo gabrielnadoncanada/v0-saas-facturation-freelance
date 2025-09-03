@@ -1,22 +1,22 @@
 'use server';
 
-import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { getSessionUserAndOrganization } from '@/shared/lib/drizzle/queries/OrganizationHelpers';
+import { OrganizationQueries } from '@/shared/lib/drizzle/queries/OrganizationQueries';
 import { Result } from '@/shared/utils/result';
 import { withAction } from '@/shared/utils/withAction';
-import { updateRecord } from '@/shared/services/supabase/crud';
 
 export async function deleteLogoAction(): Promise<Result<null>> {
   return withAction(async () => {
-    const { supabase, organization } = await getSessionUser();
+    const { supabase, organization } = await getSessionUserAndOrganization();
 
     if (!organization) {
       throw new Error('Aucune organisation active');
     }
 
     // If there's a current logo, delete it from storage
-    if (organization.logo_url) {
+    if (organization.logoUrl) {
       // Extract the file path from the URL
-      const url = new URL(organization.logo_url);
+      const url = new URL(organization.logoUrl);
       const pathParts = url.pathname.split('/');
       const fileName = pathParts[pathParts.length - 1];
       const filePath = `${organization.id}/${fileName}`;
@@ -33,15 +33,8 @@ export async function deleteLogoAction(): Promise<Result<null>> {
     }
 
     // Update organization to remove logo URL
-    await updateRecord(
-      supabase,
-      'organizations',
-      organization.id,
-      { logo_url: null },
-      '*',
-      { id: organization.id }
-    );
+    await OrganizationQueries.updateLogo(organization.id, null);
 
     return null;
   });
-} 
+}

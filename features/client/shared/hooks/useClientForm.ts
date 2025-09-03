@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Client } from '@/features/client/shared/types/client.types';
+import { Client } from '@/shared/lib/drizzle/types';
 import { ClientFormSchema, clientFormSchema } from '@/features/client/shared/schema/client.schema';
 
 interface UseClientFormOptions {
@@ -26,20 +26,21 @@ export function useClientForm({
       name: client?.name || '',
       email: client?.email || '',
       phone: client?.phone || '',
-      billing_address: client?.billing_address || '',
-      billing_city: client?.billing_city || '',
-      billing_postal_code: client?.billing_postal_code || '',
-      billing_country: client?.billing_country || '',
-      shipping_address: client?.shipping_address || '',
-      shipping_city: client?.shipping_city || '',
-      shipping_postal_code: client?.shipping_postal_code || '',
-      shipping_country: client?.shipping_country || '',
+      hourlyRate: client?.hourlyRate || '',
+      billingAddress: client?.billingAddress || '',
+      billingCity: client?.billingCity || '',
+      billingPostalCode: client?.billingPostalCode || '',
+      billingCountry: client?.billingCountry || '',
+      shippingAddress: client?.shippingAddress || '',
+      shippingCity: client?.shippingCity || '',
+      shippingPostalCode: client?.shippingPostalCode || '',
+      shippingCountry: client?.shippingCountry || '',
       notes: client?.notes || '',
       sameAsShipping: client
-        ? client.shipping_address === client.billing_address &&
-          client.shipping_city === client.billing_city &&
-          client.shipping_postal_code === client.billing_postal_code &&
-          client.shipping_country === client.billing_country
+        ? client.shippingAddress === client.billingAddress &&
+          client.shippingCity === client.billingCity &&
+          client.shippingPostalCode === client.billingPostalCode &&
+          client.shippingCountry === client.billingCountry
         : true,
     },
     mode: 'onBlur',
@@ -49,17 +50,9 @@ export function useClientForm({
     setIsLoading(true);
     setError(null);
     try {
-      let submitData = { ...values };
-      if (values.sameAsShipping) {
-        submitData.shipping_address = values.billing_address;
-        submitData.shipping_city = values.billing_city;
-        submitData.shipping_postal_code = values.billing_postal_code;
-        submitData.shipping_country = values.billing_country;
-      }
-
       const result = client
-        ? await updateClientAction(client.id, submitData)
-        : await createClientAction(submitData);
+        ? await updateClientAction(client.id, values)
+        : await createClientAction(values);
       if (result.error) {
         setError(result.error);
         setIsLoading(false);

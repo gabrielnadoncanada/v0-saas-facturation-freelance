@@ -1,49 +1,38 @@
 'use server';
 
-import { getSessionUser } from '@/shared/utils/getSessionUser';
+import { getSessionUserAndOrganization } from '@/shared/lib/drizzle/queries/OrganizationHelpers';
+import { OrganizationQueries } from '@/shared/lib/drizzle/queries/OrganizationQueries';
 import { Result } from '@/shared/utils/result';
 import { withAction } from '@/shared/utils/withAction';
-import { updateRecord } from '@/shared/services/supabase/crud';
 
 export async function uploadLogoAction(formData: FormData): Promise<Result<string>> {
   return withAction(async () => {
-    const { supabase, organization } = await getSessionUser();
+    const { supabase, organization } = await getSessionUserAndOrganization();
 
     if (!organization) throw new Error('Aucune organisation active');
 
     const file = formData.get('logo') as File;
     if (!file) throw new Error('Aucun fichier fourni');
     if (!file.type.startsWith('image/')) throw new Error('Le fichier doit être une image');
-    if (file.size > 10 * 1024 * 1024) throw new Error('Le fichier ne doit pas dépasser 10MB');
+    if (file.size > 2 * 1024 * 1024) throw new Error('Le fichier ne doit pas dépasser 2MB');
 
     const fileExt = file.name.split('.').pop();
     const fileName = `${organization.id}/logo-${Date.now()}.${fileExt}`;
 
-    // Upload
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    // Upload to storage
+    const { error: uploadError } = await supabase.storage
       .from('organization-logos')
       .upload(fileName, file, { cacheControl: '3600', upsert: false });
 
+    if (uploadError) throw new Error(`Erreur upload: ${uploadError.message}`);
 
-      console.log(uploadData)
-    // Get public URL (utilise fileName au lieu de uploadData.path)
-    const { data: urlData, error: urlError } = supabase.storage
-      .from('organization-logos')
-      .getPublicUrl(fileName);
-    if (urlError) throw new Error(`Erreur génération URL: ${urlError.message}`);
+    // Get public URL
+    const { data: urlData } = supabase.storage.from('organization-logos').getPublicUrl(fileName);
 
     const logoUrl = urlData.publicUrl;
 
-    // Update en base
-    const updateRes = await updateRecord(
-      supabase,
-      'organizations',
-      organization.id,
-      { logo_url: logoUrl },
-      '*',
-      { id: organization.id }
-    );
-    console.log('UpdateResult:', updateRes);
+    // Update organization in database
+    await OrganizationQueries.updateLogo(organization.id, logoUrl);
 
     return logoUrl;
   });

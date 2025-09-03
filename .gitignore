@@ -28,3 +28,5 @@ next-env.d.ts
 .vercel
 .env*.local
 .cursor/mcp.json
+
+.env*.local

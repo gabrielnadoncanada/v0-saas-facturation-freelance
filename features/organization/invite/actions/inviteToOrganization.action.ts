@@ -1,76 +1,60 @@
 'use server';
 
-import { createClient } from '@/shared/lib/supabase/server';
-import { ActionResult } from '@/shared/types/api.types';
-import { OrganizationRole } from '@/shared/types/organization.types';
-import { getSessionUser } from '@/shared/utils/getSessionUser';
-import { randomUUID } from 'crypto';
+import { OrganizationInvitationQueries } from '@/shared/lib/drizzle/queries/OrganizationInvitationQueries';
+import {
+  inviteToOrganizationSchema,
+  InviteToOrganizationSchema,
+} from '@/features/organization/shared/schema/organization.schema';
+import { getSessionUserAndOrganization } from '@/shared/lib/drizzle/queries/OrganizationHelpers';
+import { Result, fail } from '@/shared/utils/result';
+import { withAction } from '@/shared/utils/withAction';
 
-interface InviteData {
-  email: string;
-  role: OrganizationRole;
-}
+export async function inviteToOrganizationAction(
+  data: InviteToOrganizationSchema,
+): Promise<Result<null>> {
+  const parsed = inviteToOrganizationSchema.safeParse(data);
+  if (!parsed.success) {
+    const errorMessage = parsed.error.errors.map((err) => err.message).join(', ');
+    return fail(errorMessage);
+  }
 
-export async function inviteToOrganizationAction(data: InviteData): Promise<ActionResult> {
-  try {
-    const { user, supabase, organization, isOrgAdmin } = await getSessionUser();
+  return withAction(async () => {
+    const { organization } = await getSessionUserAndOrganization();
 
     if (!organization) {
-      return { success: false, error: 'Aucune organisation active' };
-    }
-
-    if (!isOrgAdmin) {
-      return { success: false, error: "Vous n'avez pas les droits nécessaires" };
+      throw new Error('Aucune organisation active');
     }
 
     // Check if user is already a member
-    const { data: existingMember } = await supabase
-      .from('organization_members')
-      .select('id')
-      .eq('organization_id', organization.id)
-      .eq('email', data.email)
-      .maybeSingle();
+    const isMember = await OrganizationInvitationQueries.checkExistingMember(
+      organization.id,
+      parsed.data.email,
+    );
 
-    if (existingMember) {
-      return { success: false, error: "Cet utilisateur est déjà membre de l'organisation" };
+    if (isMember) {
+      throw new Error("Cet utilisateur est déjà membre de l'organisation");
     }
 
     // Check if invitation already exists
-    const { data: existingInvite } = await supabase
-      .from('organization_invitations')
-      .select('id')
-      .eq('organization_id', organization.id)
-      .eq('email', data.email)
-      .maybeSingle();
+    const hasInvitation = await OrganizationInvitationQueries.checkExistingInvitation(
+      organization.id,
+      parsed.data.email,
+    );
 
-    if (existingInvite) {
-      return { success: false, error: 'Une invitation a déjà été envoyée à cet email' };
+    if (hasInvitation) {
+      throw new Error('Une invitation a déjà été envoyée à cet email');
     }
 
     // Create invitation
-    const token = randomUUID();
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // Expires in 7 days
-
-    const { error } = await supabase.from('organization_invitations').insert({
-      organization_id: organization.id,
-      email: data.email,
-      role: data.role,
-      token,
-      expires_at: expiresAt.toISOString(),
-    });
-
-    if (error) {
-      console.error('Error creating invitation:', error);
-      return { success: false, error: "Erreur lors de la création de l'invitation" };
-    }
+    await OrganizationInvitationQueries.create(
+      organization.id,
+      parsed.data.email,
+      parsed.data.role,
+    );
 
     // TODO: Send email with invitation link
     // This would typically use an email service like SendGrid, Postmark, etc.
 
-    return { success: true };
-  } catch (error) {
-    console.error('Error in inviteToOrganizationAction:', error);
-    return { success: false, error: 'Une erreur est survenue' };
-  }
+    return null;
+  });
 }

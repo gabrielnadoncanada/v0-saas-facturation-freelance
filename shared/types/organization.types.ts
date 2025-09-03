@@ -2,20 +2,20 @@ export interface Organization {
   id: string;
   name: string;
   slug: string;
-  owner_id: string;
+  ownerId: string;
   plan: OrganizationPlan;
-  logo_url?: string;
-  created_at: string;
-  updated_at: string;
+  logoUrl?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OrganizationMember {
   id: string;
-  organization_id: string;
-  user_id: string;
+  organizationId: string;
+  userId: string;
   role: OrganizationRole;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type OrganizationRole = 'owner' | 'admin' | 'member';
@@ -23,11 +23,11 @@ export type OrganizationPlan = 'free' | 'starter' | 'professional' | 'enterprise
 
 export interface OrganizationInvitation {
   id: string;
-  organization_id: string;
+  organizationId: string;
   email: string;
   role: OrganizationRole;
   token: string;
-  expires_at: string;
-  created_at: string;
-  updated_at: string;
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string;
 }

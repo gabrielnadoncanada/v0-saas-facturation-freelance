@@ -3,7 +3,7 @@ import { getSessionUser } from '@/shared/utils/getSessionUser';
 import { insertRecord } from '@/shared/services/supabase/crud';
 
 export async function createCategory(data: CategoryFormData): Promise<Category> {
-  const { supabase, user, organization } = await getSessionUser();
+  const { supabase, organization } = await getSessionUser();
 
   if (!organization) {
     throw new Error('Aucune organisation active');
@@ -11,7 +11,6 @@ export async function createCategory(data: CategoryFormData): Promise<Category> 
 
   const finalData = {
     ...data,
-    user_id: user.id,
     organization_id: organization.id,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),

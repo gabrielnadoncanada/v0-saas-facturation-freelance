@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { deleteClientAction } from '@/features/client/delete/actions/deleteClient.action';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 export function useClientsTable() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export function useClientsTable() {
       if (!result.success) {
         console.error('Error deleting client:', result.error);
       } else {
-        router.refresh();
+        router.reload();
       }
     } catch (err) {
       console.error('Unexpected error:', err);

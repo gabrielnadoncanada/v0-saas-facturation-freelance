@@ -3,9 +3,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
-import { OrganizationSettingsFormValues } from '../../hooks/useOrganizationSettingsForm';
+import { OrganizationSettingsFormValues } from '@/features/organization/edit/hooks/useOrganizationSettingsForm';
 
 interface CompanySettingsTabProps {
   form: UseFormReturn<OrganizationSettingsFormValues>;
@@ -36,7 +42,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="company_address"
+            name="companyAddress"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Adresse</FormLabel>
@@ -50,7 +56,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
 
           <FormField
             control={form.control}
-            name="company_city"
+            name="companyCity"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Ville</FormLabel>
@@ -66,7 +72,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <FormField
             control={form.control}
-            name="company_postal_code"
+            name="companyPostalCode"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Code postal</FormLabel>
@@ -80,7 +86,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
 
           <FormField
             control={form.control}
-            name="company_country"
+            name="companyCountry"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Pays</FormLabel>
@@ -105,7 +111,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
 
           <FormField
             control={form.control}
-            name="company_phone"
+            name="companyPhone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Téléphone</FormLabel>
@@ -121,7 +127,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="company_email"
+            name="companyEmail"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
@@ -135,7 +141,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
 
           <FormField
             control={form.control}
-            name="company_website"
+            name="companyWebsite"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Site web</FormLabel>
@@ -150,7 +156,7 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
 
         <FormField
           control={form.control}
-          name="company_tax_number"
+          name="companyTaxNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Numéro de TVA</FormLabel>
@@ -164,4 +170,4 @@ export function CompanySettingsTab({ form }: CompanySettingsTabProps) {
       </CardContent>
     </Card>
   );
-} 
+}

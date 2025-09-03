@@ -1,13 +1,14 @@
 'use server';
 
-import { getOrganizationSettings } from '../model/getOrganizationSettings';
-import { OrganizationSettings } from '../types/organization-settings.types';
-import { Result } from '@/shared/utils/result';
+import { OrganizationSettingsQueries } from '@/shared/lib/drizzle/queries/OrganizationSettingsQueries';
+import { getSessionUserAndOrganization } from '@/shared/lib/drizzle/queries/OrganizationHelpers';
 import { withAction } from '@/shared/utils/withAction';
 
-export async function getOrganizationSettingsAction(): Promise<Result<OrganizationSettings | null>> {
+export async function getOrganizationSettingsAction() {
   return withAction(async () => {
-    const settings = await getOrganizationSettings();
+    const { organization } = await getSessionUserAndOrganization();
+
+    const settings = await OrganizationSettingsQueries.getByOrganizationId(organization.id);
     return settings;
   });
-} 
+}

@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Client } from '@/features/client/shared/types/client.types';
+import { useRouter } from 'next/router';
+import { Client } from '@/shared/lib/drizzle/types';
 import { ClientFormView } from './ClientFormView';
 import { useClientForm } from '@/features/client/shared/hooks/useClientForm';
 import { createClientAction } from '@/features/client/create/actions/createClient.action';
@@ -16,7 +16,7 @@ export function ClientForm({ client }: { client: Client | null }) {
     updateClientAction,
     onSubmitSuccess: () => {
       router.push('/dashboard/clients');
-      router.refresh();
+      router.reload();
     },
   });
 

@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
-import { OrganizationSettingsFormValues } from '../../hooks/useOrganizationSettingsForm';
+import { OrganizationSettingsFormValues } from '@/features/organization/edit/hooks/useOrganizationSettingsForm';
 
 interface InvoicingSettingsTabProps {
   form: UseFormReturn<OrganizationSettingsFormValues>;
@@ -15,15 +15,13 @@ export function InvoicingSettingsTab({ form }: InvoicingSettingsTabProps) {
     <Card>
       <CardHeader>
         <CardTitle>Paramètres de facturation</CardTitle>
-        <CardDescription>
-          Configurez la numérotation et le format de vos factures
-        </CardDescription>
+        <CardDescription>Configurez la numérotation et le format de vos factures</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <FormField
             control={form.control}
-            name="invoice_prefix"
+            name="invoicePrefix"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Préfixe des factures</FormLabel>
@@ -37,7 +35,7 @@ export function InvoicingSettingsTab({ form }: InvoicingSettingsTabProps) {
 
           <FormField
             control={form.control}
-            name="invoice_number_format"
+            name="invoiceNumberFormat"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Format de numérotation</FormLabel>
@@ -51,7 +49,7 @@ export function InvoicingSettingsTab({ form }: InvoicingSettingsTabProps) {
 
           <FormField
             control={form.control}
-            name="next_invoice_number"
+            name="nextInvoiceNumber"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Prochain numéro</FormLabel>
@@ -73,13 +71,15 @@ export function InvoicingSettingsTab({ form }: InvoicingSettingsTabProps) {
         <div className="mt-4 p-4 bg-muted rounded-lg">
           <h4 className="text-sm font-medium mb-2">Aperçu du format</h4>
           <p className="text-sm text-muted-foreground">
-            Exemple: {form.watch('invoice_prefix') || 'INV'}-2024-{String(form.watch('next_invoice_number') || 1).padStart(4, '0')}
+            Exemple: {form.watch('invoicePrefix') || 'INV'}-2024-
+            {String(form.watch('nextInvoiceNumber') || 1).padStart(4, '0')}
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            Variables disponibles: {'{prefix}'}, {'{year}'}, {'{month}'}, {'{number:X}'} (X = nombre de chiffres)
+            Variables disponibles: {'{prefix}'}, {'{year}'}, {'{month}'}, {'{number:X}'} (X = nombre
+            de chiffres)
           </p>
         </div>
       </CardContent>
     </Card>
   );
-} 
+}
